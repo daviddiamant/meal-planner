@@ -1,0 +1,9 @@
+recept-back/node_modules
+recept-back/build
+recept-front/node_modules
+recept-front/build
+recept-back/SSL-key
+recept-back/key.pem
+recept-back/cert.pem
+package-lock.json
+**/.DS_Store
