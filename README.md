@@ -10,7 +10,7 @@ You just input a URL to the recipe you want to save and the application will:
 ### Tech
 The application is served using Express in Node.
 The data are stored in MongoDB.
-The front-end are written in React.
+The front-end is written in React.
 Communication between the front & back-end are done using GraphQL through Apollo.
 
 How to run
@@ -44,6 +44,5 @@ mv build ../recept-back/
 Then navigate to /recept/recept-back and run:
 ```
 npm install
-node server.js  </dev/null &>/dev/n
-ull &
+node server.js  </dev/null &>/dev/null &
 ```
