@@ -21,14 +21,17 @@ These are the instructions for running the app yourself.
 * npm - [https://www.npmjs.com/](https://www.npmjs.com/)
 * Node.js - [https://nodejs.org/en/](https://nodejs.org/en/)
 * MongoDB - [https://www.mongodb.com/](https://www.mongodb.com/)
-⋅⋅⋅ I am running this on my Raspberry Pi with Raspbian, so v. 2.4.14.
 
-⋅⋅⋅ So if you will use something newer than v. 2. There are probably some changes that needs to be made to the MongoDB connection.
+    I am running this on my Raspberry Pi with Raspbian, so v. 2.4.14.
+
+    So if you will use something newer than v. 2. There are probably some changes that needs to be made to the MongoDB connection.
 * SSL Key and Cert.
-⋅⋅⋅ If its just supposed to be running locally, just run this in /recept:
-⋅⋅⋅ ```
-openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
-```
+
+    If its just supposed to be running locally, just run this in /recept:
+
+    ```
+    openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+    ```
 
 ### How to:
 Navigate to /recept/recept-front and run:
