@@ -1,9 +1,12 @@
-const puppeteer = require('puppeteer');
-const mkdirp = require('mkdirp');
+
 const fs = require('fs');
 const axios = require('axios');
-var mongo = require('./mongodb');
+const sharp = require('sharp');
+const mkdirp = require('mkdirp');
+const puppeteer = require('puppeteer');
 const filenamify = require('filenamify');
+
+const mongo = require('./mongodb');
 
 /**
  * This function does the actual parsing of meta data.
@@ -41,14 +44,14 @@ const download = async (uri, path) => {
 		url: uri,
 		method: 'GET',
 		responseType: 'stream'
-	})
+	});
 
 	response.data.pipe(writer)
 
 	return new Promise((resolve, reject) => {
 		writer.on('finish', resolve)
 		writer.on('error', reject)
-	})
+	});
 }
 
 const validURL = (url) => {
@@ -111,6 +114,11 @@ module.exports = {
 								.catch(e => {
 									reject({res: "Could not download the image."});
 								});
+
+							sharp(folder + '/meta.jpg')
+								.resize(200, 200)
+								.max()
+								.toFile(folder + '/meta_small.jpg');
 							// Classify image and update keywords
 							// Use tensorflow js
 						}
@@ -128,6 +136,11 @@ module.exports = {
 						}).catch(e => {
 							reject({res: "Could not complete the screenshot"});
 						});
+
+						sharp(folder + '/screenshot.jpg')
+							.resize(200, 200)
+							.max()
+							.toFile(folder + '/screenshot_small.jpg');
 					}
 					await browser.close();
 					resolve({res: "Success"});

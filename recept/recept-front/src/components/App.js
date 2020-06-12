@@ -27,7 +27,8 @@ class App extends React.Component {
 			loadingNewURL: 0,
 			newURLError: false,
 			recipeFloatingOpen: false,
-			test: 1
+			test: 1,
+			reachableServer: false
 		}
 	}
 
@@ -37,6 +38,16 @@ class App extends React.Component {
 			"resize",
 			() => debounce(this.setColumns(window.innerWidth), 200)
 		);
+
+		// Check if we can reach the server or if we are served via the service worker
+		let pingUrl = window.location.hostname.indexOf('localhost') > -1 ? 'egen.kokbok.se' : window.location.hostname;
+		pingUrl = `${window.location.protocol}//${pingUrl}:443/ping`;
+		fetch(pingUrl).then(_ => {
+			// Server is reachable!
+			this.setState({
+				reachableServer: true
+			});
+		});
 	}
 
 	setColumns = (width) => {
@@ -144,7 +155,7 @@ class App extends React.Component {
 						if (error) return <p>Error :(</p>;
 
 						const recipes =  data.recipes
-							.filter(recipe => recipe.title != null)
+							.filter(recipe => recipe.title != null && recipe.title != '')
 							.map((recipe, i) => (
 							<Recipe key={recipe._id} type="0" data={recipe}/>
 						));
@@ -161,24 +172,28 @@ class App extends React.Component {
 						);
 					}}
 				</Query>
-				<FloatingButton
-					opened = {this.state.recipeFloatingOpen}
-					closedIcon = {
-						<FontAwesomeIcon icon="plus"/>
-					}
-					openIcon = {
-						(this.state.loadingNewURL === 2 ? <Spinner /> : <p>Add</p>)
-					}
-					onClick = {this.handleAddRecipe}
-					hiddenContent = {
-						<AddRecipeInput
-						currentValue = {this.state.newUrl}
-						updateValue = {this.changeUrl}/>
-					}
-					bg="#FFC245"
-					tone="dark"
-					ownClass={`add-recipe ${(this.state.newURLError ? 'show-error' : '')}`}
-				/>
+				{
+					this.state.reachableServer ? (
+						<FloatingButton
+							opened = {this.state.recipeFloatingOpen}
+							closedIcon = {
+								<FontAwesomeIcon icon="plus"/>
+							}
+							openIcon = {
+								(this.state.loadingNewURL === 2 ? <Spinner /> : <p>Add</p>)
+							}
+							onClick = {this.handleAddRecipe}
+							hiddenContent = {
+								<AddRecipeInput
+								currentValue = {this.state.newUrl}
+								updateValue = {this.changeUrl}/>
+							}
+							bg="#FFC245"
+							tone="dark"
+							ownClass={`add-recipe ${(this.state.newURLError ? 'show-error' : '')}`}
+						/>
+					) : null
+				}
 				<span ref={this.endOfRecipes}/>
 			</div>
 		);

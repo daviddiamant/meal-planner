@@ -28,7 +28,8 @@ class RecipePage extends React.Component {
 
 						const {recipe} = data;
 
-						const href = `${window.location.protocol}//${window.location.hostname}:443/`;
+						const url = window.location.hostname.indexOf('localhost') > -1 ? 'egen.kokbok.se' : window.location.hostname;
+						const href = `${window.location.protocol}//${url}:443/`;
 						const images = [
 							(recipe.image != null ? {
 								url: `${href}public/${filenamify(recipe.url)}/meta.jpg`,

@@ -100,7 +100,8 @@ class Recipe extends React.Component {
 		let data = {...this.props.data};
 
 		let image = '';
-		const href = `${window.location.protocol}//${window.location.hostname}:443/`;
+		const url = window.location.hostname.indexOf('localhost') > -1 ? 'egen.kokbok.se' : window.location.hostname;
+		const href = `${window.location.protocol}//${url}:443/`;
 		if (data.url != null && data.image != null) {
 			image = `${href}public/${filenamify(data.url)}/meta.jpg`;
 		}

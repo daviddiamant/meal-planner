@@ -13,6 +13,11 @@ const graphql = require('./graphql');
 const app = express();
 app.use(cors())
 
+// Used to ping server from client
+app.use('/ping', function (req, res) {
+	res.status(200).end();
+});
+
 // Make the screenshots available publicly
 app.use('/public', express.static('screenshots'));
 
@@ -30,8 +35,8 @@ SSLKey = SSLKey.trim();
 
 // Start express on port 443 (secure)
 https.createServer({
-    key: fs.readFileSync('./key.pem'),
-    cert: fs.readFileSync('./cert.pem'),
+    key: fs.readFileSync('./server.key'),
+    cert: fs.readFileSync('./server.crt'),
     passphrase: SSLKey
 }, app)
 .listen(443);
@@ -42,7 +47,7 @@ var http = express();
 // set up a route to redirect http to https
 http.get('*', function(req, res) {
 	res.redirect('https://' + req.headers.host + req.url);
-})
+});
 
 // have it listen on 80
 http.listen(80);

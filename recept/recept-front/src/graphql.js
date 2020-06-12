@@ -51,13 +51,14 @@ export const addRecipe = gql`
 `;
 
 export const createWeekRecipe = gql`
-	mutation CreateWeekRecipe($_id: ID!, $title: String, $keywords: [String], $image: String, $url: String){
-		createWeekRecipe(_id: $_id, title: $title, keywords: $keywords, image: $image, url: $url) {
+	mutation CreateWeekRecipe($_id: ID!, $title: String, $keywords: [String], $image: String, $url: String, $path: String){
+		createWeekRecipe(_id: $_id, title: $title, keywords: $keywords, image: $image, url: $url, path: $path) {
 			_id
 			title
 			keywords
 			image
 			url
+			path
 		}
 	}
 `;
