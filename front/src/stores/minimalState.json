@@ -1,0 +1,44 @@
+{
+	"helloWordMessage": "Hello World!",
+	"navigationItems": {
+		"runningAnimation": false,
+		"clicked": [],
+		"mutationLocks": []
+	},
+	"browseRecipes": {
+		"isFetching": false,
+		"scrollPosition": 0,
+		"recipes": []
+	},
+	"smallLazyLoadQueue": [],
+	"largeLazyLoadQueue": [],
+	"homepageLazyLoadedImages": {
+		"www.example.se/example-image": {
+			"smallUrl": "www.example.se/example-image/small",
+			"smallLocalURL": "/example-iamge-small",
+			"smallLoaded": false,
+			"shouldBeLoaded": false,
+			"loaded": false,
+			"displayed": false
+		}
+	},
+	"recipePageLazyLoadedImages": {
+		"www.example.se/example-image": {
+			"smallUrl": "www.example.se/example-image/small",
+			"smallLocalURL": "/example-iamge-small",
+			"smallLoaded": false,
+			"shouldBeLoaded": false,
+			"loaded": false,
+			"displayed": false
+		}
+	},
+	"recipePage": {
+		"backButtonColor": "light",
+		"isIngredientsSelected": true,
+		"recipe": {}
+	},
+	"expandText": {
+		"numExpanders": 0,
+		"expanderState": {}
+	}
+}
