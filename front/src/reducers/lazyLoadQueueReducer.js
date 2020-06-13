@@ -3,6 +3,7 @@ import {
   LAZY_LOAD_PROCESS_ONE,
   LAZY_LOAD_CLEAR_FOR_LARGE,
   LAZY_LOAD_PROCESS_ONE_LARGE,
+  LAZY_LOAD_REMOVE_FROM_QUEUE,
 } from "../actions/actionTypes";
 
 export function lazyLoadQueueReducer(stateKey, state = [], action) {
@@ -18,7 +19,12 @@ export function lazyLoadQueueReducer(stateKey, state = [], action) {
         return state;
       }
 
-      return [...state, action];
+      // Ensure no duplicates
+      if (state.some((x) => x.url === action.url)) {
+        return state;
+      } else {
+        return [...state, action];
+      }
 
     case LAZY_LOAD_PROCESS_ONE:
       if (!isSmall || state.length === 0) {
@@ -32,7 +38,12 @@ export function lazyLoadQueueReducer(stateKey, state = [], action) {
         return state;
       }
 
-      return [...state, action];
+      // Ensure no duplicates
+      if (state.some((x) => x.url === action.url)) {
+        return state;
+      } else {
+        return [...state, action];
+      }
 
     case LAZY_LOAD_PROCESS_ONE_LARGE:
       if (isSmall || state.length === 0) {
@@ -41,6 +52,11 @@ export function lazyLoadQueueReducer(stateKey, state = [], action) {
 
       return rest;
 
+    case LAZY_LOAD_REMOVE_FROM_QUEUE:
+      const newState = state.filter((x) => {
+        return x.url !== action.url;
+      });
+      return newState;
     default:
       return state;
   }

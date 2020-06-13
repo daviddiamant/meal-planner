@@ -51,6 +51,7 @@ const handleScroll = ({
   loaded,
   loadedLarge,
   initialScrollTop,
+  lazyLoadedImages,
 }) => {
   const change = scrollTop - prevScroll.current;
   if (Math.abs(change) < 150 && Math.abs(scrollTop - initialScrollTop) > 10) {
@@ -98,8 +99,9 @@ const handleScroll = ({
       prevClean,
       prevStill,
       positioner,
-      initCall: true,
       loadedLarge,
+      initCall: true,
+      lazyLoadedImages,
       overscanBy: overscanImagesBy,
     });
   }
@@ -117,6 +119,7 @@ const handleStandingStill = ({
   prevClean,
   loaded,
   loadedLarge,
+  lazyLoadedImages,
 }) => {
   const change = scrollTop - prevStill.current;
   if (Math.abs(change) < 150 && !initCall) {
@@ -144,7 +147,12 @@ const handleStandingStill = ({
       curImage = url + curImage;
       currentRecipes = [...currentRecipes, curImage];
       newLoaded[index] = 1;
-      if (!loadedLarge.current[index]) {
+      if (
+        (lazyLoadedImages &&
+          lazyLoadedImages[curImage] &&
+          !lazyLoadedImages[curImage].loaded) ||
+        !loadedLarge.current[index]
+      ) {
         dispatch(clearForLazyLargeImage(curImage));
         loadedLarge.current[index] = 1;
       }
@@ -169,6 +177,7 @@ export const HomepageMasonry = ({
   items,
   buttonFinished,
   scrollPosition,
+  lazyLoadedImages,
   overscanImagesBy,
   overscanSmallImagesBy,
   ...props
@@ -225,6 +234,7 @@ export const HomepageMasonry = ({
       prevScroll,
       positioner,
       loadedLarge,
+      lazyLoadedImages,
       overscanImagesBy,
       initialScrollTop: scrollPosition ? scrollPosition - offset : 0,
       overscanBy: overscanSmallImagesBy,
@@ -248,6 +258,7 @@ export const HomepageMasonry = ({
         prevStill,
         positioner,
         loadedLarge,
+        lazyLoadedImages,
         overscanBy: overscanImagesBy,
       });
 

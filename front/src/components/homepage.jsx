@@ -55,7 +55,12 @@ const style = {
   },
 };
 
-export const Homepage = ({ recipes, buttonFinished, scrollPosition }) => {
+export const Homepage = ({
+  recipes,
+  buttonFinished,
+  scrollPosition,
+  lazyLoadedImages,
+}) => {
   // Get the recipes on mount, and remove them on un-mount
   const dispatch = useDispatch();
   const windowHeight = useWindowSize()[1];
@@ -102,6 +107,7 @@ export const Homepage = ({ recipes, buttonFinished, scrollPosition }) => {
               overscanSmallImagesBy={2}
               buttonFinished={buttonFinished}
               scrollPosition={scrollPosition}
+              lazyLoadedImages={lazyLoadedImages}
             />
           )}
         </FelaComponent>

@@ -1,9 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { FelaComponent, ThemeContext } from "react-fela";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 // Local imports
 import LazyLoadedImage from "../reduxConnections/lazyLoadedImage";
+import { removeFromQueue } from "../actions/actionCreators";
 
 const style = {
   card: ({ theme }) => ({
@@ -17,18 +19,16 @@ const style = {
   }),
 };
 
-const HomepageCard = ({
-  index,
-  data: {
+const HomepageCard = ({ index, data, width }) => {
+  const {
     slug,
     title,
     mediumImage,
     smallImage,
     mediumImageWidth,
     mediumImageHeight,
-  },
-  width,
-}) => {
+  } = data;
+
   const theme = useContext(ThemeContext);
   const url = `${window.location.protocol}//${window.location.hostname}`;
 
@@ -39,6 +39,14 @@ const HomepageCard = ({
     width: `${width}px`,
     height: `${height}px`,
   };
+
+  const dispatch = useDispatch();
+  const onMount = () => {
+    return () => {
+      dispatch(removeFromQueue(url + mediumImage));
+    };
+  };
+  useEffect(onMount, []);
 
   return (
     <Link to={`/recipe/${slug}`}>

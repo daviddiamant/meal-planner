@@ -26,6 +26,7 @@ import {
   GOT_LARGE_LAZY_LOADED,
   LAZY_LOAD_DONE,
   LAZY_LOAD_CLEAN,
+  LAZY_LOAD_REMOVE_FROM_QUEUE,
   HANDLE_NAVIGATION_ANIMATION,
 } from "./actionTypes";
 
@@ -212,6 +213,13 @@ export function cleanUpLazyLoading(currentURLs, stateKey = null) {
     type: LAZY_LOAD_CLEAN,
     currentURLs,
     stateKey,
+  };
+}
+
+export function removeFromQueue(url) {
+  return {
+    type: LAZY_LOAD_REMOVE_FROM_QUEUE,
+    url,
   };
 }
 

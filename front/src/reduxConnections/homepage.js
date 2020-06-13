@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
     recipesLoaded: state.browseRecipes.isFetching,
     recipes: state.browseRecipes.recipes,
     buttonFinished: !state.navigationItems.runningAnimation,
+    lazyLoadedImages: state.homepageLazyLoadedImages,
   };
 };
 
