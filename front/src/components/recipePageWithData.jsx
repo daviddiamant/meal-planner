@@ -199,7 +199,7 @@ export const RecipePageWithData = ({
           <FelaComponent style={style.title} as="h1">
             {title}
           </FelaComponent>
-          <ExpandText numLines={2.9}>{description}</ExpandText>
+          <ExpandText numLines={3}>{description}</ExpandText>
         </FelaComponent>
         <FelaComponent style={style.recipe}>
           <FelaComponent style={style.tabs}>
@@ -209,7 +209,7 @@ export const RecipePageWithData = ({
               changeTab={changeTab}
               vibrantColor={vibrantColor}
             >
-              Ingredienser
+              <button>Ingredienser</button>
             </Tab>
             <Tab
               selected={isMethodSelected || false}
@@ -217,7 +217,7 @@ export const RecipePageWithData = ({
               changeTab={changeTab}
               vibrantColor={vibrantColor}
             >
-              Instruktioner
+              <button>Instruktioner</button>
             </Tab>
           </FelaComponent>
           <SwipeArea

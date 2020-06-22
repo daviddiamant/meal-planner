@@ -37,6 +37,33 @@ const styles = [
       textDecoration: "none",
     }),
   },
+  {
+    selector: "button",
+    rules: () => ({
+      border: "none",
+      margin: 0,
+      padding: 0,
+      width: "auto",
+      outline: "none",
+      overflow: "visible",
+      background: "transparent",
+      color: "inherit",
+      font: "inherit",
+      letterSpacing: "inherit",
+      wordSpacing: "inherit",
+      lineHeight: "normal",
+      "-webkit-font-smoothing": "inherit",
+      "-moz-osx-font-smoothing": "inherit",
+      "-webkit-appearance": "none",
+    }),
+  },
+  {
+    selector: "&::-moz-focus-inner ",
+    rules: () => ({
+      border: 0,
+      padding: 0,
+    }),
+  },
 ];
 
 const BaseStyle = () => {

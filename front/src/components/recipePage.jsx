@@ -21,7 +21,6 @@ const style = {
     justifyContent: "space-between",
   }),
   addButton: ({ theme }) => ({
-    display: "inline",
     marginLeft: `${theme.constrainedMargin}px`,
   }),
 };

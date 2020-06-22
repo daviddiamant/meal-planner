@@ -243,9 +243,7 @@ export const HomepageMasonry = ({
     const delta = prevScrollForSpeed.current - scrollTop;
     if (
       !isScrolling ||
-      (!fetchLargeLock.current &&
-        delta &&
-        ((delta > -10 && delta < 0) || (delta < 10 && delta > 0)))
+      (!fetchLargeLock.current && delta && delta > -15 && delta < 15)
     ) {
       // Remove not shown images and fetch large ones, its heavy so only do it if we are not scrolling
       handleStandingStill({

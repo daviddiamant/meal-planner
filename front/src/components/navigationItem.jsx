@@ -37,9 +37,11 @@ export const NavigationItem = ({
   linkTo,
   selected,
   svgData,
+  animationDone,
 }) => {
   // Should not trigger re-render (as state do), so use ref
   const started = useRef(0);
+  const startedOut = useRef(0);
   const touchEvents = useRef(false);
 
   // Transition on click
@@ -50,6 +52,8 @@ export const NavigationItem = ({
     onFrame: () => {
       if (isClicked) {
         started.current = started.current + 1;
+      } else {
+        startedOut.current = startedOut.current + 1;
       }
     },
     onRest: () => {
@@ -58,9 +62,11 @@ export const NavigationItem = ({
         clickDone();
         started.current = 0;
         touchEvents.current = false;
+      } else if (startedOut.current > 5) {
+        startedOut.current = 0;
+        animationDone();
       }
     },
-    //config:{duration: 10000, }
     config: { mass: 1, tension: 500, friction: 39, clamp: true },
   });
 

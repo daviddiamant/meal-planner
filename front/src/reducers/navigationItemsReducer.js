@@ -10,6 +10,8 @@ const initialState = {
   mutationLocks: [],
 };
 
+let clickOK = true;
+
 export function navigationItemsReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_NAVIGATION_CLICKED:
@@ -17,10 +19,15 @@ export function navigationItemsReducer(state = initialState, action) {
        * Add this path as clicked, and also add a mutation lock. The lock will have to be
        * removed before the path can be "unclicked"
        ***/
-      if (state.clicked.some((x) => x === action.path)) {
+      if (state.clicked.some((x) => x === action.path) || !clickOK) {
         // This button is already clicked
         return state;
       }
+
+      // Only respond to clicks every 500ms
+      clickOK = false;
+      setTimeout(() => (clickOK = true), 500);
+
       return {
         runningAnimation: true,
         clicked: [action.path, ...state.clicked],

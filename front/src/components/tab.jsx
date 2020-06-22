@@ -56,7 +56,7 @@ export const Tab = ({
     width: `${selected ? ballSize : 0}px`,
     height: `${selected ? ballSize : 0}px`,
     marginTop: `${selected ? 0 : ballSize / 2}px`,
-    marginBottom: `${selected ? 2 : 2 + ballSize / 2}px`,
+    marginBottom: `${selected ? 0 : ballSize / 2}px`,
   };
   const ballSpringFrom = {
     opacity: selected ? 0 : 1,
@@ -64,7 +64,7 @@ export const Tab = ({
     width: `${selected ? 0 : ballSize}px`,
     height: `${selected ? 0 : ballSize}px`,
     marginTop: `${selected ? ballSize / 2 : 0}px`,
-    marginBottom: `${selected ? 2 + ballSize / 2 : 2}px`,
+    marginBottom: `${selected ? ballSize / 2 : 0}px`,
   };
   /**
    * Uncomment to animate right to left

@@ -4,6 +4,7 @@ import { NavigationItem as view } from "../components/navigationItem";
 import {
   clickedNavigationItem,
   clickedNavigationItemDone,
+  handleNavigationAnimation,
 } from "../actions/actionCreators";
 
 const mapStateToProps = (state, props) => {
@@ -19,6 +20,9 @@ const mapDispatchToProps = (dispatch, props) => {
     },
     clickDone: () => {
       dispatch(clickedNavigationItemDone(props.linkTo));
+    },
+    animationDone: () => {
+      dispatch(handleNavigationAnimation());
     },
   };
 };

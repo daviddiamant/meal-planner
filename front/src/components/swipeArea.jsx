@@ -48,13 +48,13 @@ const SwipeItem = ({
 
     if (
       velocity > 1 &&
-      (movement[0] > 15 || movement[0] < -15) &&
+      (movement[0] > 10 || movement[0] < -10) &&
       movement[1] < 100 &&
       movement[1] > -100
     ) {
-      if (movement[0] > 15) {
+      if (movement[0] > 10) {
         hadSwipeLeft.current = true;
-      } else if (movement[0] < -15) {
+      } else if (movement[0] < -10) {
         hadSwipeRight.current = true;
       }
     } else {
