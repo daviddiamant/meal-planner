@@ -1,16 +1,20 @@
 import React, { Fragment } from "react";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { RendererProvider, ThemeProvider } from "react-fela";
 import { createRenderer } from "fela";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import * as firebase from "firebase/app";
+import "firebase/auth";
 
 // Local imports
 import { createStore } from "../stores/mainStore";
+import { userStateChanged } from "../actions/actionCreators";
 import baseTheme from "../themes/baseTheme";
 import lightTheme from "../themes/lightTheme";
 import BaseStyle from "../themes/baseStyle";
 import NavigationController from "./navigationController";
 import RecipePage from "../reduxConnections/recipePage";
+import useFirebase from "../hooks/useFirebase";
 
 const Routes = () => (
   <Switch>
@@ -28,23 +32,39 @@ const Routes = () => (
   </Switch>
 );
 
-const MainController = () => {
+const InsideReduxStore = () => {
+  const firebaseApp = useFirebase();
+  const dispatch = useDispatch();
+
+  if (!firebaseApp) {
+    // wait until we have the firebase app
+    return null;
+  }
+
+  firebase.auth().onAuthStateChanged((user) => {
+    dispatch(userStateChanged(user));
+  });
+
   const renderer = createRenderer();
 
   return (
-    <Provider store={createStore()}>
-      <RendererProvider renderer={renderer}>
-        <ThemeProvider theme={{ ...baseTheme, ...lightTheme }}>
-          <Fragment>
-            <BaseStyle />
-            <Router>
-              <Routes />
-            </Router>
-          </Fragment>
-        </ThemeProvider>
-      </RendererProvider>
-    </Provider>
+    <RendererProvider renderer={renderer}>
+      <ThemeProvider theme={{ ...baseTheme, ...lightTheme }}>
+        <Fragment>
+          <BaseStyle />
+          <Router>
+            <Routes />
+          </Router>
+        </Fragment>
+      </ThemeProvider>
+    </RendererProvider>
   );
 };
+
+const MainController = () => (
+  <Provider store={createStore()}>
+    <InsideReduxStore />
+  </Provider>
+);
 
 export default MainController;

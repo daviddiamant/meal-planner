@@ -10,6 +10,8 @@ import {
   TOGGLE_EXPAND_TEXT,
   CHANGE_HEIGHT_EXPAND_TEXT,
   BROWSE_RECIPES_SCROLL_POSITION,
+  START_LOG_IN,
+  USER_STATE_CHANGED,
   // Async actions
   START_FETCH_RECIPE,
   FETCH_RECIPE_DONE,
@@ -103,6 +105,19 @@ export function browseRecipesScrollPosition(scrollY) {
   return {
     type: BROWSE_RECIPES_SCROLL_POSITION,
     scrollY,
+  };
+}
+
+export function logInStarted() {
+  return {
+    type: START_LOG_IN,
+  };
+}
+
+export function userStateChanged(user) {
+  return {
+    type: USER_STATE_CHANGED,
+    user,
   };
 }
 

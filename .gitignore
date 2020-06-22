@@ -8,3 +8,4 @@ server.pem
 imgtest.js
 import.js
 package-lock.json
+firebaseConfig.js

@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 
 // Local imports
 import { startFetchRecipe, cleanRecipe } from "../actions/actionCreators";
+import { Btn } from "./btn";
 import { BottomMenu } from "./bottomMenu";
 import { RecipePageWithData } from "./recipePageWithData";
 import { RecipePageWithoutData } from "./recipePageWithoutData";
@@ -19,22 +20,9 @@ const style = {
     height: "100%",
     justifyContent: "space-between",
   }),
-  addButton: ({ theme, background }) => ({
+  addButton: ({ theme }) => ({
     display: "inline",
-    minHeight: "50px",
-    flex: 1,
-    padding: "0 35px 0 35px",
     marginLeft: `${theme.constrainedMargin}px`,
-    textAlign: "center",
-    whiteSpace: "nowrap",
-    fontFamily: '"Poppins", sans-serif',
-    fontSize: "20px",
-    fontWeight: "400",
-    background,
-    color: theme.backButtonColors.light,
-    borderRadius: `${theme.primary.borderRadius}px`,
-    ...theme.helpers.flexCenterBoth,
-    justifyContent: "space-around",
   }),
 };
 
@@ -71,9 +59,9 @@ export const RecipePage = ({ fetched, hasRecipeData, slug, ...props }) => {
           <a href={props.recipe.url} target="_blank" rel="noopener noreferrer">
             Besök recept
           </a>
-          <FelaComponent style={style.addButton} background={vibrantColor}>
+          <Btn externalStyle={style.addButton} background={vibrantColor}>
             Planera
-          </FelaComponent>
+          </Btn>
         </FelaComponent>
       </BottomMenu>
     </FelaComponent>

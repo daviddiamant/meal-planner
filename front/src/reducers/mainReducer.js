@@ -8,6 +8,7 @@ import { recipesReducer } from "./recipesReducer";
 import { lazyLoadImageReducer } from "./lazyLoadImageReducer";
 import { lazyLoadQueueReducer } from "./lazyLoadQueueReducer";
 import { expandTextReducer } from "./expandTextReducer";
+import { userReducer } from "./userReducer";
 
 // An object that tells what reducers handle what part of the state
 let allReducers = {};
@@ -50,5 +51,8 @@ allReducers = {
 
 // expandTextReducer handles the key 'expandText' in the state
 allReducers = { ...allReducers, expandText: expandTextReducer };
+
+// userReducer handles the key 'user' in the state
+allReducers = { ...allReducers, user: userReducer };
 
 export const mainReducer = combineReducers(allReducers);

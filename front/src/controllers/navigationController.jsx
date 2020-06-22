@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 // Local imports
 import Homepage from "../reduxConnections/homepage";
+import ProfilePage from "../reduxConnections/profilePage";
 import { BottomMenu } from "../components/bottomMenu";
 import { Navigation } from "../components/navigation";
 
@@ -10,7 +11,7 @@ const NavigationController = () => (
   <Fragment>
     <Switch>
       <Route path="/profile">
-        <div>Profile</div>
+        <ProfilePage />
       </Route>
       <Route path="/search">
         <div>Search</div>

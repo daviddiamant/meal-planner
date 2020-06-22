@@ -1,5 +1,8 @@
 {
 	"helloWordMessage": "Hello World!",
+	"user": {
+		"loggedIn":false
+	},
 	"navigationItems": {
 		"runningAnimation": false,
 		"clicked": [],

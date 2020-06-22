@@ -5,6 +5,7 @@ const styles = [
   {
     selector: "body, html",
     rules: ({ theme }) => ({
+      height: "100%",
       margin: 0,
       fontFamily: theme.primaryFont,
       fontWeight: theme.primaryFontWeight,
@@ -12,6 +13,12 @@ const styles = [
       lineHeight: theme.primaryLineHeight,
       letterSpacing: theme.primaryLetterSpacing,
       color: theme.textColors.primary,
+    }),
+  },
+  {
+    selector: "#main",
+    rules: () => ({
+      height: "100%",
     }),
   },
   {
