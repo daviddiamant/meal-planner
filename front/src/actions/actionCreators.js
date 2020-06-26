@@ -2,7 +2,6 @@ import {
   CHANGE_HELLO_WORLD,
   ADD_NAVIGATION_CLICKED,
   NAVIGATION_CLICKED_DONE,
-  SET_RECIPE_COLORS,
   RECIPE_CLEAN,
   RECIPE_CHANGE_PRIMARY_VIEW,
   CREATE_EXPAND_TEXT,
@@ -65,13 +64,6 @@ export function clickedNavigationItemDone(linkTo) {
   return {
     type: NAVIGATION_CLICKED_DONE,
     path: linkTo,
-  };
-}
-
-export function setRecipePageColors(imgData) {
-  return {
-    type: SET_RECIPE_COLORS,
-    imgData,
   };
 }
 

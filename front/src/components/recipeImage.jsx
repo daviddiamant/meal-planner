@@ -28,8 +28,6 @@ const style = {
 
 export const RecipeImage = ({
   recipe: { title, image, smallImage, imageWidth, imageHeight },
-  // eslint-disable-next-line no-unused-vars
-  onImageLoaded,
 }) => {
   const [windowWidth, windowHeight] = useWindowSize();
   const [
@@ -63,7 +61,6 @@ export const RecipeImage = ({
                   autoLoadSmall={true}
                   width={scaledImageWidth}
                 />
-                {/* Ad as prop above for auto coloring of back button. onLoad={onImageLoaded}*/}
               </div>
             )}
           </FelaComponent>
