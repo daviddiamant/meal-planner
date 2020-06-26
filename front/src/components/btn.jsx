@@ -19,10 +19,16 @@ const style = {
   }),
 };
 
-export const Btn = ({ children, externalStyle, background, ...props }) => (
+export const Btn = ({
+  children,
+  style: externalStyle,
+  background,
+  animationStyle,
+  ...props
+}) => (
   <FelaComponent style={[style.button, externalStyle]} background={background}>
     {({ className }) => (
-      <animated.div className={className} {...props}>
+      <animated.div className={className} style={animationStyle} {...props}>
         {children}
       </animated.div>
     )}

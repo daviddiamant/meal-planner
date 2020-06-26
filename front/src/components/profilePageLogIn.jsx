@@ -51,7 +51,7 @@ export const ProfilePageLogIn = ({ logIn }) => {
             en massa annat kul!
           </p>
           <Btn
-            externalStyle={style.button}
+            style={style.button}
             background={theme.primaryColors.yellow}
             onClick={logIn}
           >

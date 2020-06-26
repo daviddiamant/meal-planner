@@ -163,11 +163,11 @@ export const AddRecipeBox = ({
           </FelaComponent>
           <div>
             <Btn
-              externalStyle={style.addButton}
+              style={style.addButton}
               background={theme.primaryColors.yellow}
               // Only allow one click
               onClick={() => (!adding ? onAdd(currentUrl) : null)}
-              style={animateColor}
+              animationStyle={animateColor}
             >
               {fadeOutPlus.map(
                 ({ item, key, props }) =>

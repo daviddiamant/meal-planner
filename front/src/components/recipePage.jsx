@@ -58,7 +58,7 @@ export const RecipePage = ({ fetched, hasRecipeData, slug, ...props }) => {
           <a href={props.recipe.url} target="_blank" rel="noopener noreferrer">
             Besök recept
           </a>
-          <Btn externalStyle={style.addButton} background={vibrantColor}>
+          <Btn style={style.addButton} background={vibrantColor}>
             Planera
           </Btn>
         </FelaComponent>
