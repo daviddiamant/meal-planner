@@ -5,7 +5,8 @@ import useScrollPosition from "@react-hook/window-scroll";
 import { useWindowSize } from "@react-hook/window-size";
 
 // Local imports
-import { HomepageMasonry } from "../components/homepageMasonry";
+import { Header } from "./header";
+import { HomepageMasonry } from "./homepageMasonry";
 import {
   startFetchRecipes,
   cleanFetchRecipes,
@@ -14,7 +15,7 @@ import {
 
 const style = {
   titleWrapper: {
-    margin: "75px 0 50px 0",
+    margin: "70px 0 0 0",
     display: "flex",
     justifyContent: "center",
   },
@@ -44,8 +45,9 @@ const style = {
   }),
   masonryWrapper: ({ theme }) => ({
     width: "100%",
-    padding: `0 15px 0 ${15 - theme.homepageCardMargin}px`,
+    marginTop: "-10px",
     marginBottom: `${theme.navigationHeight + theme.navigationPaddingBottom}px`,
+    padding: `0 15px 0 ${15 - theme.homepageCardMargin}px`,
     boxSizing: "border-box",
   }),
   masonry: {
@@ -85,16 +87,18 @@ export const Homepage = ({
 
   return (
     <div>
-      <FelaComponent style={style.titleWrapper}>
-        <div>
-          <FelaComponent style={style.title} as="h1">
-            David & Lovisas
-          </FelaComponent>
-          <FelaComponent style={style.secondTitle} as="h3">
-            kokbok
-          </FelaComponent>
-        </div>
-      </FelaComponent>
+      <Header>
+        <FelaComponent style={style.titleWrapper}>
+          <div>
+            <FelaComponent style={style.title} as="h1">
+              David & Lovisas
+            </FelaComponent>
+            <FelaComponent style={style.secondTitle} as="h3">
+              kokbok
+            </FelaComponent>
+          </div>
+        </FelaComponent>
+      </Header>
       <FelaComponent style={style.masonryWrapper}>
         <FelaComponent style={style.masonry}>
           {({ className }) => (

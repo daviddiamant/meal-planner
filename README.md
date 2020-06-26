@@ -1,6 +1,10 @@
-GIF of the UX | The browse section | The recipe page
+GIF of the browse UX | The browse section | The recipe page
 :------------:|:------------------:|:---------------:
 ![Alt text](demo.gif?raw=true "Meal planner UI GIF")|![Alt text](demo1.jpg?raw=true "Meal planner UI browse")|![Alt text](demo2.jpg?raw=true "Meal planner UI recipe page")
+
+GIF of the profile UX | The log in page | The profile page
+:------------:|:------------------:|:---------------:
+![Alt text](demo1.gif?raw=true "Meal planner UI GIF")|![Alt text](demo3.jpg?raw=true "Meal planner log in")|![Alt text](demo4.jpg?raw=true "Meal planner UI profile page")
 
 This is an application for saving your recipes. Just like that magical cookery book your grandparents keep that is full of tasty treats, but online!
 
@@ -16,13 +20,11 @@ This is an unfinished version. To inspect the old version see branch "old-versio
 
 - Ability to plan the recipes for a week.
 - Ability to share that week.
-- Ability to add a recipe (Back-end is implemented, no UI for it).
 - Desktop/tablet UI.
 - Offline experience (i.e. service worker)
 
 **Other TODOs**
 
-- User profile.
 - Search.
 - Ability to add notes to a recipe.
 - Favorites.

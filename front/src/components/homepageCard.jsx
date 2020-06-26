@@ -13,7 +13,7 @@ const style = {
     overflow: "hidden",
   }),
   cardImage: ({ theme }) => ({
-    background: theme.secondaryColors.grey,
+    background: theme.quaternaryColors.grey,
     borderRadius: `${theme.primary.borderRadius}px`,
     overflow: "hidden",
   }),
