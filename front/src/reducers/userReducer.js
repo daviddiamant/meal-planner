@@ -18,7 +18,7 @@ export function userReducer(state = initialState, action) {
         };
       }
 
-      let newState = {
+      return {
         gotAuth: true,
         loggedIn: true,
         name: action.user.displayName || "Anonym användare",
@@ -26,7 +26,7 @@ export function userReducer(state = initialState, action) {
           action.user.photoURL ||
           `${window.location.protocol}//${window.location.hostname}/recipe-images/undraw_profile_pic.png`,
       };
-      return newState;
+
     default:
       return state;
   }

@@ -5,8 +5,8 @@ import { useWindowSize } from "@react-hook/window-size";
 // Local imports
 import { Header } from "./header";
 import { Slider } from "./slider";
+import { WeekCard } from "./weekCard";
 import AddRecipeBox from "../reduxConnections/addRecipeBox";
-import WeekCard from "./weekCard";
 
 const sliderMarginTop = 25;
 const style = {

@@ -19,7 +19,13 @@ const style = {
   }),
 };
 
-const WeekCard = ({ index, data, height, onRest, lazyLoadedStateKey }) => {
+export const WeekCard = ({
+  index,
+  data,
+  height,
+  onRest,
+  lazyLoadedStateKey,
+}) => {
   const {
     slug,
     title,
@@ -104,5 +110,3 @@ const WeekCard = ({ index, data, height, onRest, lazyLoadedStateKey }) => {
     </Link>
   );
 };
-
-export default WeekCard;

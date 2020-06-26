@@ -10,9 +10,6 @@ const initialState = {
   recipe: {},
 };
 
-const hsp = (r, g, b) =>
-  Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
-
 export function recipeReducer(state = initialState, action) {
   switch (action.type) {
     case RECIPE_CLEAN:
