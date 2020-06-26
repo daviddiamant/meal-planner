@@ -6,10 +6,27 @@ import "firebase/auth";
 import { ProfilePageUser } from "../components/profilePageUser";
 import { ProfilePageLogIn } from "../components/profilePageLogIn";
 
-export const ProfilePage = ({ display, loggedIn, user, logInStarted }) => {
+export const ProfilePage = ({
+  onMount,
+  display,
+  loggedIn,
+  logInStarted,
+  user,
+  week,
+  weekWidthAdjusted,
+  favorites,
+  favoritesWidthAdjusted,
+}) => {
   return display ? (
     loggedIn ? (
-      <ProfilePageUser user={user} />
+      <ProfilePageUser
+        onMount={onMount}
+        user={user}
+        week={week}
+        weekWidthAdjusted={weekWidthAdjusted}
+        favorites={favorites}
+        favoritesWidthAdjusted={favoritesWidthAdjusted}
+      />
     ) : (
       <ProfilePageLogIn
         logIn={() => {

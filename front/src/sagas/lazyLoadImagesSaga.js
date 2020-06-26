@@ -8,8 +8,13 @@ import {
   LAZY_LOAD_PROCESS_ONE_LARGE,
   GOT_SMALL_LAZY_LOADED,
   GOT_LARGE_LAZY_LOADED,
+  WEEK_WIDTH_CHANGED,
+  FAVORITES_WIDTH_CHANGED,
 } from "../actions/actionTypes";
+
 import {
+  lazyLoadImage as lazyLoadImageActionCreator,
+  clearForLazyLargeImage,
   gotSmallLazyLoaded,
   processLazyLoadSmallQueue,
   processLazyLoadLargeQueue,
@@ -69,10 +74,44 @@ function* processLargeQueue() {
   yield put(processLazyLoadLargeQueue());
 }
 
+function* initWeekOrFavoritesQueue(stateKey) {
+  let recipes = yield select((state) => state.profile[stateKey]);
+  let numWidthUpdated = yield select(
+    (state) => state.profile[`${stateKey}WidthAdjusted`]
+  );
+
+  if (recipes.length && recipes.length === numWidthUpdated) {
+    const url = `${window.location.protocol}//${window.location.hostname}`;
+
+    for (const recipe of recipes) {
+      yield put(
+        lazyLoadImageActionCreator(
+          url + recipe.mediumImage,
+          url + recipe.smallImage,
+          `${stateKey}LazyLoadedImages`
+        )
+      );
+      yield put(
+        clearForLazyLargeImage(
+          url + recipe.mediumImage,
+          `${stateKey}LazyLoadedImages`
+        )
+      );
+    }
+
+    // Start the queue
+    yield put(processLazyLoadSmallQueue());
+  }
+}
+
 export function* lazyLoadImagesSaga() {
   yield takeEvery(LAZY_LOAD_PROCESS_SMALL_QUEUE, startSmallQueue);
   yield takeEvery(LAZY_LOAD_PROCESS_LARGE_QUEUE, startLargeQueue);
   yield takeEvery(LAZY_LOAD_PROCESS_ONE, lazyLoadImage);
   yield takeEvery(GOT_SMALL_LAZY_LOADED, processSmallQueue);
   yield takeEvery(GOT_LARGE_LAZY_LOADED, processLargeQueue);
+  yield takeEvery(WEEK_WIDTH_CHANGED, () => initWeekOrFavoritesQueue("week"));
+  yield takeEvery(FAVORITES_WIDTH_CHANGED, () =>
+    initWeekOrFavoritesQueue("favorites")
+  );
 }

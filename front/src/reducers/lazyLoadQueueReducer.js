@@ -20,7 +20,11 @@ export function lazyLoadQueueReducer(stateKey, state = [], action) {
       }
 
       // Ensure no duplicates
-      if (state.some((x) => x.url === action.url)) {
+      if (
+        state.some(
+          (x) => x.url === action.url && x.stateKey === action.stateKey
+        )
+      ) {
         return state;
       } else {
         return [...state, action];
@@ -39,7 +43,11 @@ export function lazyLoadQueueReducer(stateKey, state = [], action) {
       }
 
       // Ensure no duplicates
-      if (state.some((x) => x.url === action.url)) {
+      if (
+        state.some(
+          (x) => x.url === action.url && x.stateKey === action.stateKey
+        )
+      ) {
         return state;
       } else {
         return [...state, action];
@@ -54,7 +62,10 @@ export function lazyLoadQueueReducer(stateKey, state = [], action) {
 
     case LAZY_LOAD_REMOVE_FROM_QUEUE:
       const newState = state.filter((x) => {
-        return x.url !== action.url;
+        return (
+          x.url !== action.url ||
+          (x.url === action.url && x.stateKey !== action.stateKey)
+        );
       });
       return newState;
     default:

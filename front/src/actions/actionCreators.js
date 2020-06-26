@@ -12,6 +12,8 @@ import {
   BROWSE_RECIPES_SCROLL_POSITION,
   START_LOG_IN,
   USER_STATE_CHANGED,
+  WEEK_WIDTH_CHANGED,
+  FAVORITES_WIDTH_CHANGED,
   // Async actions
   START_FETCH_RECIPE,
   FETCH_RECIPE_DONE,
@@ -30,6 +32,19 @@ import {
   LAZY_LOAD_CLEAN,
   LAZY_LOAD_REMOVE_FROM_QUEUE,
   HANDLE_NAVIGATION_ANIMATION,
+  START_ADD_RECIPE,
+  UPDATE_ADD_RECIPE,
+  ADD_RECIPE_PLUS_GONE,
+  ADD_RECIPE_GOT_RES,
+  ADD_RECIPE_DOTS_GONE,
+  ADD_RECIPE_DONE,
+  ADD_RECIPE_STATUS_GONE,
+  START_FETCH_WEEK,
+  FETCH_WEEK_DONE,
+  FETCH_WEEK_FAILED,
+  START_FETCH_FAVORITES,
+  FETCH_FAVORITES_DONE,
+  FETCH_FAVORITES_FAILED,
 } from "./actionTypes";
 
 export function changeHelloWorld(newMessage) {
@@ -111,6 +126,18 @@ export function browseRecipesScrollPosition(scrollY) {
 export function logInStarted() {
   return {
     type: START_LOG_IN,
+  };
+}
+
+export function weekWidthChanged() {
+  return {
+    type: WEEK_WIDTH_CHANGED,
+  };
+}
+
+export function favoritesWidthChanged() {
+  return {
+    type: FAVORITES_WIDTH_CHANGED,
   };
 }
 
@@ -241,5 +268,90 @@ export function removeFromQueue(url) {
 export function handleNavigationAnimation() {
   return {
     type: HANDLE_NAVIGATION_ANIMATION,
+  };
+}
+
+export function addRecipe(url) {
+  return {
+    type: START_ADD_RECIPE,
+    url,
+  };
+}
+
+export function updateAddRecipe(url) {
+  return {
+    type: UPDATE_ADD_RECIPE,
+    url,
+  };
+}
+
+export function addRecipePlusGone() {
+  return {
+    type: ADD_RECIPE_PLUS_GONE,
+  };
+}
+
+export function addRecipeGotRes(res) {
+  return {
+    type: ADD_RECIPE_GOT_RES,
+    res,
+  };
+}
+
+export function addRecipeDotsGone() {
+  return {
+    type: ADD_RECIPE_DOTS_GONE,
+  };
+}
+
+export function addRecipeDone() {
+  return {
+    type: ADD_RECIPE_DONE,
+  };
+}
+
+export function addRecipeStatusGone() {
+  return {
+    type: ADD_RECIPE_STATUS_GONE,
+  };
+}
+
+export function startFetchWeek() {
+  return {
+    type: START_FETCH_WEEK,
+  };
+}
+
+export function fetchWeekDone(week) {
+  return {
+    type: FETCH_WEEK_DONE,
+    week,
+  };
+}
+
+export function fetchWeekFailed(err) {
+  return {
+    type: FETCH_WEEK_FAILED,
+    err,
+  };
+}
+
+export function startFetchFavorites() {
+  return {
+    type: START_FETCH_FAVORITES,
+  };
+}
+
+export function fetchFavoritesDone(favorites) {
+  return {
+    type: FETCH_FAVORITES_DONE,
+    favorites,
+  };
+}
+
+export function fetchFavoritesFailed(err) {
+  return {
+    type: FETCH_FAVORITES_FAILED,
+    err,
   };
 }

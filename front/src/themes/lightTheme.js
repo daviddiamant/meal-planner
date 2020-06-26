@@ -1,3 +1,8 @@
+const buttonColors = {
+  light: "#ffffff",
+  dark: "#1E2D36",
+};
+
 const lightTheme = {
   background: "rgba(255, 255, 255, 1)",
   textColors: {
@@ -10,6 +15,7 @@ const lightTheme = {
     orange: "#ffb5a2",
     yellow: "#fcb85f",
     grey: "#B2B6BB",
+    red: "#fd3400",
   },
   secondaryColors: {
     blue: "#d8e1fa",
@@ -23,10 +29,8 @@ const lightTheme = {
   quaternaryColors: {
     grey: "#F4F4F4",
   },
-  backButtonColors: {
-    light: "#ffffff",
-    dark: "#1E2D36",
-  },
+  buttonColors,
+  backButtonColors: buttonColors,
 };
 
 export default lightTheme;

@@ -1,6 +1,7 @@
 const constrainedMargin = 25;
 const navigationHeight = 65;
 const navigationPaddingBottom = 15; // needed for ios swipe "pad"
+const homepageCardMargin = 10;
 
 const baseTheme = {
   primaryFont: '"Roboto", sans-serif',
@@ -37,6 +38,11 @@ const baseTheme = {
     tac: {
       textAlign: "center",
     },
+    resetHeaders: {
+      lineHeight: "1",
+      margin: 0,
+      padding: 0,
+    },
   },
   constrainedMargin,
   contentWithBottomBar: {
@@ -52,7 +58,8 @@ const baseTheme = {
   primary: {
     borderRadius: 18,
   },
-  homepageCardMargin: 10,
+  homepageCardMargin,
+  weekCardMargin: homepageCardMargin,
   navigationHeight,
   navigationPaddingBottom,
 };

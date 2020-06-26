@@ -9,6 +9,8 @@ import { lazyLoadImageReducer } from "./lazyLoadImageReducer";
 import { lazyLoadQueueReducer } from "./lazyLoadQueueReducer";
 import { expandTextReducer } from "./expandTextReducer";
 import { userReducer } from "./userReducer";
+import { addRecipeReducer } from "./addRecipeReducer";
+import { profileReducer } from "./profileReducer";
 
 // An object that tells what reducers handle what part of the state
 let allReducers = {};
@@ -37,7 +39,7 @@ allReducers = {
     lazyLoadQueueReducer("largeLazyLoadQueue", state, action),
 };
 
-// lazyLoadImageReducer handles the keys 'homepageLazyLoadedImages' and 'recipePageLazyLoadedImages' in the state
+// lazyLoadImageReducer handles the keys 'homepageLazyLoadedImages', 'weekLazyLoadedImages', 'favoritesLazyLoadedImages',  and 'recipePageLazyLoadedImages' in the state
 allReducers = {
   ...allReducers,
   homepageLazyLoadedImages: (state = {}, action) =>
@@ -48,11 +50,27 @@ allReducers = {
   recipePageLazyLoadedImages: (state = {}, action) =>
     lazyLoadImageReducer("recipePageLazyLoadedImages", state, action),
 };
+allReducers = {
+  ...allReducers,
+  weekLazyLoadedImages: (state = {}, action) =>
+    lazyLoadImageReducer("weekLazyLoadedImages", state, action),
+};
+allReducers = {
+  ...allReducers,
+  favoritesLazyLoadedImages: (state = {}, action) =>
+    lazyLoadImageReducer("favoritesLazyLoadedImages", state, action),
+};
 
 // expandTextReducer handles the key 'expandText' in the state
 allReducers = { ...allReducers, expandText: expandTextReducer };
 
 // userReducer handles the key 'user' in the state
 allReducers = { ...allReducers, user: userReducer };
+
+// addRecipeReducer handles the key 'addRecipe' in the state
+allReducers = { ...allReducers, addRecipe: addRecipeReducer };
+
+// profileReducer handles the key 'profile' in the state
+allReducers = { ...allReducers, profile: profileReducer };
 
 export const mainReducer = combineReducers(allReducers);

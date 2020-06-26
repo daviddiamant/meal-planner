@@ -1,5 +1,6 @@
 import React from "react";
 import { FelaComponent } from "react-fela";
+import { animated } from "react-spring";
 
 const style = {
   button: ({ theme, background }) => ({
@@ -21,9 +22,9 @@ const style = {
 export const Btn = ({ children, externalStyle, background, ...props }) => (
   <FelaComponent style={[style.button, externalStyle]} background={background}>
     {({ className }) => (
-      <div className={className} {...props}>
+      <animated.div className={className} {...props}>
         {children}
-      </div>
+      </animated.div>
     )}
   </FelaComponent>
 );
