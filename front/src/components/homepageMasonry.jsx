@@ -1,6 +1,5 @@
 import { useContext, useRef } from "react"; // No jsx so we do not need React
 import { useWindowSize } from "@react-hook/window-size";
-import { useDispatch } from "react-redux";
 import { useDebouncedCallback } from "use-debounce";
 import {
   useMasonry,
@@ -11,14 +10,7 @@ import {
 import { ThemeContext } from "react-fela";
 
 // Local imports
-import {
-  lazyLoadImage,
-  clearForLazyLargeImage,
-  cleanUpLazyLoading,
-  processLazyLoadSmallQueue,
-  processLazyLoadLargeQueue,
-} from "../actions/actionCreators";
-import HomepageCard from "./homepageCard";
+import HomepageCard from "../reduxConnections/homepageCard";
 
 const url = `${window.location.protocol}//${window.location.hostname}`;
 
@@ -39,7 +31,6 @@ const getOverscanLimits = ({ change, overscanBy, scrollTop, height }) => {
 
 const handleScroll = ({
   items,
-  dispatch,
   height,
   overscanBy,
   overscanImagesBy,
@@ -52,6 +43,11 @@ const handleScroll = ({
   loadedLarge,
   initialScrollTop,
   lazyLoadedImages,
+  lazyLoadImage,
+  processSmallQueue,
+  loadLarge,
+  processLargeQueue,
+  cleanUpLazyLoading,
 }) => {
   const change = scrollTop - prevScroll.current;
   if (Math.abs(change) < 150 && Math.abs(scrollTop - initialScrollTop) > 10) {
@@ -78,14 +74,14 @@ const handleScroll = ({
       const curImageSmall = url + items[index].smallImage;
 
       if (!loaded.current[index]) {
-        dispatch(lazyLoadImage(curImage, curImageSmall));
+        lazyLoadImage(curImage, curImageSmall);
         loaded.current[index] = 1;
       }
     });
 
     prevScroll.current = scrollTop;
 
-    dispatch(processLazyLoadSmallQueue());
+    processSmallQueue();
   });
 
   if (Math.abs(change) < 150 && Math.abs(scrollTop - initialScrollTop) < 10) {
@@ -94,14 +90,16 @@ const handleScroll = ({
       items,
       height,
       loaded,
-      dispatch,
       scrollTop,
       prevClean,
       prevStill,
+      loadLarge,
       positioner,
       loadedLarge,
       initCall: true,
       lazyLoadedImages,
+      processLargeQueue,
+      cleanUpLazyLoading,
       overscanBy: overscanImagesBy,
     });
   }
@@ -109,7 +107,6 @@ const handleScroll = ({
 
 const handleStandingStill = ({
   initCall,
-  dispatch,
   items,
   overscanBy,
   scrollTop,
@@ -120,6 +117,9 @@ const handleStandingStill = ({
   loaded,
   loadedLarge,
   lazyLoadedImages,
+  loadLarge,
+  processLargeQueue,
+  cleanUpLazyLoading,
 }) => {
   const change = scrollTop - prevStill.current;
   if (Math.abs(change) < 150 && !initCall) {
@@ -153,20 +153,20 @@ const handleStandingStill = ({
           !lazyLoadedImages[curImage].loaded) ||
         !loadedLarge.current[index]
       ) {
-        dispatch(clearForLazyLargeImage(curImage));
+        loadLarge(curImage);
         loadedLarge.current[index] = 1;
       }
     });
     prevStill.current = scrollTop;
 
-    dispatch(processLazyLoadLargeQueue());
+    processLargeQueue();
 
-    if (Math.abs(scrollTop - prevClean.current) < 10 * height) {
+    if (Math.abs(scrollTop - prevClean.current) < 4 * height) {
       // Do not clean if its not dirty
       return false;
     }
 
-    dispatch(cleanUpLazyLoading(currentRecipes));
+    cleanUpLazyLoading(currentRecipes);
     loaded.current = Object.keys(loaded) ? { ...newLoaded } : {};
     loadedLarge.current = Object.keys(loadedLarge) ? { ...newLoaded } : {};
     prevClean.current = scrollTop;
@@ -175,10 +175,15 @@ const handleStandingStill = ({
 
 export const HomepageMasonry = ({
   items,
+  loadLarge,
+  lazyLoadImage,
   buttonFinished,
   scrollPosition,
   lazyLoadedImages,
   overscanImagesBy,
+  processSmallQueue,
+  processLargeQueue,
+  cleanUpLazyLoading,
   overscanSmallImagesBy,
   ...props
 }) => {
@@ -193,7 +198,6 @@ export const HomepageMasonry = ({
   const loadedLarge = useRef({});
 
   const theme = useContext(ThemeContext);
-  const dispatch = useDispatch();
   const [debouncedScrolling] = useDebouncedCallback(handleScroll, 50);
   const [windowWidth, height] = useWindowSize();
   const { offset, width } = useContainerPosition(containerRef, [
@@ -227,15 +231,19 @@ export const HomepageMasonry = ({
       items,
       height,
       loaded,
-      dispatch,
       prevStill,
       scrollTop,
       prevClean,
       prevScroll,
       positioner,
+      loadLarge,
       loadedLarge,
+      lazyLoadImage,
       lazyLoadedImages,
       overscanImagesBy,
+      processSmallQueue,
+      processLargeQueue,
+      cleanUpLazyLoading,
       initialScrollTop: scrollPosition ? scrollPosition - offset : 0,
       overscanBy: overscanSmallImagesBy,
     });
@@ -250,13 +258,15 @@ export const HomepageMasonry = ({
         items,
         height,
         loaded,
-        dispatch,
         scrollTop,
         prevClean,
         prevStill,
+        loadLarge,
         positioner,
         loadedLarge,
         lazyLoadedImages,
+        processLargeQueue,
+        cleanUpLazyLoading,
         overscanBy: overscanImagesBy,
       });
 

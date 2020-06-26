@@ -1,4 +1,5 @@
 import {
+  LAZY_LOAD_CLEAN,
   LAZY_LOAD_IMAGE,
   LAZY_LOAD_PROCESS_ONE,
   LAZY_LOAD_CLEAR_FOR_LARGE,
@@ -68,6 +69,10 @@ export function lazyLoadQueueReducer(stateKey, state = [], action) {
         );
       });
       return newState;
+
+    case LAZY_LOAD_CLEAN:
+      return [];
+
     default:
       return state;
   }

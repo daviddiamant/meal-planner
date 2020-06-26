@@ -1,11 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import { FelaComponent, ThemeContext } from "react-fela";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 // Local imports
 import LazyLoadedImage from "../reduxConnections/lazyLoadedImage";
-import { removeFromQueue } from "../actions/actionCreators";
 
 const style = {
   card: ({ theme }) => ({
@@ -19,7 +17,7 @@ const style = {
   }),
 };
 
-const HomepageCard = ({ index, data, width }) => {
+export const HomepageCard = ({ index, data, width, onUnmount }) => {
   const {
     slug,
     title,
@@ -40,10 +38,9 @@ const HomepageCard = ({ index, data, width }) => {
     height: `${height}px`,
   };
 
-  const dispatch = useDispatch();
   const onMount = () => {
     return () => {
-      dispatch(removeFromQueue(url + mediumImage));
+      onUnmount(url + mediumImage);
     };
   };
   useEffect(onMount, []);
@@ -68,5 +65,3 @@ const HomepageCard = ({ index, data, width }) => {
     </Link>
   );
 };
-
-export default HomepageCard;

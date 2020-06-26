@@ -1,17 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { FelaComponent } from "react-fela";
-import { useDispatch } from "react-redux";
 import useScrollPosition from "@react-hook/window-scroll";
 import { useWindowSize } from "@react-hook/window-size";
 
 // Local imports
 import { Header } from "./header";
-import { HomepageMasonry } from "./homepageMasonry";
-import {
-  startFetchRecipes,
-  cleanFetchRecipes,
-  browseRecipesScrollPosition,
-} from "../actions/actionCreators";
+import HomepageMasonry from "../reduxConnections/homepageMasonry";
 
 const style = {
   titleWrapper: {
@@ -62,13 +56,14 @@ export const Homepage = ({
   buttonFinished,
   scrollPosition,
   lazyLoadedImages,
+  onMount: externalOnMount,
+  onUnmount,
 }) => {
-  // Get the recipes on mount, and remove them on un-mount
-  const dispatch = useDispatch();
   const windowHeight = useWindowSize()[1];
   const scrollY = useRef(0);
   scrollY.current = useScrollPosition(13 /*fps*/);
 
+  // Get the recipes on mount, and remove them on un-mount
   const onMount = () => {
     // Make sure we can scroll, content will load eventually
     document.querySelector("body").style.minHeight = `${
@@ -76,11 +71,10 @@ export const Homepage = ({
     }px`;
     window.scrollTo(0, scrollPosition);
 
-    dispatch(startFetchRecipes());
+    externalOnMount();
     return () => {
       document.querySelector("body").style.minHeight = "auto";
-      dispatch(cleanFetchRecipes());
-      dispatch(browseRecipesScrollPosition(scrollY.current));
+      onUnmount(scrollY.current);
     };
   };
   useEffect(onMount, []);

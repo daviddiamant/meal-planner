@@ -1,6 +1,12 @@
 import { connect } from "react-redux";
 
+// Local imports
 import { Homepage as view } from "../components/homepage";
+import {
+  startFetchRecipes,
+  cleanFetchRecipes,
+  browseRecipesScrollPosition,
+} from "../actions/actionCreators";
 
 const mapStateToProps = (state) => {
   return {
@@ -13,8 +19,14 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = () => {
-  return {};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onMount: () => dispatch(startFetchRecipes()),
+    onUnmount: (scrollY) => {
+      dispatch(cleanFetchRecipes());
+      dispatch(browseRecipesScrollPosition(scrollY));
+    },
+  };
 };
 
 const Homepage = connect(mapStateToProps, mapDispatchToProps)(view);

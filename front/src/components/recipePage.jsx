@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { FelaComponent } from "react-fela";
-import { useDispatch } from "react-redux";
 
 // Local imports
-import { startFetchRecipe, cleanRecipe } from "../actions/actionCreators";
 import { Btn } from "./btn";
 import { BottomMenu } from "./bottomMenu";
 import { RecipePageWithData } from "./recipePageWithData";
@@ -25,20 +23,27 @@ const style = {
   }),
 };
 
-export const RecipePage = ({ fetched, hasRecipeData, slug, ...props }) => {
-  const dispatch = useDispatch();
+export const RecipePage = ({
+  onMount: externalOnMount,
+  onUnmount,
+  fetched,
+  hasRecipeData,
+  slug,
+  ...props
+}) => {
   const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  useEffect(() => {
-    dispatch(startFetchRecipe(slug));
+  const onMount = () => {
+    externalOnMount(slug);
     return () => {
-      dispatch(cleanRecipe());
+      onUnmount();
     };
-  }, [slug, dispatch]);
+  };
+  useEffect(onMount, []);
 
   // Get the colour for this image
   const vibrantColor = `rgb(${props.recipe.imagePalette?.Vibrant.reduce(

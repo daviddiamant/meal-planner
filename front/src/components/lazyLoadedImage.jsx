@@ -1,16 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { FelaComponent } from "react-fela";
 import { useSpring, animated } from "react-spring";
-import { useDispatch } from "react-redux";
-
-// Local imports
-import {
-  lazyLoadImage,
-  cleanUpLazyLoading,
-  clearForLazyLargeImage,
-  processLazyLoadSmallQueue,
-  processLazyLoadLargeQueue,
-} from "../actions/actionCreators";
 
 const style = {
   background: ({ width, height, extraMargin, loaded }) => ({
@@ -39,16 +29,21 @@ export const LazyLoadedImage = (props) => {
     src,
     width,
     height,
+    initLoad,
     smallSrc,
     smallURL,
     stateKey,
     loadImage,
+    loadLarge,
+    clearQueue,
     crossOrigin,
     extraMargin,
     imageLoaded,
     autoLoadSmall,
     imageDisplayed,
     whenImageLoaded,
+    processSmallQueue,
+    processLargeQueue,
     whenImageDisplayed,
     startedLazyLoading,
   } = props;
@@ -62,7 +57,7 @@ export const LazyLoadedImage = (props) => {
   }
 
   const started = useRef(0); // Should not trigger re-render
-  const dispatch = useDispatch();
+
   const originObject = {};
   if (crossOrigin) {
     originObject.crossOrigin = crossOrigin;
@@ -71,12 +66,12 @@ export const LazyLoadedImage = (props) => {
   // Should we auto load the small image on mount?
   const onMount = () => {
     if (autoLoadSmall) {
-      dispatch(lazyLoadImage(src, smallSrc, stateKey));
-      dispatch(processLazyLoadSmallQueue());
+      initLoad(src, smallSrc, stateKey);
+      processSmallQueue();
     }
     return () => {
       if (autoLoadSmall) {
-        dispatch(cleanUpLazyLoading([], stateKey));
+        clearQueue(stateKey);
       }
     };
   };
@@ -85,8 +80,8 @@ export const LazyLoadedImage = (props) => {
   // Should we auto load the large image on arrival of the small?
   const onSmallImageLoaded = () => {
     if (autoLoadSmall && smallURL) {
-      dispatch(clearForLazyLargeImage(src, stateKey));
-      dispatch(processLazyLoadLargeQueue());
+      loadLarge(src, stateKey);
+      processLargeQueue();
     }
   };
   useEffect(onSmallImageLoaded, [smallURL]);
