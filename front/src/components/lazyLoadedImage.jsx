@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { FelaComponent } from "react-fela";
-import { useSpring, animated } from "react-spring";
+import { useSpring, useTransition, animated } from "react-spring";
 
 const style = {
   background: ({ width, height, extraMargin, loaded }) => ({
@@ -35,6 +35,7 @@ export const LazyLoadedImage = (props) => {
     stateKey,
     loadImage,
     loadLarge,
+    showImage,
     clearQueue,
     crossOrigin,
     extraMargin,
@@ -86,6 +87,14 @@ export const LazyLoadedImage = (props) => {
   };
   useEffect(onSmallImageLoaded, [smallURL]);
 
+  // Fade in small version of the image
+  const fadeInImage = useTransition(showImage, null, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: { mass: 1, tension: 280, friction: 60 },
+  });
+
   // We want to fade in the small image
   const fadeInSmallImage = useSpring({
     from: { opacity: 0 },
@@ -112,44 +121,52 @@ export const LazyLoadedImage = (props) => {
     },
   });
 
-  return (
-    <FelaComponent
-      style={style.background}
-      width={formattedWidth}
-      height={height}
-      extraMargin={extraMargin}
-      loaded={startedLazyLoading}
-    >
-      {({ className: childClassName }) => (
-        <div className={`${parentClassName} ${childClassName}`}>
-          {smallURL && !imageDisplayed ? (
-            <FelaComponent style={[style.image, style.smallImage]}>
-              {({ className }) => (
-                <img
-                  style={fadeInSmallImage}
-                  className={className}
-                  src={smallURL}
-                  alt={alt}
-                />
-              )}
-            </FelaComponent>
-          ) : null}
-          {loadImage ? (
-            <FelaComponent style={style.image}>
-              {({ className }) => (
-                <animated.img
-                  {...originObject}
-                  style={fadeInLargeImage}
-                  className={className}
-                  src={src}
-                  alt={alt}
-                  onLoad={whenImageLoaded}
-                />
-              )}
-            </FelaComponent>
-          ) : null}
-        </div>
-      )}
-    </FelaComponent>
+  return fadeInImage.map(
+    ({ item, key, props }) =>
+      item && (
+        <FelaComponent
+          key={key}
+          style={style.background}
+          width={formattedWidth}
+          height={height}
+          extraMargin={extraMargin}
+          loaded={startedLazyLoading}
+        >
+          {({ className: childClassName }) => (
+            <animated.div
+              key={key}
+              style={props}
+              className={`${parentClassName} ${childClassName}`}
+            >
+              {smallURL && !imageDisplayed ? (
+                <FelaComponent style={[style.image, style.smallImage]}>
+                  {({ className }) => (
+                    <img
+                      style={fadeInSmallImage}
+                      className={className}
+                      src={smallURL}
+                      alt={alt}
+                    />
+                  )}
+                </FelaComponent>
+              ) : null}
+              {loadImage ? (
+                <FelaComponent style={style.image}>
+                  {({ className }) => (
+                    <animated.img
+                      {...originObject}
+                      style={fadeInLargeImage}
+                      className={className}
+                      src={src}
+                      alt={alt}
+                      onLoad={whenImageLoaded}
+                    />
+                  )}
+                </FelaComponent>
+              ) : null}
+            </animated.div>
+          )}
+        </FelaComponent>
+      )
   );
 };

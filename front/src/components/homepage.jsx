@@ -1,7 +1,6 @@
-import React, { useEffect, useRef } from "react";
-import { FelaComponent } from "react-fela";
+import React, { useContext, useEffect, useRef } from "react";
+import { FelaComponent, ThemeContext } from "react-fela";
 import useScrollPosition from "@react-hook/window-scroll";
-import { useWindowSize } from "@react-hook/window-size";
 
 // Local imports
 import { Header } from "./header";
@@ -39,7 +38,7 @@ const style = {
   }),
   masonryWrapper: ({ theme }) => ({
     width: "100%",
-    marginTop: "-10px",
+    marginTop: `-${theme.homepageCardMargin}px`,
     marginBottom: `${theme.navigationHeight + theme.navigationPaddingBottom}px`,
     padding: `0 15px 0 ${15 - theme.homepageCardMargin}px`,
     boxSizing: "border-box",
@@ -53,27 +52,21 @@ const style = {
 
 export const Homepage = ({
   recipes,
-  buttonFinished,
   scrollPosition,
-  lazyLoadedImages,
   onMount: externalOnMount,
   onUnmount,
 }) => {
-  const windowHeight = useWindowSize()[1];
+  const theme = useContext(ThemeContext);
   const scrollY = useRef(0);
   scrollY.current = useScrollPosition(13 /*fps*/);
+  const headerRef = useRef();
 
-  // Get the recipes on mount, and remove them on un-mount
+  // Get the recipes on mount
   const onMount = () => {
-    // Make sure we can scroll, content will load eventually
-    document.querySelector("body").style.minHeight = `${
-      scrollPosition + windowHeight
-    }px`;
     window.scrollTo(0, scrollPosition);
 
     externalOnMount();
     return () => {
-      document.querySelector("body").style.minHeight = "auto";
       onUnmount(scrollY.current);
     };
   };
@@ -81,7 +74,7 @@ export const Homepage = ({
 
   return (
     <div>
-      <Header>
+      <Header externalRef={headerRef}>
         <FelaComponent style={style.titleWrapper}>
           <div>
             <FelaComponent style={style.title} as="h1">
@@ -97,15 +90,15 @@ export const Homepage = ({
         <FelaComponent style={style.masonry}>
           {({ className }) => (
             <HomepageMasonry
-              stateKey="homepageMasonry"
               className={className}
               items={recipes}
-              overscanBy={buttonFinished ? 7 : 3}
-              overscanImagesBy={0.5}
-              overscanSmallImagesBy={2}
-              buttonFinished={buttonFinished}
+              initialOffset={
+                headerRef.current?.offsetHeight - theme.homepageCardMargin
+              }
+              overscanBy={7}
+              overscanImagesBy={1}
+              overscanSmallImagesBy={4}
               scrollPosition={scrollPosition}
-              lazyLoadedImages={lazyLoadedImages}
             />
           )}
         </FelaComponent>

@@ -16,7 +16,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch, props) => {
   return {
     handleClick: () => {
-      dispatch(clickedNavigationItem(props.linkTo));
+      dispatch(clickedNavigationItem(props.linkFrom, props.linkTo));
     },
     clickDone: () => {
       dispatch(clickedNavigationItemDone(props.linkTo));

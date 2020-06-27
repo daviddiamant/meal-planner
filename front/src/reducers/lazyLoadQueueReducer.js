@@ -11,8 +11,7 @@ export function lazyLoadQueueReducer(stateKey, state = [], action) {
   let isSmall = stateKey.indexOf("small");
   isSmall = isSmall < 1 && isSmall !== -1;
 
-  // eslint-disable-next-line
-  const [_, ...rest] = state;
+  const [, ...rest] = state;
 
   switch (action.type) {
     case LAZY_LOAD_IMAGE:

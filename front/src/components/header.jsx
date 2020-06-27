@@ -9,6 +9,12 @@ const style = {
   },
 };
 
-export const Header = ({ children }) => (
-  <FelaComponent style={style.content}>{children}</FelaComponent>
+export const Header = ({ children, externalRef, ...props }) => (
+  <FelaComponent style={style.content}>
+    {({ className }) => (
+      <div className={className} ref={externalRef} {...props}>
+        {children}
+      </div>
+    )}
+  </FelaComponent>
 );

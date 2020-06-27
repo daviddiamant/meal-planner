@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { FelaComponent, ThemeContext } from "react-fela";
 import { Link } from "react-router-dom";
 
@@ -6,18 +6,20 @@ import { Link } from "react-router-dom";
 import LazyLoadedImage from "../reduxConnections/lazyLoadedImage";
 
 const style = {
-  card: ({ theme }) => ({
+  card: ({ theme, height, width }) => ({
+    height,
+    width,
     margin: `${theme.homepageCardMargin}px 0 0 ${theme.homepageCardMargin}px`,
-    overflow: "hidden",
-  }),
-  cardImage: ({ theme }) => ({
     background: theme.quaternaryColors.grey,
     borderRadius: `${theme.primary.borderRadius}px`,
     overflow: "hidden",
   }),
+  cardImage: () => ({
+    overflow: "hidden",
+  }),
 };
 
-export const HomepageCard = ({ index, data, width, onUnmount }) => {
+export const HomepageCard = ({ index, data, width }) => {
   const {
     slug,
     title,
@@ -27,8 +29,8 @@ export const HomepageCard = ({ index, data, width, onUnmount }) => {
     mediumImageHeight,
   } = data;
 
-  const theme = useContext(ThemeContext);
   const url = `${window.location.protocol}//${window.location.hostname}`;
+  const theme = useContext(ThemeContext);
 
   width -= theme.homepageCardMargin;
   const ratio = mediumImageHeight / mediumImageWidth;
@@ -38,16 +40,9 @@ export const HomepageCard = ({ index, data, width, onUnmount }) => {
     height: `${height}px`,
   };
 
-  const onMount = () => {
-    return () => {
-      onUnmount(url + mediumImage);
-    };
-  };
-  useEffect(onMount, []);
-
   return (
     <Link to={`/recipe/${slug}`}>
-      <FelaComponent key={index} style={style.card} as="div">
+      <FelaComponent key={index} style={style.card} {...toStyle} as="div">
         <FelaComponent style={style.cardImage}>
           {({ className }) => (
             <LazyLoadedImage

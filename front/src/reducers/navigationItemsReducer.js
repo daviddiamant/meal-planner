@@ -2,10 +2,13 @@ import {
   ADD_NAVIGATION_CLICKED,
   NAVIGATION_CLICKED_DONE,
   HANDLE_NAVIGATION_ANIMATION,
+  NAVIGATION_UNMOUNT,
+  REGULAR_MOUNTED,
 } from "../actions/actionTypes";
 
 const initialState = {
   runningAnimation: false,
+  changingView: false,
   clicked: [],
   mutationLocks: [],
 };
@@ -30,9 +33,16 @@ export function navigationItemsReducer(state = initialState, action) {
 
       return {
         runningAnimation: true,
+        changingView: false, // Will be marked as true on unmount
         clicked: [action.path, ...state.clicked],
         mutationLocks: [action.path, ...state.mutationLocks],
       };
+
+    case NAVIGATION_UNMOUNT:
+      return { ...state, changingView: true };
+
+    case REGULAR_MOUNTED:
+      return { ...state, changingView: false };
 
     case NAVIGATION_CLICKED_DONE:
       /***
@@ -47,7 +57,7 @@ export function navigationItemsReducer(state = initialState, action) {
         : state.mutationLocks;
 
       return {
-        runningAnimation: state.runningAnimation,
+        ...state,
         clicked,
         mutationLocks,
       };
@@ -55,6 +65,7 @@ export function navigationItemsReducer(state = initialState, action) {
     case HANDLE_NAVIGATION_ANIMATION:
       return {
         ...state,
+        changingView: false,
         runningAnimation: state.clicked.length ? true : false,
       };
 

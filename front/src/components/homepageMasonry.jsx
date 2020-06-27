@@ -1,6 +1,5 @@
-import { useContext, useRef } from "react"; // No jsx so we do not need React
+import { useContext, useEffect, useRef } from "react"; // No jsx so we do not need React
 import { useWindowSize } from "@react-hook/window-size";
-import { useDebouncedCallback } from "use-debounce";
 import {
   useMasonry,
   usePositioner,
@@ -8,202 +7,243 @@ import {
   useScroller,
 } from "masonic";
 import { ThemeContext } from "react-fela";
+import { useDebouncedCallback } from "use-debounce";
 
 // Local imports
-import HomepageCard from "../reduxConnections/homepageCard";
+import { HomepageCard } from "./homepageCard";
 
-const url = `${window.location.protocol}//${window.location.hostname}`;
-
-const getOverscanLimits = ({ change, overscanBy, scrollTop, height }) => {
-  const direction = change > 0 ? "down" : "up";
-  const overScanInPixels = overscanBy * height;
-
-  // Scrolling down
-  let lowerLimit = scrollTop - height;
-  let upperLimit = scrollTop + overScanInPixels + height;
-  if (direction === "up") {
-    // Scrolling up
-    lowerLimit = scrollTop - overScanInPixels;
-    upperLimit = scrollTop + 2 * height;
-  }
-  return { lowerLimit, upperLimit };
-};
-
-const handleScroll = ({
-  items,
-  height,
-  overscanBy,
-  overscanImagesBy,
-  scrollTop,
-  positioner,
-  prevScroll,
-  prevStill,
-  prevClean,
-  loaded,
-  loadedLarge,
-  initialScrollTop,
-  lazyLoadedImages,
-  lazyLoadImage,
-  processSmallQueue,
-  loadLarge,
-  processLargeQueue,
-  cleanUpLazyLoading,
-}) => {
-  const change = scrollTop - prevScroll.current;
-  if (Math.abs(change) < 150 && Math.abs(scrollTop - initialScrollTop) > 10) {
-    // Given that we are not at the top, we only react to real changes
-    return false;
-  }
-
-  const { lowerLimit, upperLimit } = getOverscanLimits({
-    change,
-    overscanBy,
-    scrollTop,
+class HomepageMasonryHelper {
+  constructor({
+    items,
+    offset,
     height,
-  });
-
-  window.requestAnimationFrame(() => {
-    positioner.range(lowerLimit, upperLimit, (index) => {
-      if (!items[index]) {
-        // This image is not added in state
-        return false;
-      }
-
-      let curImage = items[index].mediumImage;
-      curImage = url + curImage;
-      const curImageSmall = url + items[index].smallImage;
-
-      if (!loaded.current[index]) {
-        lazyLoadImage(curImage, curImageSmall);
-        loaded.current[index] = 1;
-      }
-    });
-
-    prevScroll.current = scrollTop;
-
-    processSmallQueue();
-  });
-
-  if (Math.abs(change) < 150 && Math.abs(scrollTop - initialScrollTop) < 10) {
-    // We have not scrolled and we are at the top - this is a init call
-    handleStandingStill({
-      items,
-      height,
-      loaded,
-      scrollTop,
-      prevClean,
-      prevStill,
-      loadLarge,
-      positioner,
-      loadedLarge,
-      initCall: true,
-      lazyLoadedImages,
-      processLargeQueue,
-      cleanUpLazyLoading,
-      overscanBy: overscanImagesBy,
-    });
-  }
-};
-
-const handleStandingStill = ({
-  initCall,
-  items,
-  overscanBy,
-  scrollTop,
-  height,
-  positioner,
-  prevStill,
-  prevClean,
-  loaded,
-  loadedLarge,
-  lazyLoadedImages,
-  loadLarge,
-  processLargeQueue,
-  cleanUpLazyLoading,
-}) => {
-  const change = scrollTop - prevStill.current;
-  if (Math.abs(change) < 150 && !initCall) {
-    // Has anything changed?
-    return false;
-  }
-
-  const { lowerLimit, upperLimit } = getOverscanLimits({
-    change,
-    overscanBy,
+    loaded,
+    loadLarge,
     scrollTop,
-    height,
-  });
+    prevClean,
+    prevStill,
+    positioner,
+    prevScroll,
+    isScrolling,
+    loadedLarge,
+    lazyLoadImage,
+    buttonFinished,
+    lazyLoadedImages,
+    overscanImagesBy,
+    processLargeQueue,
+    processSmallQueue,
+    cleanUpLazyLoading,
+    prevScrollForSpeed,
+    firstCallAfterMount,
+    overscanSmallImagesBy,
+  }) {
+    this.items = items;
+    this.offset = offset;
+    this.height = height;
+    this.loaded = loaded;
+    this.loadLarge = loadLarge;
+    this.scrollTop = scrollTop;
+    this.prevClean = prevClean;
+    this.prevStill = prevStill;
+    this.positioner = positioner;
+    this.prevScroll = prevScroll;
+    this.isScrolling = isScrolling;
+    this.loadedLarge = loadedLarge;
+    this.lazyLoadImage = lazyLoadImage;
+    this.buttonFinished = buttonFinished;
+    this.lazyLoadedImages = lazyLoadedImages;
+    this.overscanImagesBy = overscanImagesBy;
+    this.processLargeQueue = processLargeQueue;
+    this.processSmallQueue = processSmallQueue;
+    this.cleanUpLazyLoading = cleanUpLazyLoading;
+    this.prevScrollForSpeed = prevScrollForSpeed;
+    this.firstCallAfterMount = firstCallAfterMount;
+    this.overscanSmallImagesBy = overscanSmallImagesBy;
 
-  let currentRecipes = [];
-  let newLoaded = {};
-  window.requestAnimationFrame(() => {
-    positioner.range(lowerLimit, upperLimit, (index) => {
-      if (!items[index]) {
-        // This image is not added in state
-        return false;
-      }
+    this.url = `${window.location.protocol}//${window.location.hostname}`;
+  }
 
-      let curImage = items[index].mediumImage;
-      curImage = url + curImage;
-      currentRecipes = [...currentRecipes, curImage];
-      newLoaded[index] = 1;
-      if (
-        (lazyLoadedImages &&
-          lazyLoadedImages[curImage] &&
-          !lazyLoadedImages[curImage].loaded) ||
-        !loadedLarge.current[index]
-      ) {
-        loadLarge(curImage);
-        loadedLarge.current[index] = 1;
-      }
+  getOverscanLimits(change, overscanBy) {
+    const direction = change > 0 ? "down" : "up";
+    const overScanInPixels = overscanBy * this.height;
+
+    // Scrolling down
+    let lowerLimit = this.scrollTop - this.height;
+    let upperLimit = this.scrollTop + overScanInPixels + this.height;
+    if (direction === "up") {
+      // Scrolling up
+      lowerLimit = this.scrollTop - overScanInPixels;
+      upperLimit = this.scrollTop + 2 * this.height;
+    }
+    return { lowerLimit, upperLimit };
+  }
+
+  handleScroll() {
+    const change = this.scrollTop - this.prevScroll.current;
+    if (Math.abs(change) < 50) {
+      // We only react to real changes
+      return false;
+    }
+    this.prevScroll.current = this.scrollTop;
+
+    const { lowerLimit, upperLimit } = this.getOverscanLimits(
+      change,
+      this.overscanSmallImagesBy
+    );
+
+    window.requestAnimationFrame(() => {
+      this.positioner.range(lowerLimit, upperLimit, (index) => {
+        if (!this.items[index]) {
+          // This recipe is not added in state
+          return false;
+        }
+
+        let curImage = this.items[index].mediumImage;
+        curImage = this.url + curImage;
+        const curImageSmall = this.url + this.items[index].smallImage;
+
+        if (!this.loaded.current[index] || !this.lazyLoadedImages[curImage]) {
+          this.lazyLoadImage(curImage, curImageSmall);
+          this.loaded.current[index] = 1;
+        }
+      });
+
+      this.processSmallQueue();
     });
-    prevStill.current = scrollTop;
+  }
 
-    processLargeQueue();
+  handleMovingSlow() {
+    const change = this.scrollTop - this.prevStill.current;
+    if (Math.abs(change) < 150) {
+      // We only react to real changes
+      return false;
+    }
+    this.prevStill.current = this.scrollTop;
 
-    if (Math.abs(scrollTop - prevClean.current) < 4 * height) {
+    const { lowerLimit, upperLimit } = this.getOverscanLimits(
+      change,
+      this.overscanImagesBy
+    );
+
+    window.requestAnimationFrame(() => {
+      this.positioner.range(lowerLimit, upperLimit, (index) => {
+        if (!this.items[index]) {
+          // This image is not added in state
+          return false;
+        }
+
+        let curImage = this.items[index].mediumImage;
+        curImage = this.url + curImage;
+        if (
+          // Not loaded in state
+          (this.lazyLoadedImages &&
+            this.lazyLoadedImages[curImage] &&
+            !this.lazyLoadedImages[curImage].loaded) ||
+          // Not loaded here, locally
+          !this.loadedLarge.current[index]
+        ) {
+          this.loadLarge(curImage);
+          this.loadedLarge.current[index] = 1;
+        }
+      });
+
+      this.processLargeQueue();
+    });
+  }
+
+  handleStandingStill() {
+    if (Math.abs(this.scrollTop - this.prevClean.current) < 4 * this.height) {
       // Do not clean if its not dirty
       return false;
     }
 
-    cleanUpLazyLoading(currentRecipes);
-    loaded.current = Object.keys(loaded) ? { ...newLoaded } : {};
-    loadedLarge.current = Object.keys(loadedLarge) ? { ...newLoaded } : {};
-    prevClean.current = scrollTop;
-  });
-};
+    const { lowerLimit, upperLimit } = this.getOverscanLimits(
+      1,
+      this.overscanImagesBy
+    );
 
-export const HomepageMasonry = ({
-  items,
-  loadLarge,
-  lazyLoadImage,
-  buttonFinished,
-  scrollPosition,
-  lazyLoadedImages,
-  overscanImagesBy,
-  processSmallQueue,
-  processLargeQueue,
-  cleanUpLazyLoading,
-  overscanSmallImagesBy,
-  ...props
-}) => {
+    let currentRecipes = [];
+    let newLoaded = {};
+    window.requestAnimationFrame(() => {
+      this.positioner.range(lowerLimit, upperLimit, (index) => {
+        if (!this.items[index]) {
+          // This image is not added in state
+          return false;
+        }
+
+        let curImage = this.items[index].mediumImage;
+        curImage = this.url + curImage;
+        currentRecipes.push(curImage);
+        newLoaded[index] = 1;
+      });
+
+      this.cleanUpLazyLoading(currentRecipes);
+      this.loaded.current = Object.keys(this.loaded) ? { ...newLoaded } : {};
+      this.loadedLarge.current = Object.keys(this.loadedLarge)
+        ? { ...newLoaded }
+        : {};
+      this.prevClean.current = this.scrollTop;
+    });
+  }
+
+  handleUpdates() {
+    if (
+      this.buttonFinished &&
+      this.items.length &&
+      !isNaN(this.offset) &&
+      typeof this.offset !== "undefined"
+    ) {
+      // Load small images while scrolling, its is not that heavy so we can do it a lot
+      this.handleScroll();
+
+      const delta = this.prevScrollForSpeed.current - this.scrollTop;
+      if (
+        // Scrolling slow
+        (delta !== 0 && delta > -125 && delta < 125) ||
+        // Init call
+        this.firstCallAfterMount.current ||
+        // Or we are standing still
+        !this.isScrolling
+      ) {
+        // Remove not shown images and fetch large ones, its heavy so only do it if we are not scrolling
+        this.handleMovingSlow();
+
+        this.firstCallAfterMount.current = false;
+      }
+
+      this.prevScrollForSpeed.current = this.scrollTop;
+    }
+  }
+}
+
+export const HomepageMasonry = (props) => {
   // These should not trigger re-renders (as state does), so use refs
+  const theme = useContext(ThemeContext);
   const containerRef = useRef(null);
-  const prevScrollForSpeed = useRef(scrollPosition);
-  const fetchLargeLock = useRef(false);
-  const prevScroll = useRef(scrollPosition);
-  const prevStill = useRef(scrollPosition);
-  const prevClean = useRef(scrollPosition);
+  const prevScrollForSpeed = useRef(props.scrollPosition);
+  const firstCallAfterMount = useRef(false);
+  const prevScroll = useRef(-Number.MAX_SAFE_INTEGER);
+  const prevStill = useRef(-Number.MAX_SAFE_INTEGER);
+  const prevClean = useRef(props.scrollPosition);
   const loaded = useRef({});
   const loadedLarge = useRef({});
 
-  const theme = useContext(ThemeContext);
-  const [debouncedScrolling] = useDebouncedCallback(handleScroll, 50);
+  // Mount and unmount
+  useEffect(() => {
+    firstCallAfterMount.current = true;
+    return () => {
+      firstCallAfterMount.current = false;
+    };
+  }, []);
+
   const [windowWidth, height] = useWindowSize();
-  const { offset, width } = useContainerPosition(containerRef, [
+  let { offset, width } = useContainerPosition(containerRef, [
     windowWidth,
     height,
   ]);
+  offset = offset || props.initialOffset;
+  width = width || windowWidth - 2 * theme.homepageCardMargin;
+
   const { scrollTop, isScrolling } = useScroller(offset);
 
   // Get the number of columns
@@ -225,68 +265,60 @@ export const HomepageMasonry = ({
 
   const positioner = usePositioner({ width, columnCount }, [width]);
 
-  if (buttonFinished) {
-    // Load small images while scrolling, its is not that heavy so we can do it a lot
-    debouncedScrolling({
-      items,
-      height,
-      loaded,
-      prevStill,
-      scrollTop,
-      prevClean,
-      prevScroll,
-      positioner,
-      loadLarge,
-      loadedLarge,
-      lazyLoadImage,
-      lazyLoadedImages,
-      overscanImagesBy,
-      processSmallQueue,
-      processLargeQueue,
-      cleanUpLazyLoading,
-      initialScrollTop: scrollPosition ? scrollPosition - offset : 0,
-      overscanBy: overscanSmallImagesBy,
-    });
+  const params = {
+    offset,
+    height,
+    loaded,
+    scrollTop,
+    prevClean,
+    prevStill,
+    positioner,
+    prevScroll,
+    isScrolling,
+    loadedLarge,
+    items: props.items,
+    prevScrollForSpeed,
+    firstCallAfterMount,
+    loadLarge: props.loadLarge,
+    lazyLoadImage: props.lazyLoadImage,
+    buttonFinished: props.buttonFinished,
+    lazyLoadedImages: props.lazyLoadedImages,
+    overscanImagesBy: props.overscanImagesBy,
+    processLargeQueue: props.processLargeQueue,
+    processSmallQueue: props.processSmallQueue,
+    cleanUpLazyLoading: props.cleanUpLazyLoading,
+    overscanSmallImagesBy: props.overscanSmallImagesBy,
+  };
+  const helper = new HomepageMasonryHelper(params);
+  const [debouncedOnRender] = useDebouncedCallback(
+    () => helper.handleUpdates(),
+    1000
+  );
+  const [debouncedCleaning, stopCleaning] = useDebouncedCallback(
+    () => helper.handleStandingStill(),
+    1000
+  );
 
-    const delta = prevScrollForSpeed.current - scrollTop;
-    if (
-      !isScrolling ||
-      (!fetchLargeLock.current && delta && delta > -15 && delta < 15)
-    ) {
-      // Remove not shown images and fetch large ones, its heavy so only do it if we are not scrolling
-      handleStandingStill({
-        items,
-        height,
-        loaded,
-        scrollTop,
-        prevClean,
-        prevStill,
-        loadLarge,
-        positioner,
-        loadedLarge,
-        lazyLoadedImages,
-        processLargeQueue,
-        cleanUpLazyLoading,
-        overscanBy: overscanImagesBy,
-      });
-
-      fetchLargeLock.current = true;
-      setTimeout(() => {
-        fetchLargeLock.current = false;
-      }, 250);
-    }
-  }
-  prevScrollForSpeed.current = scrollTop;
-
-  // Return the Masonry component
-  return useMasonry({
-    items,
+  const masonry = useMasonry({
+    items: props.items,
     height,
     scrollTop,
     positioner,
     isScrolling,
     containerRef,
     render: HomepageCard,
+    onRender: debouncedOnRender,
     ...props,
   });
+
+  helper.handleUpdates();
+
+  if (!isScrolling) {
+    debouncedCleaning();
+  } else {
+    stopCleaning();
+  }
+
+  // Return the Masonry component
+  return masonry;
 };

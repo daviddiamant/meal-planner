@@ -26,7 +26,7 @@ export function lazyLoadImageReducer(stateKey, state = {}, action) {
        * It will trigger a saga that first lazy loads
        * a smaller version of the image
        ***/
-      newState[action.url] = {
+      newState[action.url] = imgState || {
         smallUrl: action.smallUrl, // can be null if no small version exists
         smallLocalURL: "", // Will be filled when the image is loaded
         smallLoaded: false,
@@ -48,7 +48,7 @@ export function lazyLoadImageReducer(stateKey, state = {}, action) {
       break;
 
     case LAZY_LOAD_PROCESS_ONE_LARGE:
-      if (!imgState) {
+      if (!imgState || imgState.loaded) {
         return state;
       }
       newState[action.url] = {

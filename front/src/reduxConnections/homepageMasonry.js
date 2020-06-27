@@ -9,7 +9,12 @@ import {
   processLazyLoadLargeQueue,
 } from "../actions/actionCreators";
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  lazyLoadedImages: state.homepageLazyLoadedImages,
+  buttonFinished:
+    !state.navigationItems.changingView &&
+    !state.navigationItems.runningAnimation,
+});
 
 const mapDispatchToProps = (dispatch) => {
   return {

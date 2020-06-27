@@ -59,7 +59,7 @@ const baseTheme = {
     borderRadius: 18,
   },
   homepageCardMargin,
-  weekCardMargin: homepageCardMargin,
+  sliderCardMargin: homepageCardMargin,
   navigationHeight,
   navigationPaddingBottom,
 };

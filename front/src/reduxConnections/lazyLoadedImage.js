@@ -12,32 +12,42 @@ import {
   processLazyLoadLargeQueue,
 } from "../actions/actionCreators";
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state, { stateKey, src }) => {
   // Get info about this specific image
-  const imgState = state[props.stateKey][props.src];
+  const imgState = state[stateKey][src];
 
   return {
+    showImage:
+      state[stateKey][src]?.smallLoaded && !state.navigationItems.changingView,
     startedLazyLoading: imgState ? true : false,
-    smallURL: imgState && imgState.smallLoaded ? imgState.smallLocalURL : "",
-    loadImage: imgState && imgState.shouldBeLoaded,
-    imageLoaded: imgState && imgState.loaded,
-    imageDisplayed: imgState && imgState.displayed,
+    smallURL:
+      imgState && imgState.smallLoaded && !state.navigationItems.changingView
+        ? imgState.smallLocalURL
+        : "",
+    loadImage:
+      imgState &&
+      imgState.shouldBeLoaded &&
+      !state.navigationItems.changingView,
+    imageLoaded:
+      imgState && imgState.loaded && !state.navigationItems.changingView,
+    imageDisplayed:
+      imgState && imgState.displayed && !state.navigationItems.changingView,
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = (dispatch, { onLoad, stateKey, src }) => {
   return {
     initLoad: (src, smallSrc, stateKey) =>
       dispatch(lazyLoadImage(src, smallSrc, stateKey)),
     loadLarge: (src, stateKey) =>
       dispatch(clearForLazyLargeImage(src, stateKey)),
     whenImageLoaded: (event) => {
-      if (props.onLoad) {
-        props.onLoad(event);
+      if (onLoad) {
+        onLoad(event);
       }
-      dispatch(gotLargeLazyLoaded(props.src, props.stateKey));
+      dispatch(gotLargeLazyLoaded(src, stateKey));
     },
-    whenImageDisplayed: () => dispatch(lazyLoadDone(props.src, props.stateKey)),
+    whenImageDisplayed: () => dispatch(lazyLoadDone(src, stateKey)),
     processSmallQueue: () => dispatch(processLazyLoadSmallQueue()),
     processLargeQueue: () => dispatch(processLazyLoadLargeQueue()),
     clearQueue: (stateKey) => dispatch(cleanUpLazyLoading([], stateKey)),

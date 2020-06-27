@@ -5,6 +5,7 @@
 	},
 	"navigationItems": {
 		"runningAnimation": false,
+		"changingView": false,
 		"clicked": [],
 		"mutationLocks": []
 	},

@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { FelaComponent } from "react-fela";
 import { Link } from "react-router-dom";
-import { animated, useSpring, useTransition } from "react-spring";
+import { animated, useSpring } from "react-spring";
 
 // Local imports
 import LazyLoadedImage from "../reduxConnections/lazyLoadedImage";
@@ -12,14 +12,14 @@ const style = {
     justifyContent: "center",
     flexDirection: "column",
     alignItems: "center",
-    marginRight: `${theme.weekCardMargin}px`,
+    marginRight: `${theme.sliderCardMargin}px`,
     overflow: "hidden",
     borderRadius: `${theme.primary.borderRadius}px`,
     background: theme.quaternaryColors.grey,
   }),
 };
 
-export const WeekCard = ({
+export const SliderCard = ({
   index,
   data,
   height,
@@ -72,14 +72,6 @@ export const WeekCard = ({
     onRest,
   }));
 
-  // Fade in small version of the image
-  const fadeInImage = useTransition(slug && slug.length, null, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-    config: { mass: 1, tension: 280, friction: 60 },
-  });
-
   if (prevWidth.current !== width) {
     setWidth({ width });
   }
@@ -90,20 +82,13 @@ export const WeekCard = ({
       <FelaComponent key={index} style={style.card}>
         {({ className: cardClasses }) => (
           <animated.div className={cardClasses} style={animateWidth}>
-            {fadeInImage.map(
-              ({ item, key, props }) =>
-                item && (
-                  <animated.div key={key} style={props}>
-                    <LazyLoadedImage
-                      src={url + mediumImage}
-                      smallSrc={url + smallImage}
-                      alt={title}
-                      stateKey={lazyLoadedStateKey}
-                      {...toStyle}
-                    />
-                  </animated.div>
-                )
-            )}
+            <LazyLoadedImage
+              src={url + mediumImage}
+              smallSrc={url + smallImage}
+              alt={title}
+              stateKey={lazyLoadedStateKey}
+              {...toStyle}
+            />
           </animated.div>
         )}
       </FelaComponent>

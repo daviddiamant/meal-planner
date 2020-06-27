@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
-import { Provider, useDispatch } from "react-redux";
+import React, { Fragment, useEffect } from "react";
+import { Provider } from "react-redux";
 import { RendererProvider, ThemeProvider } from "react-fela";
 import { createRenderer } from "fela";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -8,7 +8,7 @@ import "firebase/auth";
 
 // Local imports
 import { createStore } from "../stores/mainStore";
-import { userStateChanged } from "../actions/actionCreators";
+import { userStateChanged, regularMounted } from "../actions/actionCreators";
 import baseTheme from "../themes/baseTheme";
 import lightTheme from "../themes/lightTheme";
 import BaseStyle from "../themes/baseStyle";
@@ -16,25 +16,37 @@ import NavigationController from "./navigationController";
 import RecipePage from "../reduxConnections/recipePage";
 import useFirebase from "../hooks/useFirebase";
 
-const Routes = () => (
+const SubPage = ({ store, children }) => {
+  const onMount = () => {
+    store.dispatch(regularMounted());
+  };
+  useEffect(onMount, []);
+
+  return children;
+};
+
+const Routes = ({ store }) => (
   <Switch>
-    <Route path="/recipe/:slug">
+    <Route path="/recipe/:slug" key="recipe">
       {({
         match: {
           params: { slug },
         },
-      }) => <RecipePage slug={slug} />}
+      }) => (
+        <SubPage store={store}>
+          <RecipePage slug={slug} />
+        </SubPage>
+      )}
     </Route>
     <Route path="/">
       {/* The routes that have the bottom navbar (home, search, and profile)*/}
-      <NavigationController />
+      <NavigationController store={store} />
     </Route>
   </Switch>
 );
 
-const InsideReduxStore = () => {
+const InsideReduxStore = ({ store }) => {
   const firebaseApp = useFirebase();
-  const dispatch = useDispatch();
 
   if (!firebaseApp) {
     // wait until we have the firebase app
@@ -42,7 +54,7 @@ const InsideReduxStore = () => {
   }
 
   firebase.auth().onAuthStateChanged((user) => {
-    dispatch(userStateChanged(user));
+    store.dispatch(userStateChanged(user));
   });
 
   const renderer = createRenderer();
@@ -53,7 +65,7 @@ const InsideReduxStore = () => {
         <Fragment>
           <BaseStyle />
           <Router>
-            <Routes />
+            <Routes store={store} />
           </Router>
         </Fragment>
       </ThemeProvider>
@@ -61,10 +73,13 @@ const InsideReduxStore = () => {
   );
 };
 
-const MainController = () => (
-  <Provider store={createStore()}>
-    <InsideReduxStore />
-  </Provider>
-);
+const MainController = () => {
+  const store = createStore();
+  return (
+    <Provider store={store}>
+      <InsideReduxStore store={store} />
+    </Provider>
+  );
+};
 
 export default MainController;

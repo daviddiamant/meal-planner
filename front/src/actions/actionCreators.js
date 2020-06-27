@@ -1,6 +1,7 @@
 import {
   CHANGE_HELLO_WORLD,
   ADD_NAVIGATION_CLICKED,
+  NAVIGATION_UNMOUNT,
   NAVIGATION_CLICKED_DONE,
   RECIPE_CLEAN,
   RECIPE_CHANGE_PRIMARY_VIEW,
@@ -13,6 +14,7 @@ import {
   USER_STATE_CHANGED,
   WEEK_WIDTH_CHANGED,
   FAVORITES_WIDTH_CHANGED,
+  REGULAR_MOUNTED,
   // Async actions
   START_FETCH_RECIPE,
   FETCH_RECIPE_DONE,
@@ -53,11 +55,16 @@ export function changeHelloWorld(newMessage) {
   };
 }
 
-export function clickedNavigationItem(linkTo) {
+export function clickedNavigationItem(linkFrom, linkTo) {
   return {
     type: ADD_NAVIGATION_CLICKED,
+    pathFrom: linkFrom,
     path: linkTo,
   };
+}
+
+export function navigationUnmounted() {
+  return { type: NAVIGATION_UNMOUNT };
 }
 
 export function clickedNavigationItemDone(linkTo) {
@@ -137,6 +144,12 @@ export function userStateChanged(user) {
   return {
     type: USER_STATE_CHANGED,
     user,
+  };
+}
+
+export function regularMounted() {
+  return {
+    type: REGULAR_MOUNTED,
   };
 }
 

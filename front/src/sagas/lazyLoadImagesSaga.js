@@ -1,4 +1,4 @@
-import { call, select, put, takeEvery } from "redux-saga/effects";
+import { call, delay, select, put, takeEvery } from "redux-saga/effects";
 
 // Local imports
 import {
@@ -19,6 +19,8 @@ import {
   processLazyLoadSmallQueue,
   processLazyLoadLargeQueue,
 } from "../actions/actionCreators";
+
+let waitingForLargeImage = false;
 
 function* startSmallQueue() {
   let queue = yield select((state) => state.smallLazyLoadQueue);
@@ -44,6 +46,15 @@ function* startLargeQueue() {
     // (Small queue always needs to be processed first)
     yield put({ ...queue[0], type: LAZY_LOAD_PROCESS_ONE_LARGE });
   }
+
+  if (queue.length > 1 && !raceWithSmall) {
+    waitingForLargeImage = true;
+    yield delay(250);
+    if (waitingForLargeImage) {
+      // The image have not arrived for 250ms, but we still have a queue - load it
+      yield put(processLazyLoadLargeQueue());
+    }
+  }
 }
 
 function* lazyLoadImage(action) {
@@ -53,6 +64,22 @@ function* lazyLoadImage(action) {
 function* lazyLoadSmallImage(action) {
   if (!action.smallUrl) {
     return false;
+  }
+
+  const currentState = yield select(
+    (state) => state[action.stateKey || "homepageLazyLoadedImages"]
+  );
+  if (currentState[action.url].smallLoaded) {
+    // This is already loaded
+    // Fire the action
+    yield put(
+      gotSmallLazyLoaded(
+        action.url,
+        currentState[action.url].smallLocalURL,
+        action.stateKey
+      )
+    );
+    return;
   }
 
   // We have a small image for this one - load it!
@@ -70,6 +97,7 @@ function* processSmallQueue() {
 }
 
 function* processLargeQueue() {
+  waitingForLargeImage = false;
   // Notify the queue
   yield put(processLazyLoadLargeQueue());
 }

@@ -91,6 +91,14 @@ function* fetchRecipe(action) {
 }
 
 function* fetchRecipes() {
+  const recipes = yield select((state) => state.browseRecipes.recipes);
+
+  if (recipes.length > 0) {
+    // This is cached, no need to fetch
+    yield put(fetchRecipesDone(recipes));
+    return;
+  }
+
   try {
     const location = window.location;
     let recipes = yield call(

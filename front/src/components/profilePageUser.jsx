@@ -5,7 +5,7 @@ import { useWindowSize } from "@react-hook/window-size";
 // Local imports
 import { Header } from "./header";
 import { Slider } from "./slider";
-import { WeekCard } from "./weekCard";
+import { SliderCard } from "./sliderCard";
 import AddRecipeBox from "../reduxConnections/addRecipeBox";
 
 const sliderMarginTop = 25;
@@ -144,7 +144,7 @@ export const ProfilePageUser = ({
           {haveCalculatedSliderHeight ? (
             <Slider>
               {week.map((recipe, i) => (
-                <WeekCard
+                <SliderCard
                   key={i}
                   index={i}
                   data={recipe}
@@ -172,7 +172,7 @@ export const ProfilePageUser = ({
           {haveCalculatedSliderHeight ? (
             <Slider>
               {favorites.map((recipe, i) => (
-                <WeekCard
+                <SliderCard
                   key={i}
                   index={i}
                   data={recipe}
