@@ -37,7 +37,7 @@ export const Slider = ({ children, style: externalStyle, ...props }) => {
         windowWidth -
         innerRef.current.offsetWidth -
         theme.constrainedMargin -
-        theme.weekCardMargin;
+        theme.sliderCardMargin;
 
       if (newLeft > 0) {
         newLeft = 0;
