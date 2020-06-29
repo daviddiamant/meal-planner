@@ -78,6 +78,18 @@ const helpers = fp((fastify, _, done) => {
     return foundValue;
   });
 
+  fastify.decorate("getJWT", (req) => {
+    let JWT;
+    try {
+      JWT = req.headers.authorization || null;
+      JWT = JWT.split(" ");
+      JWT = JWT[0] === "Bearer" ? JWT[1] : null;
+    } catch (error) {
+      JWT = null;
+    }
+    return JWT;
+  });
+
   done();
 });
 

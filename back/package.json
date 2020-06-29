@@ -18,7 +18,9 @@
 		"axios": "^0.19.2",
 		"sharp": "^0.25.2",
 		"node-vibrant": "^3.1.5",
-		"sanitize-html": "^1.24.0"
+		"sanitize-html": "^1.24.0",
+		"firebase-admin": "^8.12.1",
+		"ajv": "^6.12.2"
 	},
 	"scripts": {
 		"dev": "nodemon src/server.js",

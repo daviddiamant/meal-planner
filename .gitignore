@@ -5,6 +5,7 @@ SSL-key
 server.crt
 server.key
 server.pem
+serviceAccountKey.json
 imgtest.js
 import.js
 package-lock.json

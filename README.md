@@ -18,8 +18,7 @@ This is an unfinished version. To inspect the old version see branch "old-versio
 
 **Missing functionality from the old-version**
 
-- Ability to plan the recipes for a week.
-- Ability to share that week.
+- Ability to share the planned week.
 - Desktop/tablet UI.
 - Offline experience (i.e. service worker)
 

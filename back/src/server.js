@@ -6,6 +6,7 @@ import helpers from "./utilities/helpers.js";
 import mainController from "./routes/mainController.js";
 import mongoConnector from "./utilities/mongoConnector.js";
 import puppeteerLauncher from "./utilities/puppeteerLauncher.js";
+import firebase from "./utilities/firebase.js";
 
 // Set up the server
 const fastify = Fastify({
@@ -18,6 +19,7 @@ const fastify = Fastify({
 fastify.register(fastifyCors, { origin: "https://egen.kokbok.se:3000" });
 fastify.register(mongoConnector);
 fastify.register(puppeteerLauncher);
+fastify.register(firebase);
 fastify.register(helpers);
 
 // Register the routes

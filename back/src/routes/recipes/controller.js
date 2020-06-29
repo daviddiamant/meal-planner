@@ -33,15 +33,17 @@ const recipesController = (fastify, _, done) => {
     url: "/add",
     schema: addSchema,
     handler: async (req, res) => {
-      const url = req.body.url || "";
+      const url = req.body.value || "";
       if (!url || !fastify.validURL(url)) {
         res.code(400).send({ result: "Faulty URL!" });
+        return res;
       }
 
       // We have a url and its valid - add it!
       const added = await model.addRecipe(url);
       if (!added) {
         res.code(400).send({ result: "Could not add recipe" });
+        return res;
       }
 
       res.send({ result: true });

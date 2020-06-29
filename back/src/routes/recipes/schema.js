@@ -1,3 +1,5 @@
+import { singleValueBody, booleanRes, recipesForLists } from "../mainSchema.js";
+
 export const getOneSchema = {
   params: {
     slug: { type: "string" },
@@ -75,39 +77,13 @@ export const getOneSchema = {
 
 export const getAllSchema = {
   response: {
-    200: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          title: { type: "string" },
-          slug: { type: "string" },
-          smallImage: { type: "string" },
-          smallImageWidth: { type: "number" },
-          smallImageHeight: { type: "number" },
-          mediumImage: { type: "string" },
-          mediumImageWidth: { type: "number" },
-          mediumImageHeight: { type: "number" },
-        },
-      },
-    },
+    200: recipesForLists,
   },
 };
 
 export const addSchema = {
-  body: {
-    type: "object",
-    required: ["url"],
-    properties: {
-      url: { type: "string" },
-    },
-  },
+  body: singleValueBody,
   response: {
-    200: {
-      type: "object",
-      properties: {
-        result: { type: "string" },
-      },
-    },
+    200: booleanRes,
   },
 };
