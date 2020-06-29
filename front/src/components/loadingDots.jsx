@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { FelaComponent, RendererContext } from "react-fela";
-import { animated } from "react-spring";
 
 const style = {
   wave: () => ({
@@ -48,7 +47,7 @@ const keyframes = {
   }),
 };
 
-export const LoadingDots = (props) => {
+export const LoadingDots = () => {
   const renderer = useContext(RendererContext);
 
   const waveKeyframe = renderer.renderKeyframe(keyframes.wave);
@@ -56,11 +55,11 @@ export const LoadingDots = (props) => {
   return (
     <FelaComponent style={style.wave}>
       {({ className }) => (
-        <animated.div className={className} {...props}>
+        <div className={className}>
           <FelaComponent style={style.dot} waveKeyframe={waveKeyframe} />
           <FelaComponent style={style.dot} waveKeyframe={waveKeyframe} />
           <FelaComponent style={style.dot} waveKeyframe={waveKeyframe} />
-        </animated.div>
+        </div>
       )}
     </FelaComponent>
   );

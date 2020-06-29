@@ -9,8 +9,9 @@ import { lazyLoadImageReducer } from "./lazyLoadImageReducer";
 import { lazyLoadQueueReducer } from "./lazyLoadQueueReducer";
 import { expandTextReducer } from "./expandTextReducer";
 import { userReducer } from "./userReducer";
-import { addRecipeReducer } from "./addRecipeReducer";
+import { addRecipeInputReducer } from "./addRecipeInputReducer";
 import { profileReducer } from "./profileReducer";
+import { addReducer } from "./addReducer";
 
 // An object that tells what reducers handle what part of the state
 let allReducers = {};
@@ -67,8 +68,20 @@ allReducers = { ...allReducers, expandText: expandTextReducer };
 // userReducer handles the key 'user' in the state
 allReducers = { ...allReducers, user: userReducer };
 
-// addRecipeReducer handles the key 'addRecipe' in the state
-allReducers = { ...allReducers, addRecipe: addRecipeReducer };
+// addRecipeInputReducer handles the key 'addRecipeInput' in the state
+allReducers = { ...allReducers, addRecipeInput: addRecipeInputReducer };
+
+// addReducer handles the key 'addRecipeBtn' and 'planRecipeBtn' in the state
+allReducers = {
+  ...allReducers,
+  addRecipeBtn: (state = {}, action) =>
+    addReducer("addRecipeBtn", state, action),
+};
+allReducers = {
+  ...allReducers,
+  planRecipeBtn: (state = {}, action) =>
+    addReducer("planRecipeBtn", state, action),
+};
 
 // profileReducer handles the key 'profile' in the state
 allReducers = { ...allReducers, profile: profileReducer };

@@ -6,6 +6,7 @@ import {
   changeRecipePrimaryView,
   cleanRecipe,
   startFetchRecipe,
+  startFetchWeek,
 } from "../actions/actionCreators";
 
 const mapStateToProps = (state, { slug }) => {
@@ -21,12 +22,20 @@ const mapStateToProps = (state, { slug }) => {
     backButtonColor: state.recipePage.backButtonColor,
     isIngredientsSelected,
     isMethodSelected,
+    gotPlanned:
+      !state.planRecipeBtn.statusShowing && state.profile.week.length > 0
+        ? true
+        : false,
+    isPlanned: state.profile.week.some((x) => x.slug === slug),
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onMount: (slug) => dispatch(startFetchRecipe(slug)),
+    onMount: (slug) => {
+      dispatch(startFetchRecipe(slug));
+      dispatch(startFetchWeek());
+    },
     onUnmount: () => dispatch(cleanRecipe()),
     changeTab: (primaryView) => dispatch(changeRecipePrimaryView(primaryView)),
   };

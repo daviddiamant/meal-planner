@@ -15,6 +15,7 @@ import {
   WEEK_WIDTH_CHANGED,
   FAVORITES_WIDTH_CHANGED,
   REGULAR_MOUNTED,
+  GOT_JWT,
   // Async actions
   START_FETCH_RECIPE,
   FETCH_RECIPE_DONE,
@@ -33,13 +34,13 @@ import {
   LAZY_LOAD_CLEAN,
   LAZY_LOAD_REMOVE_FROM_QUEUE,
   HANDLE_NAVIGATION_ANIMATION,
-  START_ADD_RECIPE,
+  START_ADD,
   UPDATE_ADD_RECIPE,
-  ADD_RECIPE_PLUS_GONE,
-  ADD_RECIPE_GOT_RES,
-  ADD_RECIPE_DOTS_GONE,
-  ADD_RECIPE_DONE,
-  ADD_RECIPE_STATUS_GONE,
+  ADD_ADD_GONE,
+  ADD_GOT_RES,
+  ADD_ADDING_GONE,
+  ADD_DONE,
+  ADD_STATUS_GONE,
   START_FETCH_WEEK,
   FETCH_WEEK_DONE,
   FETCH_WEEK_FAILED,
@@ -147,9 +148,20 @@ export function userStateChanged(user) {
   };
 }
 
+export function gotJWT(JWT) {
+  return { type: GOT_JWT, JWT };
+}
+
 export function regularMounted() {
   return {
     type: REGULAR_MOUNTED,
+  };
+}
+
+export function updateAddRecipe(url) {
+  return {
+    type: UPDATE_ADD_RECIPE,
+    url,
   };
 }
 
@@ -276,48 +288,48 @@ export function handleNavigationAnimation() {
   };
 }
 
-export function addRecipe(url) {
+export function startAdd(stateKey, path, value) {
   return {
-    type: START_ADD_RECIPE,
-    url,
+    type: START_ADD,
+    stateKey,
+    path,
+    value,
   };
 }
 
-export function updateAddRecipe(url) {
+export function addAddGone(stateKey) {
   return {
-    type: UPDATE_ADD_RECIPE,
-    url,
+    type: ADD_ADD_GONE,
+    stateKey,
   };
 }
 
-export function addRecipePlusGone() {
+export function addGotRes(stateKey, res) {
   return {
-    type: ADD_RECIPE_PLUS_GONE,
-  };
-}
-
-export function addRecipeGotRes(res) {
-  return {
-    type: ADD_RECIPE_GOT_RES,
+    type: ADD_GOT_RES,
+    stateKey,
     res,
   };
 }
 
-export function addRecipeDotsGone() {
+export function addAddingGone(stateKey) {
   return {
-    type: ADD_RECIPE_DOTS_GONE,
+    type: ADD_ADDING_GONE,
+    stateKey,
   };
 }
 
-export function addRecipeDone() {
+export function addDone(stateKey) {
   return {
-    type: ADD_RECIPE_DONE,
+    type: ADD_DONE,
+    stateKey,
   };
 }
 
-export function addRecipeStatusGone() {
+export function addStatusGone(stateKey) {
   return {
-    type: ADD_RECIPE_STATUS_GONE,
+    type: ADD_STATUS_GONE,
+    stateKey,
   };
 }
 

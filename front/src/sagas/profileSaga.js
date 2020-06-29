@@ -1,7 +1,10 @@
-import { call, select, takeEvery, put } from "redux-saga/effects";
+import { call, select, take, takeEvery, put } from "redux-saga/effects";
 
 // Local imports
 import {
+  GOT_JWT,
+  ADD_GOT_RES,
+  ADD_STATUS_GONE,
   START_FETCH_WEEK,
   START_FETCH_FAVORITES,
 } from "../actions/actionTypes";
@@ -12,14 +15,31 @@ import {
   fetchFavoritesDone,
   fetchFavoritesFailed,
 } from "../actions/actionCreators";
+import { isArray } from "lodash";
 
-function* fetchRecipes(url, stateKey, successAction, failAction) {
+function* fetchRecipes(
+  url,
+  stateKey,
+  successAction,
+  failAction,
+  forceFetch = false
+) {
   const recipes = yield select((state) => state.profile[stateKey]);
 
-  if (recipes.length > 0) {
+  if (recipes.length > 0 && !forceFetch) {
     // This is cached, no need to fetch
     yield put(successAction(recipes));
     return;
+  } else if (forceFetch) {
+    // clear it while we are fetching
+    yield put(successAction([]));
+  }
+
+  let JWT = yield select((state) => state.user.JWT);
+  if (!JWT) {
+    // Wait for the JWT to arrive
+    JWT = yield take(GOT_JWT);
+    JWT = JWT.JWT;
   }
 
   try {
@@ -27,29 +47,56 @@ function* fetchRecipes(url, stateKey, successAction, failAction) {
 
     let recipes = yield call(
       fetch,
-      `${location.protocol}//${location.hostname}${url}`
+      `${location.protocol}//${location.hostname}${url}`,
+      {
+        headers: {
+          Authorization: `Bearer ${JWT}`,
+        },
+      }
     );
     recipes = yield recipes.json();
 
-    // Remove slice when backend is in place
-    yield put(successAction(recipes.slice(stateKey === "week" ? -5 : -3)));
+    if (isArray(recipes) && recipes.length) {
+      yield put(successAction(recipes));
+    } else {
+      throw new Error("could not fetch");
+    }
   } catch (err) {
     yield put(failAction(err));
   }
 }
 
+function* maybeUpdateProfile(action) {
+  if (action.stateKey !== "planRecipeBtn" || !action.res) {
+    return;
+  }
+
+  // Update it after animations are done
+  yield take(ADD_STATUS_GONE);
+
+  // A recipe has been planned! Update profile
+  yield fetchRecipes(
+    "/api/plannedweek",
+    "week",
+    fetchWeekDone,
+    fetchWeekFailed,
+    true
+  );
+}
+
 export function* profileSaga() {
-  // Change url to weeks when the backend is implemented
   yield takeEvery(START_FETCH_WEEK, () =>
-    fetchRecipes("/api/recipes", "week", fetchWeekDone, fetchWeekFailed)
+    fetchRecipes("/api/plannedweek", "week", fetchWeekDone, fetchWeekFailed)
   );
   // Change url to favorites when the backend is implemented
   yield takeEvery(START_FETCH_FAVORITES, () =>
     fetchRecipes(
-      "/api/recipes",
+      "/api/plannedweek",
       "favorites",
       fetchFavoritesDone,
       fetchFavoritesFailed
     )
   );
+
+  yield takeEvery(ADD_GOT_RES, maybeUpdateProfile);
 }

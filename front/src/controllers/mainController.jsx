@@ -8,7 +8,11 @@ import "firebase/auth";
 
 // Local imports
 import { createStore } from "../stores/mainStore";
-import { userStateChanged, regularMounted } from "../actions/actionCreators";
+import {
+  userStateChanged,
+  regularMounted,
+  gotJWT,
+} from "../actions/actionCreators";
 import baseTheme from "../themes/baseTheme";
 import lightTheme from "../themes/lightTheme";
 import BaseStyle from "../themes/baseStyle";
@@ -54,7 +58,14 @@ const InsideReduxStore = ({ store }) => {
   }
 
   firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
+      return;
+    }
+
     store.dispatch(userStateChanged(user));
+    user.getIdToken().then((JWT) => {
+      store.dispatch(gotJWT(JWT));
+    });
   });
 
   const renderer = createRenderer();

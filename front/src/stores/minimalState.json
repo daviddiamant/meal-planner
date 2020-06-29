@@ -1,7 +1,12 @@
 {
 	"helloWordMessage": "Hello World!",
 	"user": {
-		"loggedIn":false
+		"loggedIn":false,
+		"gotAuth": false,
+		"uID": null,
+		"JWT": null,
+		"name": null,
+		"image": null
 	},
 	"navigationItems": {
 		"runningAnimation": false,
@@ -65,13 +70,22 @@
 		"numExpanders": 0,
 		"expanderState": {}
 	},
-	"addRecipe": {
+	"addRecipeInput": {
+		"url": ""
+	},
+	"addRecipeBtn": {
 		"isAdding": false,
 		"status": null,
-		"plusShowing": true,
-		"dotsShowing": false,
-		"statusShowing": false,
-		"url": ""
+		"addShowing": true,
+		"addingShowing": false,
+		"statusShowing": false
+	},
+	"planRecipeBtn": {
+		"isAdding": false,
+		"status": null,
+		"addShowing": true,
+		"addingShowing": false,
+		"statusShowing": false
 	},
 	"profile": {
 		"isFetchingWeek": false,

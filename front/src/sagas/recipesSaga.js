@@ -3,65 +3,46 @@ import {
   delay,
   put,
   select,
+  take,
   takeEvery,
   takeLatest,
 } from "redux-saga/effects";
 
 // Local imports
 import {
-  START_ADD_RECIPE,
-  ADD_RECIPE_DONE,
+  ADD_DONE,
   START_FETCH_RECIPE,
   START_FETCH_RECIPES,
+  ADD_GOT_RES,
 } from "../actions/actionTypes";
 
 import {
   updateAddRecipe,
-  addRecipeGotRes,
-  addRecipeDone,
   fetchRecipesDone,
   fetchRecipesFailed,
   fetchRecipeDone,
   fetchRecipeFailed,
 } from "../actions/actionCreators";
 
-function* addRecipe() {
-  try {
-    const url = yield select((state) => state.addRecipe.url);
-
-    if (!url) {
-      throw new Error("No url to add");
-    }
-
-    const location = window.location;
-    let res = yield call(
-      fetch,
-      `${location.protocol}//${location.hostname}/api/recipes/add`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ url }),
-      }
-    );
-    res = yield res.json();
-
-    if (res.result === "true") {
-      yield put(addRecipeGotRes(true));
-    } else {
-      throw new Error("Could not add");
-    }
-  } catch (err) {
-    yield put(addRecipeGotRes(false));
+function* maybeUpdateRecipes(action) {
+  if (action.stateKey !== "addRecipeBtn" || !action.res) {
+    return;
   }
-  // Wait a bit, then reset add recipe box
-  yield delay(2500);
-  yield put(addRecipeDone());
+
+  // Update it after animations are done
+  yield take(ADD_DONE);
+
+  // A recipe has been added! Update recipes
+  yield fetchRecipes(true);
 }
 
-function* clearAddRecipeURL() {
-  let currentURL = yield select((state) => state.addRecipe.url);
+function* clearAddRecipeInput(action) {
+  if (action.stateKey !== "addRecipeBtn") {
+    return;
+  }
+
+  // Remove url from input
+  let currentURL = yield select((state) => state.addRecipeInput.url);
 
   while (currentURL !== "") {
     // Remove one letter at a time
@@ -90,10 +71,10 @@ function* fetchRecipe(action) {
   }
 }
 
-function* fetchRecipes() {
+function* fetchRecipes(forceUpdate = false) {
   const recipes = yield select((state) => state.browseRecipes.recipes);
 
-  if (recipes.length > 0) {
+  if (recipes.length > 0 && !forceUpdate) {
     // This is cached, no need to fetch
     yield put(fetchRecipesDone(recipes));
     return;
@@ -113,8 +94,8 @@ function* fetchRecipes() {
 }
 
 export function* recipesSaga() {
-  yield takeEvery(START_ADD_RECIPE, addRecipe);
-  yield takeEvery(ADD_RECIPE_DONE, clearAddRecipeURL);
+  yield takeEvery(ADD_GOT_RES, maybeUpdateRecipes);
+  yield takeEvery(ADD_DONE, clearAddRecipeInput);
   yield takeEvery(START_FETCH_RECIPE, fetchRecipe);
   yield takeLatest(START_FETCH_RECIPES, fetchRecipes);
 }
