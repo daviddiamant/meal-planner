@@ -41,6 +41,7 @@ export const RecipePage = ({
   fetched,
   hasRecipeData,
   slug,
+  gotUser,
   gotPlanned,
   isPlanned,
   ...props
@@ -77,12 +78,12 @@ export const RecipePage = ({
           <a href={props.recipe.url} target="_blank" rel="noopener noreferrer">
             Besök recept
           </a>
-          {isPlanned ? (
+          {isPlanned || !gotUser ? (
             <FelaComponent style={style.toProfile}>
               {({ className }) => (
                 <Link className={className} to="/profile">
                   <Btn style={style.addButton} background={vibrantColor}>
-                    Planerat
+                    {!gotUser ? "Logga in" : "Planerat"}
                   </Btn>
                 </Link>
               )}

@@ -27,10 +27,10 @@ export const Slider = ({ children, style: externalStyle, ...props }) => {
     let newLeft = prevPos.current + movement[0];
 
     if (!down) {
-      // Give it a little extra "push". 0.4 friction constant
+      // Give it a little extra "push". 0.3 friction constant
       newLeft +=
         (prevPos.current - newLeft < 0 ? 1 : -1) *
-        ((velocity * 10) ** 2 / (2 * 0.4));
+        ((velocity * 10) ** 2 / (2 * 0.3));
 
       // Check boundaries
       const minLeft =

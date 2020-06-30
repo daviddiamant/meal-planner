@@ -58,11 +58,12 @@ const InsideReduxStore = ({ store }) => {
   }
 
   firebase.auth().onAuthStateChanged((user) => {
+    store.dispatch(userStateChanged(user));
+
     if (!user) {
       return;
     }
 
-    store.dispatch(userStateChanged(user));
     user.getIdToken().then((JWT) => {
       store.dispatch(gotJWT(JWT));
     });

@@ -22,6 +22,7 @@ const mapStateToProps = (state, { slug }) => {
     backButtonColor: state.recipePage.backButtonColor,
     isIngredientsSelected,
     isMethodSelected,
+    gotUser: state.user.loggedIn,
     gotPlanned:
       !state.planRecipeBtn.statusShowing && state.profile.week.length > 0
         ? true

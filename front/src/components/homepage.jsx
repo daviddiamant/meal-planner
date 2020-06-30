@@ -40,7 +40,9 @@ const style = {
     width: "100%",
     marginTop: `-${theme.homepageCardMargin}px`,
     marginBottom: `${theme.navigationHeight + theme.navigationPaddingBottom}px`,
-    padding: `0 15px 0 ${15 - theme.homepageCardMargin}px`,
+    padding: `0 ${theme.constrainedMargin}px 0 ${
+      theme.constrainedMargin - theme.homepageCardMargin
+    }px`,
     boxSizing: "border-box",
   }),
   masonry: {

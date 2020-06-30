@@ -24,8 +24,13 @@ function* fetchRecipes(
   failAction,
   forceFetch = false
 ) {
-  const recipes = yield select((state) => state.profile[stateKey]);
+  const loggedIn = yield select((state) => state.user.loggedIn);
+  if (!loggedIn) {
+    yield put(successAction([]));
+    return;
+  }
 
+  const recipes = yield select((state) => state.profile[stateKey]);
   if (recipes.length > 0 && !forceFetch) {
     // This is cached, no need to fetch
     yield put(successAction(recipes));

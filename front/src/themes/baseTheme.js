@@ -1,4 +1,4 @@
-const constrainedMargin = 25;
+const constrainedMargin = 20;
 const navigationHeight = 65;
 const navigationPaddingBottom = 15; // needed for ios swipe "pad"
 const homepageCardMargin = 10;
@@ -59,7 +59,7 @@ const baseTheme = {
     borderRadius: 18,
   },
   homepageCardMargin,
-  sliderCardMargin: homepageCardMargin,
+  sliderCardMargin: 10,
   navigationHeight,
   navigationPaddingBottom,
 };

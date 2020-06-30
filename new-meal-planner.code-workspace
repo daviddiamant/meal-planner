@@ -18,5 +18,8 @@
 				}
 			]
 		}
-	]
+	],
+	"settings": {
+		"editor.formatOnSave": true
+	}
 }

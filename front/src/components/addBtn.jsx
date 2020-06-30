@@ -95,8 +95,6 @@ export const AddBtn = ({
     immediate: !hasMounted.current,
   });
 
-  console.log(showAdd, showAdding, showSuccess, showFail);
-
   return (
     <Btn
       style={externalStyle}
