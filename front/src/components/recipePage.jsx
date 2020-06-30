@@ -41,7 +41,7 @@ export const RecipePage = ({
   fetched,
   hasRecipeData,
   slug,
-  gotUser,
+  noUser,
   gotPlanned,
   isPlanned,
   ...props
@@ -65,6 +65,8 @@ export const RecipePage = ({
     (a, b) => `${a}, ${b}`
   )})`;
 
+  console.log(gotPlanned);
+
   return fetched ? (
     <FelaComponent style={style.recipePage}>
       {hasRecipeData ? (
@@ -78,12 +80,12 @@ export const RecipePage = ({
           <a href={props.recipe.url} target="_blank" rel="noopener noreferrer">
             Besök recept
           </a>
-          {isPlanned || !gotUser ? (
+          {isPlanned || noUser ? (
             <FelaComponent style={style.toProfile}>
               {({ className }) => (
                 <Link className={className} to="/profile">
                   <Btn style={style.addButton} background={vibrantColor}>
-                    {!gotUser ? "Logga in" : "Planerat"}
+                    {noUser ? "Logga in" : "Planerat"}
                   </Btn>
                 </Link>
               )}

@@ -7,6 +7,7 @@ import {
   ADD_STATUS_GONE,
   START_FETCH_WEEK,
   START_FETCH_FAVORITES,
+  USER_STATE_CHANGED,
 } from "../actions/actionTypes";
 
 import {
@@ -24,6 +25,12 @@ function* fetchRecipes(
   failAction,
   forceFetch = false
 ) {
+  const gotAuth = yield select((state) => state.user.gotAuth);
+  if (!gotAuth) {
+    // Wait for firebase to give us the potential user
+    yield take(USER_STATE_CHANGED);
+  }
+
   const loggedIn = yield select((state) => state.user.loggedIn);
   if (!loggedIn) {
     yield put(successAction([]));
