@@ -14,6 +14,17 @@ const baseTheme = {
   headerLineHeight: "115%",
   headerLetterSpacing: "1px",
   helpers: {
+    hexToRgba: ({ key, hex, a = 1 }) => {
+      var bigint = parseInt(hex.replace("#", ""), 16);
+      var r = (bigint >> 16) & 255;
+      var g = (bigint >> 8) & 255;
+      var b = bigint & 255;
+
+      let rgb = {};
+      rgb[key] = `rgba(${r}, ${g}, ${b}, ${a})`;
+
+      return rgb;
+    },
     noHighlight: {
       "-webkit-touch-callout": "none",
       "-webkit-user-select": "none",

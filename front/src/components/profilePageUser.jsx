@@ -4,8 +4,9 @@ import { useWindowSize } from "@react-hook/window-size";
 
 // Local imports
 import { Header } from "./header";
-import { Slider } from "./slider";
-import { SliderCard } from "./sliderCard";
+import { SliderMessage } from "./sliderMessage";
+import Slider from "../reduxConnections/slider";
+import SliderCard from "../reduxConnections/sliderCard";
 import AddRecipeBox from "../reduxConnections/addRecipeBox";
 
 const sliderMarginTop = 25;
@@ -43,8 +44,12 @@ const style = {
     width: "auto",
     borderRadius: `${theme.primary.borderRadius - 3}px`,
   }),
-  slider: () => ({
+  sliderContainer: () => ({
+    position: "relative",
     marginTop: `${sliderMarginTop}px`,
+  }),
+  slider: ({ isDefault }) => ({
+    filter: `blur(${isDefault ? 3.5 : 0}px)`,
   }),
   halfAndHalfTitle: ({ theme, show }) => ({
     marginTop: 0,
@@ -63,11 +68,15 @@ export const ProfilePageUser = ({
   onMount,
   user: { name, image },
   week,
+  isDefaultWeek,
   weekWidthAdjusted,
   favorites,
+  isDefaultFavorites,
   favoritesWidthAdjusted,
 }) => {
   const addRef = useRef();
+  const slugToWeekKey = useRef({});
+  const slugToFavoritesKey = useRef({});
   const headerRef = useRef();
   const [, windowHeight] = useWindowSize();
   const theme = useContext(ThemeContext);
@@ -125,7 +134,7 @@ export const ProfilePageUser = ({
         <FelaComponent style={style.constrainedContent}>
           <AddRecipeBox externalRef={addRef} />
         </FelaComponent>
-        <FelaComponent style={style.slider}>
+        <FelaComponent style={style.sliderContainer}>
           <FelaComponent style={style.constrainedContent}>
             <FelaComponent
               style={style.halfAndHalfTitle}
@@ -142,21 +151,48 @@ export const ProfilePageUser = ({
             </FelaComponent>
           </FelaComponent>
           {haveCalculatedSliderHeight ? (
-            <Slider>
-              {week.map((recipe, i) => (
-                <SliderCard
-                  key={i}
-                  index={i}
-                  data={recipe}
-                  height={height}
-                  onRest={weekWidthAdjusted}
-                  lazyLoadedStateKey="weekLazyLoadedImages"
-                />
-              ))}
+            <Slider
+              slider="week"
+              style={style.slider}
+              isDefault={isDefaultWeek}
+            >
+              {week.map((recipe, i) => {
+                /**
+                 * Avoid re-renders on delete. If we have seen a slug before, keep it's last index.
+                 * Otherwise the dom-element for the deleted meal will remain but get new image data.
+                 */
+
+                let index;
+                if (
+                  recipe?.slug &&
+                  typeof slugToWeekKey.current[recipe.slug] !== "undefined"
+                ) {
+                  index = slugToWeekKey.current[recipe.slug];
+                } else {
+                  index = i;
+                  slugToWeekKey.current[recipe.slug] = i;
+                }
+                return (
+                  <SliderCard
+                    sliderKey="week"
+                    key={index}
+                    index={i}
+                    data={recipe}
+                    height={height}
+                    onRest={weekWidthAdjusted}
+                    lazyLoadedStateKey="weekLazyLoadedImages"
+                  />
+                );
+              })}
             </Slider>
           ) : null}
+          {isDefaultWeek ? (
+            <SliderMessage>
+              <h4>Du har inte planerat några recept</h4>
+            </SliderMessage>
+          ) : null}
         </FelaComponent>
-        <FelaComponent style={style.slider}>
+        <FelaComponent style={style.sliderContainer}>
           <FelaComponent style={style.constrainedContent}>
             <FelaComponent
               style={style.halfAndHalfTitle}
@@ -170,18 +206,45 @@ export const ProfilePageUser = ({
             </FelaComponent>
           </FelaComponent>
           {haveCalculatedSliderHeight ? (
-            <Slider>
-              {favorites.map((recipe, i) => (
-                <SliderCard
-                  key={i}
-                  index={i}
-                  data={recipe}
-                  height={height}
-                  onRest={favoritesWidthAdjusted}
-                  lazyLoadedStateKey="favoritesLazyLoadedImages"
-                />
-              ))}
+            <Slider
+              slider="favorites"
+              style={style.slider}
+              isDefault={isDefaultFavorites}
+            >
+              {favorites.map((recipe, i) => {
+                /**
+                 * Avoid re-renders on delete. If we have seen a slug before, keep it's last index.
+                 * Otherwise the dom-element for the deleted meal will remain but get new image data.
+                 */
+
+                let index;
+                if (
+                  recipe?.slug &&
+                  typeof slugToFavoritesKey.current[recipe.slug] !== "undefined"
+                ) {
+                  index = slugToFavoritesKey.current[recipe.slug];
+                } else {
+                  index = i;
+                  slugToFavoritesKey.current[recipe.slug] = i;
+                }
+                return (
+                  <SliderCard
+                    sliderKey="favorites"
+                    key={index}
+                    index={i}
+                    data={recipe}
+                    height={height}
+                    onRest={favoritesWidthAdjusted}
+                    lazyLoadedStateKey="favoritesLazyLoadedImages"
+                  />
+                );
+              })}
             </Slider>
+          ) : null}
+          {isDefaultFavorites ? (
+            <SliderMessage>
+              <h4>Du har inga favoriter</h4>
+            </SliderMessage>
           ) : null}
         </FelaComponent>
       </FelaComponent>

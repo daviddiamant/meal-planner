@@ -65,8 +65,6 @@ export const RecipePage = ({
     (a, b) => `${a}, ${b}`
   )})`;
 
-  console.log(gotPlanned);
-
   return fetched ? (
     <FelaComponent style={style.recipePage}>
       {hasRecipeData ? (

@@ -17,7 +17,12 @@ const style = {
   }),
 };
 
-export const Slider = ({ children, style: externalStyle, ...props }) => {
+export const Slider = ({
+  children,
+  style: externalStyle,
+  onMove,
+  ...props
+}) => {
   const theme = useContext(ThemeContext);
   const [windowWidth] = useWindowSize();
   const innerRef = useRef();
@@ -34,15 +39,21 @@ export const Slider = ({ children, style: externalStyle, ...props }) => {
 
       // Check boundaries
       const minLeft =
-        windowWidth -
-        innerRef.current.offsetWidth -
-        theme.constrainedMargin -
-        theme.sliderCardMargin;
+        innerRef.current.offsetWidth < windowWidth
+          ? 0
+          : windowWidth -
+            innerRef.current.offsetWidth -
+            theme.constrainedMargin -
+            theme.sliderCardMargin;
 
       if (newLeft > 0) {
         newLeft = 0;
       } else if (newLeft < minLeft) {
         newLeft = minLeft;
+      }
+
+      if (prevPos.current !== newLeft) {
+        onMove();
       }
 
       prevPos.current = newLeft;
@@ -56,9 +67,9 @@ export const Slider = ({ children, style: externalStyle, ...props }) => {
   }));
 
   return (
-    <FelaComponent style={[style.slider, externalStyle]}>
+    <FelaComponent style={[style.slider, externalStyle]} {...props}>
       {({ className }) => (
-        <div className={className} {...props}>
+        <div className={className}>
           <FelaComponent style={style.inner}>
             {({ className }) => (
               <animated.div

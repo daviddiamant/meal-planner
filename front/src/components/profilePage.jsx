@@ -6,27 +6,10 @@ import "firebase/auth";
 import { ProfilePageUser } from "../components/profilePageUser";
 import { ProfilePageLogIn } from "../components/profilePageLogIn";
 
-export const ProfilePage = ({
-  onMount,
-  display,
-  loggedIn,
-  logInStarted,
-  user,
-  week,
-  weekWidthAdjusted,
-  favorites,
-  favoritesWidthAdjusted,
-}) => {
+export const ProfilePage = ({ display, loggedIn, logInStarted, ...props }) => {
   return display ? (
     loggedIn ? (
-      <ProfilePageUser
-        onMount={onMount}
-        user={user}
-        week={week}
-        weekWidthAdjusted={weekWidthAdjusted}
-        favorites={favorites}
-        favoritesWidthAdjusted={favoritesWidthAdjusted}
-      />
+      <ProfilePageUser {...props} />
     ) : (
       <ProfilePageLogIn
         logIn={() => {
@@ -34,6 +17,7 @@ export const ProfilePage = ({
           const provider = new firebase.auth.GoogleAuthProvider();
           firebase.auth().signInWithPopup(provider);
         }}
+        {...props}
       />
     )
   ) : null;

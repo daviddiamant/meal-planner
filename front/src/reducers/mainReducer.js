@@ -12,6 +12,7 @@ import { userReducer } from "./userReducer";
 import { addRecipeInputReducer } from "./addRecipeInputReducer";
 import { profileReducer } from "./profileReducer";
 import { addReducer } from "./addReducer";
+import { sliderCardReducer } from "./sliderCardReducer";
 
 // An object that tells what reducers handle what part of the state
 let allReducers = {};
@@ -85,5 +86,8 @@ allReducers = {
 
 // profileReducer handles the key 'profile' in the state
 allReducers = { ...allReducers, profile: profileReducer };
+
+// sliderCardReducer handles the key 'clickedSliderCards' in the state
+allReducers = { ...allReducers, clickedSliderCards: sliderCardReducer };
 
 export const mainReducer = combineReducers(allReducers);

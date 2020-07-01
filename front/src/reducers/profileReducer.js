@@ -1,12 +1,15 @@
 import {
-  START_FETCH_WEEK,
   FETCH_WEEK_DONE,
+  START_FETCH_WEEK,
   FETCH_WEEK_FAILED,
   WEEK_WIDTH_CHANGED,
-  START_FETCH_FAVORITES,
+  DELETE_FROM_PROFILE,
   FETCH_FAVORITES_DONE,
+  START_FETCH_FAVORITES,
   FETCH_FAVORITES_FAILED,
   FAVORITES_WIDTH_CHANGED,
+  DELETE_FROM_PROFILE_FADE_DONE,
+  DELETE_FROM_PROFILE_ANIMATIONS_DONE,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -43,6 +46,7 @@ export function profileReducer(state = initialState, action) {
         ...state,
       };
 
+      newState[getWidthAdjustedKey(action.type)] = 0;
       newState[getIsFetchingKey(action.type)] = true;
 
       return newState;
@@ -81,6 +85,44 @@ export function profileReducer(state = initialState, action) {
         return newState;
       }
       return state;
+
+    case DELETE_FROM_PROFILE_FADE_DONE:
+    case DELETE_FROM_PROFILE:
+      let keyToChange;
+      switch (action.type) {
+        default:
+        case DELETE_FROM_PROFILE:
+          keyToChange = "isDeleted";
+          break;
+        case DELETE_FROM_PROFILE_FADE_DONE:
+          keyToChange = "isFaded";
+          break;
+      }
+
+      newState = {
+        ...state,
+      };
+
+      const i = newState[action.sliderKey].findIndex(
+        (x) => x.slug === action.slug
+      );
+      let newImageState = {
+        ...newState[action.sliderKey][i],
+      };
+
+      newImageState[keyToChange] = true;
+      newState[action.sliderKey][i] = newImageState;
+
+      return newState;
+
+    case DELETE_FROM_PROFILE_ANIMATIONS_DONE:
+      newState = { ...state };
+
+      newState[action.sliderKey] = newState[action.sliderKey].filter(
+        (x) => x.slug !== action.slug
+      );
+
+      return newState;
 
     default:
       return state;

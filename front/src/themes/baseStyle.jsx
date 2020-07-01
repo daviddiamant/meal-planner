@@ -14,6 +14,7 @@ const styles = [
       lineHeight: theme.primaryLineHeight,
       letterSpacing: theme.primaryLetterSpacing,
       color: theme.textColors.primary,
+      "-webkit-tap-highlight-color": "transparent",
     }),
   },
   {
@@ -57,6 +58,19 @@ const styles = [
       "-webkit-font-smoothing": "inherit",
       "-moz-osx-font-smoothing": "inherit",
       "-webkit-appearance": "none",
+    }),
+  },
+  {
+    selector: " :focus",
+    rules: () => ({
+      outline: "none",
+      "-webkit-tap-highlight-color": "transparent",
+      "-webkit-touch-callout": "none",
+      "-webkit-user-select": "none",
+      "-khtml-user-select": "none",
+      "-moz-user-select": "none",
+      "-ms-user-select": "none",
+      "user-select": "none",
     }),
   },
   {

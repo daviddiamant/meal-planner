@@ -16,6 +16,8 @@ import {
   FAVORITES_WIDTH_CHANGED,
   REGULAR_MOUNTED,
   GOT_JWT,
+  SLIDER_MOVED,
+  SLIDER_CARD_CLICKED,
   // Async actions
   START_FETCH_RECIPE,
   FETCH_RECIPE_DONE,
@@ -47,6 +49,11 @@ import {
   START_FETCH_FAVORITES,
   FETCH_FAVORITES_DONE,
   FETCH_FAVORITES_FAILED,
+  DELETE_FROM_PROFILE,
+  DELETE_FROM_PROFILE_DONE,
+  DELETE_FROM_PROFILE_FAILED,
+  DELETE_FROM_PROFILE_FADE_DONE,
+  DELETE_FROM_PROFILE_ANIMATIONS_DONE,
 } from "./actionTypes";
 
 export function changeHelloWorld(newMessage) {
@@ -163,6 +170,14 @@ export function updateAddRecipe(url) {
     type: UPDATE_ADD_RECIPE,
     url,
   };
+}
+
+export function sliderMoved(sliderKey) {
+  return { type: SLIDER_MOVED, sliderKey };
+}
+
+export function sliderCardClicked(sliderKey, slug) {
+  return { type: SLIDER_CARD_CLICKED, sliderKey, slug };
 }
 
 // Async actions
@@ -333,9 +348,10 @@ export function addStatusGone(stateKey) {
   };
 }
 
-export function startFetchWeek() {
+export function startFetchWeek(force = false) {
   return {
     type: START_FETCH_WEEK,
+    force,
   };
 }
 
@@ -353,9 +369,10 @@ export function fetchWeekFailed(err) {
   };
 }
 
-export function startFetchFavorites() {
+export function startFetchFavorites(force = false) {
   return {
     type: START_FETCH_FAVORITES,
+    force,
   };
 }
 
@@ -371,4 +388,24 @@ export function fetchFavoritesFailed(err) {
     type: FETCH_FAVORITES_FAILED,
     err,
   };
+}
+
+export function deleteFromProfile(sliderKey, slug) {
+  return { type: DELETE_FROM_PROFILE, sliderKey, slug };
+}
+
+export function deleteFromProfileSuccess() {
+  return { type: DELETE_FROM_PROFILE_DONE };
+}
+
+export function deleteFromProfileFailed(err) {
+  return { type: DELETE_FROM_PROFILE_FAILED, err };
+}
+
+export function deleteFromProfileFadeDone(sliderKey, slug) {
+  return { type: DELETE_FROM_PROFILE_FADE_DONE, sliderKey, slug };
+}
+
+export function deleteFromProfileDone(sliderKey, slug) {
+  return { type: DELETE_FROM_PROFILE_ANIMATIONS_DONE, sliderKey, slug };
 }

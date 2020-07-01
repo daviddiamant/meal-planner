@@ -5,21 +5,59 @@ import { useSpring, useTransition, animated } from "react-spring";
 const style = {
   background: ({ width, height, extraMargin, loaded }) => ({
     position: "relative",
-    width,
-    height,
+    width: typeof width === "string" ? width : `${width}px`,
+    height: typeof height === "string" ? height : `${height}px`,
     marginBottom: extraMargin && loaded ? 0 : "1px", // bug in masonic - will not display unless height change
+  }),
+  centerHelper: ({ width, height, left, top }) => ({
+    position: "absolute",
+    left: `${left}px`,
+    top: `${top}px`,
+    width: typeof width === "string" ? width : `${width}px`,
+    height: typeof height === "string" ? height : `${height}px`,
   }),
   smallImage: {
     filter: "blur(2.5px) brightness(95%)",
   },
-  image: {
+  image: ({ width, height }) => ({
     position: "absolute",
-    width: "100%",
-    height: "auto",
+    width: width ? (typeof width === "string" ? width : `${width}px`) : "100%",
+    height: height
+      ? typeof height === "string"
+        ? height
+        : `${height}px`
+      : "auto",
     top: 0,
     bottom: 0,
     left: 0,
-  },
+  }),
+};
+
+const ImagePart = ({
+  wrap,
+  containerWidth,
+  containerHeight,
+  width,
+  height,
+  children,
+}) => {
+  if (!wrap) {
+    return children;
+  }
+
+  const left = parseInt((parseInt(containerWidth) - parseInt(width)) / 2);
+  const top = parseInt((parseInt(containerHeight) - parseInt(height)) / 2);
+  return (
+    <FelaComponent
+      style={style.centerHelper}
+      width={width}
+      height={height}
+      left={left}
+      top={top}
+    >
+      {children}
+    </FelaComponent>
+  );
 };
 
 export const LazyLoadedImage = (props) => {
@@ -29,6 +67,7 @@ export const LazyLoadedImage = (props) => {
     src,
     width,
     height,
+    children,
     initLoad,
     smallSrc,
     smallURL,
@@ -41,21 +80,15 @@ export const LazyLoadedImage = (props) => {
     extraMargin,
     imageLoaded,
     autoLoadSmall,
+    containerWidth,
     imageDisplayed,
+    containerHeight,
     whenImageLoaded,
     processSmallQueue,
     processLargeQueue,
     whenImageDisplayed,
     startedLazyLoading,
   } = props;
-
-  // Ensure pixels
-  let formattedWidth;
-  if (typeof width === "number") {
-    formattedWidth = `${width}px`;
-  } else {
-    formattedWidth = width;
-  }
 
   const started = useRef(0); // Should not trigger re-render
 
@@ -127,10 +160,11 @@ export const LazyLoadedImage = (props) => {
         <FelaComponent
           key={key}
           style={style.background}
-          width={formattedWidth}
-          height={height}
+          width={containerWidth || width}
+          height={containerHeight || height}
           extraMargin={extraMargin}
           loaded={startedLazyLoading}
+          isContainer={containerHeight && containerWidth}
         >
           {({ className: childClassName }) => (
             <animated.div
@@ -138,32 +172,49 @@ export const LazyLoadedImage = (props) => {
               style={props}
               className={`${parentClassName} ${childClassName}`}
             >
-              {smallURL && !imageDisplayed ? (
-                <FelaComponent style={[style.image, style.smallImage]}>
-                  {({ className }) => (
-                    <img
-                      style={fadeInSmallImage}
-                      className={className}
-                      src={smallURL}
-                      alt={alt}
-                    />
-                  )}
-                </FelaComponent>
-              ) : null}
-              {loadImage ? (
-                <FelaComponent style={style.image}>
-                  {({ className }) => (
-                    <animated.img
-                      {...originObject}
-                      style={fadeInLargeImage}
-                      className={className}
-                      src={src}
-                      alt={alt}
-                      onLoad={whenImageLoaded}
-                    />
-                  )}
-                </FelaComponent>
-              ) : null}
+              <ImagePart
+                wrap={containerHeight && containerWidth}
+                containerHeight={containerHeight}
+                containerWidth={containerWidth}
+                width={width}
+                height={height}
+              >
+                {smallURL && !imageDisplayed ? (
+                  <FelaComponent
+                    style={[style.image, style.smallImage]}
+                    width={containerWidth ? width : null}
+                    height={containerHeight ? height : null}
+                  >
+                    {({ className }) => (
+                      <img
+                        style={fadeInSmallImage}
+                        className={className}
+                        src={smallURL}
+                        alt={alt}
+                      />
+                    )}
+                  </FelaComponent>
+                ) : null}
+                {loadImage ? (
+                  <FelaComponent
+                    style={style.image}
+                    width={containerWidth ? width : null}
+                    height={containerHeight ? height : null}
+                  >
+                    {({ className }) => (
+                      <animated.img
+                        {...originObject}
+                        style={fadeInLargeImage}
+                        className={className}
+                        src={src}
+                        alt={alt}
+                        onLoad={whenImageLoaded}
+                      />
+                    )}
+                  </FelaComponent>
+                ) : null}
+              </ImagePart>
+              {children}
             </animated.div>
           )}
         </FelaComponent>

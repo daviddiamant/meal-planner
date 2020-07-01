@@ -24,7 +24,7 @@ const mapStateToProps = (state, { slug }) => {
     isMethodSelected,
     noUser: !state.user.loggedIn && state.user.gotAuth,
     gotPlanned:
-      !state.planRecipeBtn.statusShowing && state.profile.week.length > 0
+      !state.planRecipeBtn.statusShowing && !state.profile.isFetchingWeek
         ? true
         : false,
     isPlanned: state.profile.week.some((x) => x.slug === slug),
