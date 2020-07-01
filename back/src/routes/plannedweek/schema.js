@@ -5,13 +5,17 @@ import {
   recipesForLists,
 } from "../mainSchema.js";
 
-export const addSchema = {
+const oneRecipe = {
   body: singleValueBody,
   headers: jwtHeader,
   response: {
     200: booleanRes,
   },
 };
+
+export const addSchema = oneRecipe;
+
+export const removeSchema = oneRecipe;
 
 export const getAllSchema = {
   headers: jwtHeader,

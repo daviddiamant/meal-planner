@@ -63,6 +63,28 @@ class plannedWeekModel {
     return inserted.insertedCount > 0;
   }
 
+  async removeFromWeek(JWT, slug) {
+    // Verify JWT and get uID
+    const user = await this.verifyJWT(JWT);
+    if (!user || !user.uid) {
+      return false;
+    }
+
+    const weekID = this.getWeekID(user.uid);
+
+    // Remove recipe from week
+    let removed;
+    try {
+      removed = await this.plannedRecipesCollection.deleteOne({
+        $and: [{ slug }, { weekID }],
+      });
+    } catch (error) {
+      return false;
+    }
+
+    return removed.deletedCount > 0;
+  }
+
   async getWeek(JWT) {
     // Verify JWT and get uID
     const user = await this.verifyJWT(JWT);
