@@ -18,6 +18,10 @@ import {
   GOT_JWT,
   SLIDER_MOVED,
   SLIDER_CARD_CLICKED,
+  OPEN_DROPDOWN,
+  DROPDOWN_OPENED,
+  DROPDOWN_SHOULD_CLOSE,
+  CLOSE_DROPDOWN,
   // Async actions
   START_FETCH_RECIPE,
   FETCH_RECIPE_DONE,
@@ -178,6 +182,22 @@ export function sliderMoved(sliderKey) {
 
 export function sliderCardClicked(sliderKey, slug) {
   return { type: SLIDER_CARD_CLICKED, sliderKey, slug };
+}
+
+export function openDropdown(stateKey) {
+  return { type: OPEN_DROPDOWN, stateKey };
+}
+
+export function dropdownOpened(stateKey) {
+  return { type: DROPDOWN_OPENED, stateKey };
+}
+
+export function dropdownShouldClose(stateKey) {
+  return { type: DROPDOWN_SHOULD_CLOSE, stateKey };
+}
+
+export function closeDropdown(stateKey) {
+  return { type: CLOSE_DROPDOWN, stateKey };
 }
 
 // Async actions

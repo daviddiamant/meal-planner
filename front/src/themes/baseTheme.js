@@ -73,6 +73,7 @@ const baseTheme = {
   sliderCardMargin: 10,
   navigationHeight,
   navigationPaddingBottom,
+  dropdownPadding: 5,
 };
 
 export default baseTheme;

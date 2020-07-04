@@ -13,6 +13,7 @@ import { addRecipeInputReducer } from "./addRecipeInputReducer";
 import { profileReducer } from "./profileReducer";
 import { addReducer } from "./addReducer";
 import { sliderCardReducer } from "./sliderCardReducer";
+import { dropdownReducer } from "./dropdownReducer";
 
 // An object that tells what reducers handle what part of the state
 let allReducers = {};
@@ -89,5 +90,12 @@ allReducers = { ...allReducers, profile: profileReducer };
 
 // sliderCardReducer handles the key 'clickedSliderCards' in the state
 allReducers = { ...allReducers, clickedSliderCards: sliderCardReducer };
+
+// dropdownReducer handles the key 'profileDropdown' in the state
+allReducers = {
+  ...allReducers,
+  profileDropdown: (state = {}, action) =>
+    dropdownReducer("profileDropdown", state, action),
+};
 
 export const mainReducer = combineReducers(allReducers);

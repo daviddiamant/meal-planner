@@ -95,5 +95,10 @@
     "favorites": [],
     "favoritesWidthAdjusted": 0
   },
-  "clickedSliderCards": [{ "slider": "exampleSlider", "slug": "exampleSlug" }]
+  "clickedSliderCards": [{ "slider": "exampleSlider", "slug": "exampleSlug" }],
+  "profileDropdown": {
+    "open": false,
+    "shouldOpen": false,
+    "shouldClose": false
+  }
 }

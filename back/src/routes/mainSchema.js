@@ -28,6 +28,7 @@ export const recipesForLists = {
     properties: {
       title: { type: "string" },
       slug: { type: "string" },
+      url: { type: "string" },
       smallImage: { type: "string" },
       smallImageWidth: { type: "number" },
       smallImageHeight: { type: "number" },

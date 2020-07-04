@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { Fragment, useContext, useEffect, useRef } from "react";
 import { FelaComponent, ThemeContext } from "react-fela";
 import { useWindowSize } from "@react-hook/window-size";
 
@@ -8,16 +8,20 @@ import { SliderMessage } from "./sliderMessage";
 import Slider from "../reduxConnections/slider";
 import SliderCard from "../reduxConnections/sliderCard";
 import AddRecipeBox from "../reduxConnections/addRecipeBox";
+import Dropdown from "../reduxConnections/dropdown";
+import DropdownItem from "../reduxConnections/dropdownItem";
+import useShareWeekText from "../hooks/useShareWeekText";
 
 const sliderMarginTop = 25;
+const profileImageHeight = 35;
 const style = {
   inner: () => ({}),
   constrainedContent: ({ theme }) => ({
     ...theme.constrained,
   }),
-  top: () => ({
+  top: ({ withMenu }) => ({
     display: "flex",
-    margin: "70px 0 0 0",
+    margin: `${withMenu ? 85 : 70}px 0 0 0`,
     justifyContent: "space-between",
     alignItems: "center",
   }),
@@ -36,11 +40,12 @@ const style = {
       marginLeft: "-0.62vw",
     },
   }),
-  image: ({ theme }) => ({
+  image: ({ theme, withMenu }) => ({
     position: "absolute",
     top: `${theme.constrainedMargin}px`,
-    right: `${theme.constrainedMargin}px`,
-    height: "35px",
+    right: withMenu ? "auto" : `${theme.constrainedMargin}px`,
+    left: withMenu ? `${theme.constrainedMargin}px` : "auto",
+    height: `${profileImageHeight}px`,
     width: "auto",
     borderRadius: `${theme.primary.borderRadius - 3}px`,
   }),
@@ -62,6 +67,32 @@ const style = {
     fontWeight: "600",
     color: theme.textColors.primary,
   }),
+  topMenuButton: ({ theme }) => {
+    const dimension = 30;
+    return {
+      position: "absolute",
+      top: `${
+        theme.constrainedMargin + (profileImageHeight - dimension) / 2
+      }px`,
+      right: `${theme.constrainedMargin - 8}px`,
+      height: `${dimension}px`,
+      width: `${dimension}px`,
+      marginBottom: `${(profileImageHeight - dimension) / 2}px`,
+      boxSizing: "border-box",
+    };
+  },
+};
+
+const shareWeek = ({ title, text }) => {
+  if (!title || !text || !(navigator && navigator.share)) {
+    return;
+  }
+
+  // Share it
+  navigator.share({
+    title,
+    text,
+  });
 };
 
 export const ProfilePageUser = ({
@@ -80,6 +111,10 @@ export const ProfilePageUser = ({
   const headerRef = useRef();
   const [, windowHeight] = useWindowSize();
   const theme = useContext(ThemeContext);
+  const rightMenu = true;
+  const sharingCapabilities = navigator && navigator.share;
+  const shareObject = useShareWeekText(week);
+  const rightMenuButton = useRef();
 
   useEffect(onMount, []);
 
@@ -108,12 +143,76 @@ export const ProfilePageUser = ({
   return (
     <FelaComponent style={style.content}>
       <Header>
-        <FelaComponent style={style.image}>
+        <FelaComponent style={style.image} withMenu={rightMenu}>
           {({ className }) => (
             <img src={image} className={className} alt="Profilbild" />
           )}
         </FelaComponent>
-        <FelaComponent style={[style.constrainedContent, style.top]}>
+        {rightMenu ? (
+          <Fragment>
+            <FelaComponent style={style.topMenuButton}>
+              {({ className }) => (
+                <div className={className} ref={rightMenuButton}>
+                  <svg
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                  </svg>
+                </div>
+              )}
+            </FelaComponent>
+            <Dropdown stateKey="profileDropdown" trigger={rightMenuButton}>
+              {sharingCapabilities ? (
+                <DropdownItem
+                  stateKey="profileDropdown"
+                  icon={
+                    <svg
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                    </svg>
+                  }
+                  onClick={() => shareWeek(shareObject)}
+                >
+                  Dela veckoplanering
+                </DropdownItem>
+              ) : null}
+              <DropdownItem
+                stateKey="profileDropdown"
+                icon={
+                  <svg
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  </svg>
+                }
+              >
+                {/* Not implemented */}
+                Inställningar
+              </DropdownItem>
+            </Dropdown>
+          </Fragment>
+        ) : null}
+        <FelaComponent
+          style={[style.constrainedContent, style.top]}
+          withMenu={rightMenu}
+        >
           <div>
             <FelaComponent
               style={[theme.helpers.resetHeaders, style.greeting]}
