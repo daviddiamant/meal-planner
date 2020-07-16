@@ -17,7 +17,11 @@ const mapStateToProps = (state, { slug }) => {
   return {
     slug,
     fetched: state.recipePage.recipe.title ? true : false,
-    hasRecipeData: state.recipePage.recipe?.ingredients ? true : false,
+    hasRecipeData:
+      state.recipePage.recipe?.ingredients &&
+      state.recipePage.recipe.ingredients.length > 0
+        ? true
+        : false,
     recipe: state.recipePage.recipe,
     backButtonColor: state.recipePage.backButtonColor,
     isIngredientsSelected,
