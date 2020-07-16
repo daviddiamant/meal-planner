@@ -37,7 +37,7 @@ class plannedWeekModel {
       return false;
     }
 
-    const weekID = this.getWeekID(user.uid);
+    const weekID = await this.getWeekID(user.uid);
 
     // Filter recipe
     const _id = recipe._id;
@@ -70,7 +70,7 @@ class plannedWeekModel {
       return false;
     }
 
-    const weekID = this.getWeekID(user.uid);
+    const weekID = await this.getWeekID(user.uid);
 
     // Remove recipe from week
     let removed;
@@ -92,7 +92,7 @@ class plannedWeekModel {
       return false;
     }
 
-    const weekID = this.getWeekID(user.uid);
+    const weekID = await this.getWeekID(user.uid);
 
     const plannedRecipes = await this.plannedRecipesCollection
       .find({ weekID }, { projection: { _id: 0 } })
