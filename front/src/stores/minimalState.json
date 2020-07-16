@@ -1,5 +1,6 @@
 {
   "helloWordMessage": "Hello World!",
+  "serverReachable": true,
   "user": {
     "loggedIn": false,
     "gotAuth": false,

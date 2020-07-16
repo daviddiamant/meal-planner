@@ -58,6 +58,7 @@ const style = {
 };
 
 export const AddRecipeBox = ({
+  disabled,
   currentUrl,
   onInput,
   externalRef,
@@ -83,13 +84,14 @@ export const AddRecipeBox = ({
                 <input
                   className={className}
                   type="text"
-                  placeholder="Webbadress.."
+                  placeholder={disabled ? "Kan ej nå servern" : "Webbadress.."}
                   onChange={() =>
                     /*This is needed to mute a warning, we use onInput here */ null
                   }
                   onInput={(e) => onInput(e.target.value)}
                   ref={urlInput}
                   value={currentUrl}
+                  disabled={disabled}
                 ></input>
               )}
             </FelaComponent>

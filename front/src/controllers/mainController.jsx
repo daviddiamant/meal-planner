@@ -1,3 +1,5 @@
+/* global process */
+
 import React, { Fragment, useEffect } from "react";
 import { Provider } from "react-redux";
 import { RendererProvider, ThemeProvider } from "react-fela";
@@ -12,6 +14,7 @@ import {
   userStateChanged,
   regularMounted,
   gotJWT,
+  startFetchWeek,
 } from "../actions/actionCreators";
 import baseTheme from "../themes/baseTheme";
 import lightTheme from "../themes/lightTheme";
@@ -50,6 +53,20 @@ const Routes = ({ store }) => (
 );
 
 const InsideReduxStore = ({ store }) => {
+  // Check for service worker support
+  if ("serviceWorker" in navigator) {
+    // Register it
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (const registration of registrations) {
+          registration.unregister();
+        }
+      });
+    } else {
+      navigator.serviceWorker.register("/serviceworker.js");
+    }
+  }
+
   const firebaseApp = useFirebase();
 
   if (!firebaseApp) {
@@ -66,6 +83,9 @@ const InsideReduxStore = ({ store }) => {
 
     user.getIdToken().then((JWT) => {
       store.dispatch(gotJWT(JWT));
+
+      // Pre-fetch the week so that it is always cached
+      store.dispatch(startFetchWeek());
     });
   });
 

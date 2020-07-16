@@ -1,10 +1,19 @@
-import { call, delay, select, take, takeEvery, put } from "redux-saga/effects";
+import {
+  call,
+  delay,
+  select,
+  take,
+  takeEvery,
+  takeLeading,
+  put,
+} from "redux-saga/effects";
 
 // Local imports
 import {
   GOT_JWT,
   ADD_GOT_RES,
   ADD_STATUS_GONE,
+  FETCH_WEEK_DONE,
   START_FETCH_WEEK,
   DELETE_FROM_PROFILE,
   START_FETCH_FAVORITES,
@@ -15,6 +24,7 @@ import {
   fetchWeekDone,
   startFetchWeek,
   fetchWeekFailed,
+  startFetchRecipe,
   fetchFavoritesDone,
   fetchFavoritesFailed,
   deleteFromProfileFailed,
@@ -155,8 +165,17 @@ function* deleteFromProfile(action, numTries = 0) {
   }
 }
 
+function* preFetchWeek() {
+  const week = yield select((state) => state.profile.week);
+
+  for (const recipe of week) {
+    // Pre-fetch the recipes of the week so they are always cached
+    yield put(startFetchRecipe(recipe.slug, true));
+  }
+}
+
 export function* profileSaga() {
-  yield takeEvery(START_FETCH_WEEK, (action) =>
+  yield takeLeading(START_FETCH_WEEK, (action) =>
     fetchRecipes(
       action,
       "/api/plannedweek",
@@ -167,7 +186,7 @@ export function* profileSaga() {
   );
 
   // Change url to favorites when the backend is implemented
-  yield takeEvery(START_FETCH_FAVORITES, (action) =>
+  yield takeLeading(START_FETCH_FAVORITES, (action) =>
     fetchRecipes(
       action,
       "/api/plannedweek",
@@ -180,4 +199,6 @@ export function* profileSaga() {
   yield takeEvery(ADD_GOT_RES, maybeUpdateProfile);
 
   yield takeEvery(DELETE_FROM_PROFILE, deleteFromProfile);
+
+  yield takeEvery(FETCH_WEEK_DONE, preFetchWeek);
 }

@@ -22,6 +22,7 @@ const InnerContent = ({ style: externalStyle, inner }) => (
 );
 
 export const AddBtn = ({
+  disabled,
   addContent,
   addingContent,
   successContent,
@@ -98,9 +99,10 @@ export const AddBtn = ({
   return (
     <Btn
       style={externalStyle}
+      disabled={disabled}
       background={background}
-      // Only allow one click
-      onClick={() => (!adding ? onAdd(addPath, value) : null)}
+      // Only allow one click and only when we are not disbaled
+      onClick={() => (!adding && !disabled ? onAdd(addPath, value) : null)}
       animationStyle={animateColor}
     >
       {fadeOutAdd.map(

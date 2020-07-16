@@ -58,6 +58,8 @@ import {
   DELETE_FROM_PROFILE_FAILED,
   DELETE_FROM_PROFILE_FADE_DONE,
   DELETE_FROM_PROFILE_ANIMATIONS_DONE,
+  CHECK_PING,
+  GOT_PING_RES,
 } from "./actionTypes";
 
 export function changeHelloWorld(newMessage) {
@@ -201,17 +203,19 @@ export function closeDropdown(stateKey) {
 }
 
 // Async actions
-export function startFetchRecipe(slug) {
+export function startFetchRecipe(slug, isBackgroundFetch = false) {
   return {
     type: START_FETCH_RECIPE,
     slug,
+    isBackgroundFetch,
   };
 }
 
-export function fetchRecipeDone(recipe) {
+export function fetchRecipeDone(recipe, isBackgroundFetch = false) {
   return {
     type: FETCH_RECIPE_DONE,
     recipe,
+    isBackgroundFetch,
   };
 }
 
@@ -428,4 +432,12 @@ export function deleteFromProfileFadeDone(sliderKey, slug) {
 
 export function deleteFromProfileDone(sliderKey, slug) {
   return { type: DELETE_FROM_PROFILE_ANIMATIONS_DONE, sliderKey, slug };
+}
+
+export function pingServer() {
+  return { type: CHECK_PING };
+}
+
+export function pingDone(res) {
+  return { type: GOT_PING_RES, res };
 }

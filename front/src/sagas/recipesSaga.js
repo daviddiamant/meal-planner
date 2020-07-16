@@ -65,7 +65,7 @@ function* fetchRecipe(action) {
     );
     recipe = yield recipe.json();
 
-    yield put(fetchRecipeDone(recipe));
+    yield put(fetchRecipeDone(recipe, action.isBackgroundFetch || false));
   } catch (err) {
     yield put(fetchRecipeFailed(err));
   }

@@ -1,6 +1,6 @@
 const mainController = (fastify, _, done) => {
   // All the routes
-  const routes = ["plannedweek", "recipes"];
+  const routes = ["plannedweek", "recipes", "ping"];
 
   // Register all routes
   routes.forEach((route) => {

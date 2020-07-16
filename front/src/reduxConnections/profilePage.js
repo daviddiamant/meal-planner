@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 // Local imports
 import { ProfilePage as view } from "../components/profilePage";
 import {
+  pingServer,
   logInStarted,
   startFetchWeek,
   weekWidthChanged,
@@ -36,6 +37,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onMount: () => {
+      // Check if we are served via the service worker
+      dispatch(pingServer());
+
       dispatch(startFetchWeek());
       dispatch(startFetchFavorites());
     },

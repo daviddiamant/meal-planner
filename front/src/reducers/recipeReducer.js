@@ -16,6 +16,11 @@ export function recipeReducer(state = initialState, action) {
       return initialState;
 
     case FETCH_RECIPE_DONE:
+      if (action.isBackgroundFetch) {
+        // This is a background fetch (for caching)
+        return state;
+      }
+
       return {
         ...state,
         recipe: action.recipe,
