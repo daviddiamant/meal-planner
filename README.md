@@ -21,7 +21,6 @@ This is an unfinished version. To inspect the old version see branch "old-versio
 **Missing functionality from the old-version**
 
 - Desktop/tablet UI.
-- Offline experience (i.e. service worker)
 
 **Other TODOs**
 
