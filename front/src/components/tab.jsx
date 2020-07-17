@@ -12,7 +12,7 @@ const style = {
     display: "inline-block",
     marginTop: "0px",
     marginBottom: "10px",
-    fontSize: "16px",
+    fontSize: "4.3vw",
   },
   tabBall: () => ({
     margin: "auto",

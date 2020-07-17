@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef } from "react";
 import { FelaComponent, ThemeContext } from "react-fela";
 import { useDispatch, useSelector } from "react-redux";
 import { animated, useSpring } from "react-spring";
+import { useWindowSize } from "@react-hook/window-size";
 
 // Local imports
 import {
@@ -76,6 +77,7 @@ const style = {
 
 export const ExpandText = ({ children, numLines }) => {
   const theme = useContext(ThemeContext);
+  const [windowWidth] = useWindowSize();
   const innerRef = useRef({ offsetHeight: 0 });
   const outerRef = useRef({ offsetHeight: 0 });
   const uid = useRef(-1);
@@ -125,7 +127,9 @@ export const ExpandText = ({ children, numLines }) => {
       maxHeight: !expanded
         ? `${
             numLines *
-            (parseInt(theme.primaryFontSize.replace("px")) *
+            (parseFloat(theme.primaryFontSize) *
+              parseFloat(windowWidth) *
+              0.01 *
               parseFloat(theme.primaryLineHeight))
           }px`
         : `${innerRef.current.offsetHeight}px`,
@@ -135,7 +139,9 @@ export const ExpandText = ({ children, numLines }) => {
         ? `${innerRef.current.offsetHeight}px`
         : `${
             numLines *
-            (parseInt(theme.primaryFontSize.replace("px")) *
+            (parseFloat(theme.primaryFontSize) *
+              parseFloat(windowWidth) *
+              0.01 *
               parseFloat(theme.primaryLineHeight))
           }px`,
     },

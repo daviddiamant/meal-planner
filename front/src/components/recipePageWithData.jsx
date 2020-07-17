@@ -74,7 +74,7 @@ const style = {
   recipeRight: {},
   recipeLeftText: ({ theme }) => ({
     margin: "0",
-    fontSize: "15px",
+    fontSize: "4vw",
     lineHeight: theme.primaryLineHeight,
     whiteSpace: "break-spaces",
     ":first-letter": {

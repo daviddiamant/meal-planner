@@ -6,13 +6,16 @@ const homepageCardMargin = 10;
 const baseTheme = {
   primaryFont: '"Roboto", sans-serif',
   primaryFontWeight: 300,
-  primaryFontSize: "16px",
+  primaryFontSize: "4.3vw",
   primaryLineHeight: "1.6",
   primaryLetterSpacing: "0.5px",
   headerFont: '"Poppins", sans-serif',
   headerFontWeight: 600,
   headerLineHeight: "115%",
   headerLetterSpacing: "1px",
+  h1FontSize: "8vw",
+  h2FontSize: "6.5vw",
+  h3FontSize: "5vw",
   helpers: {
     hexToRgba: ({ key, hex, a = 1 }) => {
       var bigint = parseInt(hex.replace("#", ""), 16);
@@ -39,7 +42,7 @@ const baseTheme = {
       justifyContent: "space-evenly",
       alignItems: "center",
     },
-    fzSmall: "14px",
+    fzSmall: "3.7vw",
     tar: {
       textAlign: "right",
     },

@@ -34,6 +34,24 @@ const styles = [
     }),
   },
   {
+    selector: "h1",
+    rules: ({ theme }) => ({
+      fontSize: theme.h1FontSize,
+    }),
+  },
+  {
+    selector: "h2",
+    rules: ({ theme }) => ({
+      fontSize: theme.h2FontSize,
+    }),
+  },
+  {
+    selector: "h3",
+    rules: ({ theme }) => ({
+      fontSize: theme.h3FontSize,
+    }),
+  },
+  {
     selector: "a",
     rules: () => ({
       color: "inherit",
