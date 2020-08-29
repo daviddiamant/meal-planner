@@ -89,6 +89,9 @@ const styles = [
       "-moz-user-select": "none",
       "-ms-user-select": "none",
       "user-select": "none",
+      "-webkit-appearance": "none",
+      "-moz-appearance": "none",
+      appearance: "none",
     }),
   },
   {

@@ -16,7 +16,7 @@ const fastify = Fastify({
 });
 
 // Add utilities - will be attached to the Fastify instance
-fastify.register(fastifyCors, { origin: "https://egen.kokbok.se:3000" });
+fastify.register(fastifyCors, { origin: "*" });
 fastify.register(mongoConnector);
 fastify.register(puppeteerLauncher);
 fastify.register(firebase);

@@ -42,6 +42,12 @@ const style = {
         outline: "none",
         shadow: "none",
         border: `1px solid ${theme.secondaryColors.yellow}`,
+        "-webkit-touch-callout": "initial",
+        "-webkit-user-select": "initial",
+        "-khtml-user-select": "initial",
+        "-moz-user-select": "initial",
+        "-ms-user-select": "initial",
+        "user-select": "initial",
       },
     };
   },
