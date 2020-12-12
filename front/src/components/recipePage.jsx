@@ -93,7 +93,7 @@ export const RecipePage = ({
               style={style.addButton}
               background={vibrantColor}
               stateKey="planRecipeBtn"
-              addPath="/api/plannedweek/add"
+              addPath="/week/add"
               value={slug}
               addContent={() => (gotPlanned ? "Planera" : null)}
               addingContent={() => <LoadingDots />}

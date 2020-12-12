@@ -25,7 +25,7 @@ const mapStateToProps = (
     isDeleted,
     isFaded,
     height: isDeleted && isFaded ? 0 : height,
-    showServerDependant: state.serverReachable,
+    showServerDependant: true,
   };
 };
 

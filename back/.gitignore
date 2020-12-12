@@ -1,0 +1,19 @@
+# package directories
+node_modules
+jspm_packages
+package-lock.json
+
+# Serverless directories
+.serverless
+.webpack
+
+# Lambda layers
+src/layers/*/*.zip
+
+.env
+.DS_store
+serviceAccountKey.json
+*.pem
+*.key
+*.crt
+SSL-key

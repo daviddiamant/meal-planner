@@ -5,12 +5,12 @@ import { recipesSaga } from "./recipesSaga";
 import { profileSaga } from "./profileSaga";
 import { addSaga } from "./addSaga";
 import { lazyLoadImagesSaga } from "./lazyLoadImagesSaga";
-import { pingSaga } from "./pingSaga";
+import { userSaga } from "./userSaga";
 
 export function* mainSaga() {
   yield spawn(addSaga);
+  yield spawn(userSaga);
   yield spawn(recipesSaga);
   yield spawn(profileSaga);
   yield spawn(lazyLoadImagesSaga);
-  yield spawn(pingSaga);
 }

@@ -58,8 +58,8 @@ import {
   DELETE_FROM_PROFILE_FAILED,
   DELETE_FROM_PROFILE_FADE_DONE,
   DELETE_FROM_PROFILE_ANIMATIONS_DONE,
-  CHECK_PING,
-  GOT_PING_RES,
+  START_FETCH_USER,
+  FETCH_USER_DONE,
 } from "./actionTypes";
 
 export function changeHelloWorld(newMessage) {
@@ -434,10 +434,16 @@ export function deleteFromProfileDone(sliderKey, slug) {
   return { type: DELETE_FROM_PROFILE_ANIMATIONS_DONE, sliderKey, slug };
 }
 
-export function pingServer() {
-  return { type: CHECK_PING };
+export function startFetchUser(uID) {
+  return {
+    type: START_FETCH_USER,
+    uID,
+  };
 }
 
-export function pingDone(res) {
-  return { type: GOT_PING_RES, res };
+export function fetchUserDone(user) {
+  return {
+    type: FETCH_USER_DONE,
+    user,
+  };
 }

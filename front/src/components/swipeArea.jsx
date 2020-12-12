@@ -15,6 +15,7 @@ const style = {
   }),
   swipeAreaItem: ({ theme }) => ({
     ...theme.constrained,
+    touchAction: "pan-y",
     margin: 0,
     padding: `0 ${theme.constrainedMargin + 6}px 0 ${
       theme.constrainedMargin + 6

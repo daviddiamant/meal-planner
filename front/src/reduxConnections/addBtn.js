@@ -18,7 +18,7 @@ const mapStateToProps = (state, { stateKey }) => {
 
   return {
     adding: state[stateKey].isAdding,
-    disabled: !state.serverReachable,
+    disabled: false,
     // Only one icon at a time
     showAdd:
       showAdd &&

@@ -12,6 +12,7 @@ module.exports = function override(config, env) {
     new WorkboxPlugin.InjectManifest({
       swSrc: "./src/serviceWorker.js",
       swDest: "./serviceworker.js",
+      exclude: [/index\.html/, /serviceworker\.js/],
     })
   );
 

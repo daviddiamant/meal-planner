@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 // Local imports
 import LazyLoadedImage from "../reduxConnections/lazyLoadedImage";
+import { IMAGE_URL } from "../appConfig";
 
 const style = {
   card: ({ theme, height, width }) => ({
@@ -29,7 +30,6 @@ export const HomepageCard = ({ index, data, width }) => {
     mediumImageHeight,
   } = data;
 
-  const url = `${window.location.protocol}//${window.location.hostname}`;
   const theme = useContext(ThemeContext);
 
   width -= theme.homepageCardMargin;
@@ -47,8 +47,8 @@ export const HomepageCard = ({ index, data, width }) => {
           {({ className }) => (
             <LazyLoadedImage
               className={className}
-              src={url + mediumImage}
-              smallSrc={url + smallImage}
+              src={IMAGE_URL + mediumImage}
+              smallSrc={IMAGE_URL + smallImage}
               {...toStyle}
               extraMargin={index === 0 ? 1 : 0}
               alt={title}

@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 
 // Local imports
 import { TopMenu } from "./topMenu";
+import { IMAGE_URL } from "../appConfig";
 
 const style = {
   topMenu: ({ theme }) => ({
@@ -67,7 +68,7 @@ export const RecipePageWithoutData = ({ image }) => {
         {({ className }) => (
           <img
             className={className}
-            src={`${window.location.protocol}//${window.location.hostname}${image}`}
+            src={`${IMAGE_URL}${image}`}
             alt="Screenshot av receptet"
           />
         )}

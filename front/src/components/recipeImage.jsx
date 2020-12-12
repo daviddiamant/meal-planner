@@ -5,6 +5,7 @@ import { useWindowSize } from "@react-hook/window-size";
 // Local imports
 import useScaledRecipeImageDimensions from "../hooks/useScaledRecipeImageDimensions";
 import LazyLoadedImage from "../reduxConnections/lazyLoadedImage";
+import { IMAGE_URL } from "../appConfig";
 import { AnimateWithScroll } from "./animateWithScroll";
 
 const style = {
@@ -54,8 +55,8 @@ export const RecipeImage = ({
                 <LazyLoadedImage
                   crossOrigin="Anonymous"
                   className={className}
-                  src={`${window.location.protocol}//${window.location.hostname}${image}`}
-                  smallSrc={`${window.location.protocol}//${window.location.hostname}${smallImage}`}
+                  src={`${IMAGE_URL}${image}`}
+                  smallSrc={`${IMAGE_URL}${smallImage}`}
                   alt={title}
                   stateKey="recipePageLazyLoadedImages"
                   autoLoadSmall={true}

@@ -3,6 +3,7 @@ import { FelaComponent, ThemeContext } from "react-fela";
 
 // Local imports
 import { Btn } from "./btn";
+import { IMAGE_URL } from "../appConfig";
 
 const style = {
   content: ({ theme }) => ({
@@ -38,7 +39,7 @@ export const ProfilePageLogIn = ({ logIn }) => {
         {({ className }) => (
           <img
             className={className}
-            src={`${window.location.protocol}//${window.location.hostname}/recipe-images/undraw_eating_together.png`}
+            src={`${IMAGE_URL}/recipe-images/undraw_eating_together.png`}
             alt={"Äter tillsammans"}
           />
         )}

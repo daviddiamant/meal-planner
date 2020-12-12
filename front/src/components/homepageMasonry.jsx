@@ -10,6 +10,7 @@ import { ThemeContext } from "react-fela";
 import { useDebouncedCallback } from "use-debounce";
 
 // Local imports
+import { IMAGE_URL } from "../appConfig";
 import { HomepageCard } from "./homepageCard";
 
 class HomepageMasonryHelper {
@@ -60,7 +61,7 @@ class HomepageMasonryHelper {
     this.firstCallAfterMount = firstCallAfterMount;
     this.overscanSmallImagesBy = overscanSmallImagesBy;
 
-    this.url = `${window.location.protocol}//${window.location.hostname}`;
+    this.url = IMAGE_URL;
   }
 
   getOverscanLimits(change, overscanBy) {
@@ -290,11 +291,11 @@ export const HomepageMasonry = (props) => {
     overscanSmallImagesBy: props.overscanSmallImagesBy,
   };
   const helper = new HomepageMasonryHelper(params);
-  const [debouncedOnRender] = useDebouncedCallback(
+  const { callback: debouncedOnRender } = useDebouncedCallback(
     () => helper.handleUpdates(),
     1000
   );
-  const [debouncedCleaning, stopCleaning] = useDebouncedCallback(
+  const { callback: debouncedCleaning } = useDebouncedCallback(
     () => helper.handleStandingStill(),
     1000
   );
@@ -315,8 +316,6 @@ export const HomepageMasonry = (props) => {
 
   if (!isScrolling) {
     debouncedCleaning();
-  } else {
-    stopCleaning();
   }
 
   // Return the Masonry component

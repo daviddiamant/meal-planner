@@ -13,6 +13,7 @@ const style = {
     position: "relative",
     display: "flex",
     width: "max-content",
+    touchAction: "pan-y",
     marginLeft: `${theme.constrainedMargin}px`,
   }),
 };

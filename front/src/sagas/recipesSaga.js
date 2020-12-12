@@ -9,11 +9,14 @@ import {
 } from "redux-saga/effects";
 
 // Local imports
+import { API_URL } from "../appConfig";
 import {
+  GOT_JWT,
   ADD_DONE,
   START_FETCH_RECIPE,
   START_FETCH_RECIPES,
   ADD_GOT_RES,
+  USER_STATE_CHANGED,
 } from "../actions/actionTypes";
 
 import {
@@ -23,6 +26,23 @@ import {
   fetchRecipeDone,
   fetchRecipeFailed,
 } from "../actions/actionCreators";
+
+function* getJWT() {
+  const gotAuth = yield select((state) => state.user.gotAuth);
+  if (!gotAuth) {
+    // Wait for firebase to give us the potential user
+    yield take(USER_STATE_CHANGED);
+  }
+
+  let JWT = yield select((state) => state.user.JWT);
+  if (!JWT) {
+    // Wait for the JWT to arrive
+    JWT = yield take(GOT_JWT);
+    JWT = JWT.JWT;
+  }
+
+  return JWT;
+}
 
 function* maybeUpdateRecipes(action) {
   if (action.stateKey !== "addRecipeBtn" || !action.res) {
@@ -57,12 +77,14 @@ function* clearAddRecipeInput(action) {
 }
 
 function* fetchRecipe(action) {
+  const JWT = yield getJWT();
+
   try {
-    const location = window.location;
-    let recipe = yield call(
-      fetch,
-      `${location.protocol}//${location.hostname}/api/recipes/${action.slug}`
-    );
+    let recipe = yield call(fetch, `${API_URL}/recipes/${action.slug}`, {
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+    });
     recipe = yield recipe.json();
 
     yield put(fetchRecipeDone(recipe, action.isBackgroundFetch || false));
@@ -80,12 +102,14 @@ function* fetchRecipes(forceUpdate = false) {
     return;
   }
 
+  const JWT = yield getJWT();
+
   try {
-    const location = window.location;
-    let recipes = yield call(
-      fetch,
-      `${location.protocol}//${location.hostname}/api/recipes`
-    );
+    let recipes = yield call(fetch, `${API_URL}/recipes`, {
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+    });
     recipes = yield recipes.json();
     yield put(fetchRecipesDone(recipes));
   } catch (err) {

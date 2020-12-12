@@ -3,6 +3,7 @@ import {
   createStore as reduxCreateStore,
   compose,
 } from "redux";
+import * as Sentry from "@sentry/react";
 import createSagaMiddleware from "redux-saga";
 
 import { default as initialState } from "./minimalState.json";
@@ -11,6 +12,7 @@ import { mainSaga } from "../sagas/mainSaga";
 
 export function createStore() {
   const sagaMiddleware = createSagaMiddleware();
+  const sentryReduxEnhancer = Sentry.createReduxEnhancer();
 
   const store = reduxCreateStore(
     mainReducer,
@@ -18,6 +20,7 @@ export function createStore() {
     window.__REDUX_DEVTOOLS_EXTENSION__
       ? compose(
           applyMiddleware(sagaMiddleware),
+          sentryReduxEnhancer,
           window.__REDUX_DEVTOOLS_EXTENSION__()
         )
       : applyMiddleware(sagaMiddleware)

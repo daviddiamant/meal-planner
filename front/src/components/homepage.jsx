@@ -7,18 +7,18 @@ import { Header } from "./header";
 import HomepageMasonry from "../reduxConnections/homepageMasonry";
 
 const style = {
-  titleWrapper: {
-    margin: "70px 0 0 0",
+  titleWrapper: ({ low }) => ({
+    margin: low ? "70px 0 0 0" : "35px 0 0 0",
     display: "flex",
     justifyContent: "center",
-  },
-  title: ({ theme }) => ({
+  }),
+  title: ({ theme, low }) => ({
     margin: 0,
     textAlign: "center",
     fontFamily: '"Pacifico", cursive',
     fontSize: "11vw",
     fontWeight: 400,
-    lineHeight: 1.1,
+    lineHeight: low ? 1.1 : 1.775,
     letterSpacing: "normal", // Font does not support it :(
     background: `linear-gradient(
 			170deg,
@@ -37,12 +37,11 @@ const style = {
     lineHeight: 1,
   }),
   masonryWrapper: ({ theme }) => ({
+    ...theme.contentWithBottomBar,
     width: "100%",
     marginTop: `-${theme.homepageCardMargin}px`,
-    marginBottom: `${theme.navigationHeight + theme.navigationPaddingBottom}px`,
-    padding: `0 ${theme.constrainedMargin}px 0 ${
-      theme.constrainedMargin - theme.homepageCardMargin
-    }px`,
+    paddingRight: `${theme.constrainedMargin}px`,
+    paddingLeft: `${theme.constrainedMargin - theme.homepageCardMargin}px`,
     boxSizing: "border-box",
   }),
   masonry: {
@@ -53,7 +52,9 @@ const style = {
 };
 
 export const Homepage = ({
+  title,
   recipes,
+  lowTitle,
   scrollPosition,
   onMount: externalOnMount,
   onUnmount,
@@ -77,10 +78,10 @@ export const Homepage = ({
   return (
     <div>
       <Header externalRef={headerRef}>
-        <FelaComponent style={style.titleWrapper}>
+        <FelaComponent style={style.titleWrapper} low={lowTitle}>
           <div>
-            <FelaComponent style={style.title} as="h1">
-              David & Lovisas
+            <FelaComponent style={style.title} as="h1" low={lowTitle}>
+              {title}
             </FelaComponent>
             <FelaComponent style={style.secondTitle} as="h3">
               kokbok

@@ -9,6 +9,7 @@ import {
 } from "redux-saga/effects";
 
 // Local imports
+import { API_URL } from "../appConfig";
 import {
   GOT_JWT,
   ADD_GOT_RES,
@@ -65,17 +66,11 @@ function* fetchRecipes(action, url, stateKey, successAction, failAction) {
   }
 
   try {
-    const location = window.location;
-
-    let recipes = yield call(
-      fetch,
-      `${location.protocol}//${location.hostname}${url}`,
-      {
-        headers: {
-          Authorization: `Bearer ${JWT}`,
-        },
-      }
-    );
+    let recipes = yield call(fetch, `${API_URL}${url}`, {
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+    });
     recipes = yield recipes.json();
 
     if (Array.isArray(recipes)) {
@@ -121,32 +116,27 @@ function* deleteFromProfile(action, numTries = 0) {
   }
 
   try {
-    const location = window.location;
     let url;
     switch (action.sliderKey) {
       case "week":
-        url = "plannedweek/remove";
+        url = "week/remove";
         break;
       case "favorites":
         // change to favorites when the backend is in place
-        url = "plannedweek/remove";
+        url = "week/remove";
         break;
       default:
         throw new Error("Unknown sliderkey");
     }
 
-    let res = yield call(
-      fetch,
-      `${location.protocol}//${location.hostname}/api/${url}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${JWT}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ value: action.slug }),
-      }
-    );
+    let res = yield call(fetch, `${API_URL}/${url}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ value: action.slug }),
+    });
     res = yield res.json();
 
     if (res.result === true) {
@@ -176,20 +166,14 @@ function* preFetchWeek() {
 
 export function* profileSaga() {
   yield takeLeading(START_FETCH_WEEK, (action) =>
-    fetchRecipes(
-      action,
-      "/api/plannedweek",
-      "week",
-      fetchWeekDone,
-      fetchWeekFailed
-    )
+    fetchRecipes(action, "/week", "week", fetchWeekDone, fetchWeekFailed)
   );
 
   // Change url to favorites when the backend is implemented
   yield takeLeading(START_FETCH_FAVORITES, (action) =>
     fetchRecipes(
       action,
-      "/api/plannedweek",
+      "/week",
       "favorites",
       fetchFavoritesDone,
       fetchFavoritesFailed

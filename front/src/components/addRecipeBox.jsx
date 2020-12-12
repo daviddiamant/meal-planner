@@ -106,7 +106,7 @@ export const AddRecipeBox = ({
             <AddBtn
               style={style.addButton}
               stateKey="addRecipeBtn"
-              addPath="/api/recipes/add"
+              addPath="/recipes/add"
               value={currentUrl}
               addContent={() => (
                 <FelaComponent style={style.addIcon}>

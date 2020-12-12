@@ -1,7 +1,9 @@
+import { IMAGE_URL } from "../appConfig";
 import {
   START_LOG_IN,
   USER_STATE_CHANGED,
   GOT_JWT,
+  FETCH_USER_DONE,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -11,6 +13,8 @@ const initialState = {
   JWT: null,
   name: null,
   image: null,
+  bookTitle: null,
+  lowTitle: false,
 };
 
 export function userReducer(state = initialState, action) {
@@ -37,13 +41,19 @@ export function userReducer(state = initialState, action) {
         name: action.user.displayName || "Anonym användare",
         image:
           action.user.photoURL ||
-          `${window.location.protocol}//${window.location.hostname}/recipe-images/undraw_profile_pic.png`,
+          `${IMAGE_URL}/recipe-images/undraw_profile_pic.png`,
       };
 
     case GOT_JWT:
       return {
         ...state,
         JWT: action.JWT,
+      };
+
+    case FETCH_USER_DONE:
+      return {
+        ...state,
+        ...action.user,
       };
 
     default:

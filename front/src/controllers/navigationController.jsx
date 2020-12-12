@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 
 // Local imports
+import ProtectedRoute from "./protectedRoute";
 import Homepage from "../reduxConnections/homepage";
 import ProfilePage from "../reduxConnections/profilePage";
 import { BottomMenu } from "../components/bottomMenu";
@@ -26,16 +27,16 @@ const NavigationController = ({ store }) => {
             <ProfilePage />
           </SubPage>
         </Route>
-        <Route path="/search">
+        <ProtectedRoute path="/search">
           <SubPage store={store} key="search">
             <div>Search</div>
           </SubPage>
-        </Route>
-        <Route path="/">
+        </ProtectedRoute>
+        <ProtectedRoute path="/">
           <SubPage store={store} key="home">
             <Homepage />
           </SubPage>
-        </Route>
+        </ProtectedRoute>
       </Switch>
       <BottomMenu>
         <Navigation />

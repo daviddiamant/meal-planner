@@ -60,7 +60,7 @@ const baseTheme = {
   },
   constrainedMargin,
   contentWithBottomBar: {
-    marginBottom: `${navigationHeight + navigationPaddingBottom + 25}px`,
+    paddingBottom: `${navigationHeight + navigationPaddingBottom + 25}px`,
   },
   constrained: {
     boxSizing: "border-box",

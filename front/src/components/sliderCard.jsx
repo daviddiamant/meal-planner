@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { animated, useSpring, useTransition } from "react-spring";
 
 // Local imports
+import { IMAGE_URL } from "../appConfig";
 import LazyLoadedImage from "../reduxConnections/lazyLoadedImage";
 
 const iconDimension = 50;
@@ -72,7 +73,6 @@ export const SliderCard = ({
   } = data;
   const theme = useContext(ThemeContext);
   const prevWidth = useRef(0);
-  const url = `${window.location.protocol}//${window.location.hostname}`;
   const ratio = mediumImageHeight / mediumImageWidth;
 
   let scaledWidth = 0;
@@ -160,8 +160,8 @@ export const SliderCard = ({
             }}
           >
             <LazyLoadedImage
-              src={url + mediumImage}
-              smallSrc={url + smallImage}
+              src={IMAGE_URL + mediumImage}
+              smallSrc={IMAGE_URL + smallImage}
               alt={title}
               stateKey={lazyLoadedStateKey}
               containerWidth={width}

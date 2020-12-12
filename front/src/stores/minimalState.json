@@ -1,13 +1,14 @@
 {
   "helloWordMessage": "Hello World!",
-  "serverReachable": true,
   "user": {
     "loggedIn": false,
     "gotAuth": false,
     "uID": null,
     "JWT": null,
     "name": null,
-    "image": null
+    "image": null,
+    "bookTitle": null,
+    "lowTitle": false
   },
   "navigationItems": {
     "runningAnimation": false,

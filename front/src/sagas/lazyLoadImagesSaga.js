@@ -1,6 +1,7 @@
 import { call, delay, select, take, takeEvery, put } from "redux-saga/effects";
 
 // Local imports
+import { IMAGE_URL } from "../appConfig";
 import {
   LAZY_LOAD_PROCESS_SMALL_QUEUE,
   LAZY_LOAD_PROCESS_LARGE_QUEUE,
@@ -124,19 +125,17 @@ function* initWeekOrFavoritesQueue(stateKey, fetchingKey, fetchDone) {
     typeof numBeforeLazy !== "undefined" &&
     numWidthUpdated >= numBeforeLazy
   ) {
-    const url = `${window.location.protocol}//${window.location.hostname}`;
-
     for (const recipe of recipes) {
       yield put(
         lazyLoadImageActionCreator(
-          url + recipe.mediumImage,
-          url + recipe.smallImage,
+          IMAGE_URL + recipe.mediumImage,
+          IMAGE_URL + recipe.smallImage,
           `${stateKey}LazyLoadedImages`
         )
       );
       yield put(
         clearForLazyLargeImage(
-          url + recipe.mediumImage,
+          IMAGE_URL + recipe.mediumImage,
           `${stateKey}LazyLoadedImages`
         )
       );

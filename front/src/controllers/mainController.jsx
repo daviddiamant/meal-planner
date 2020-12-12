@@ -1,11 +1,10 @@
-/* global process */
-
 import React, { Fragment, useEffect } from "react";
 import { Provider } from "react-redux";
 import { RendererProvider, ThemeProvider } from "react-fela";
 import { createRenderer } from "fela";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import * as firebase from "firebase/app";
+import * as Sentry from "@sentry/react";
+import firebase from "firebase/app";
 import "firebase/auth";
 
 // Local imports
@@ -15,6 +14,7 @@ import {
   regularMounted,
   gotJWT,
   startFetchWeek,
+  startFetchUser,
 } from "../actions/actionCreators";
 import baseTheme from "../themes/baseTheme";
 import lightTheme from "../themes/lightTheme";
@@ -22,6 +22,7 @@ import BaseStyle from "../themes/baseStyle";
 import NavigationController from "./navigationController";
 import RecipePage from "../reduxConnections/recipePage";
 import useFirebase from "../hooks/useFirebase";
+import ProtectedRoute from "./protectedRoute";
 
 const SubPage = ({ store, children }) => {
   const onMount = () => {
@@ -32,9 +33,9 @@ const SubPage = ({ store, children }) => {
   return children;
 };
 
-const Routes = ({ store }) => (
+const Routes = ({ store, user }) => (
   <Switch>
-    <Route path="/recipe/:slug" key="recipe">
+    <ProtectedRoute path="/recipe/:slug" key="recipe" user={user}>
       {({
         match: {
           params: { slug },
@@ -44,7 +45,7 @@ const Routes = ({ store }) => (
           <RecipePage slug={slug} />
         </SubPage>
       )}
-    </Route>
+    </ProtectedRoute>
     <Route path="/">
       {/* The routes that have the bottom navbar (home, search, and profile)*/}
       <NavigationController store={store} />
@@ -56,13 +57,7 @@ const InsideReduxStore = ({ store }) => {
   // Check for service worker support
   if ("serviceWorker" in navigator) {
     // Register it
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        for (const registration of registrations) {
-          registration.unregister();
-        }
-      });
-    } else {
+    if (process.env.NODE_ENV !== "development") {
       navigator.serviceWorker.register("/serviceworker.js");
     }
   }
@@ -84,7 +79,8 @@ const InsideReduxStore = ({ store }) => {
     user.getIdToken().then((JWT) => {
       store.dispatch(gotJWT(JWT));
 
-      // Pre-fetch the week so that it is always cached
+      Sentry.setUser({ id: user.uid });
+      store.dispatch(startFetchUser(user.uid));
       store.dispatch(startFetchWeek());
     });
   });

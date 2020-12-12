@@ -1,7 +1,7 @@
 import { call, delay, put, select, takeEvery } from "redux-saga/effects";
 // Local imports
+import { API_URL } from "../appConfig";
 import { START_ADD } from "../actions/actionTypes";
-
 import { addGotRes, addDone } from "../actions/actionCreators";
 
 function* add(action) {
@@ -10,20 +10,15 @@ function* add(action) {
       throw new Error("Nothing to add");
     }
 
-    const location = window.location;
     const JWT = yield select((state) => state.user.JWT);
-    let res = yield call(
-      fetch,
-      `${location.protocol}//${location.hostname}${action.path}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${JWT}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ value: action.value }),
-      }
-    );
+    let res = yield call(fetch, `${API_URL}${action.path}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ value: action.value }),
+    });
     res = yield res.json();
 
     if (res.result === true) {

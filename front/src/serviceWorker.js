@@ -1,9 +1,13 @@
 /* eslint-disable no-restricted-globals */
 
-import { createHandlerBoundToURL, precacheAndRoute } from "workbox-precaching";
-import { NavigationRoute, registerRoute } from "workbox-routing";
+import { precacheAndRoute } from "workbox-precaching";
+import { registerRoute } from "workbox-routing";
 import { NetworkFirst, StaleWhileRevalidate } from "workbox-strategies";
 import { ExpirationPlugin } from "workbox-expiration";
+import { skipWaiting, clientsClaim } from "workbox-core";
+
+skipWaiting();
+clientsClaim();
 
 // Clear up the caches on new version of SW
 self.addEventListener("activate", (event) => {
@@ -24,16 +28,17 @@ self.addEventListener("activate", (event) => {
 // Set up precache
 precacheAndRoute(self.__WB_MANIFEST || []);
 
-// Cache the sites
-const handler = createHandlerBoundToURL("/index.html");
-const navigationRoute = new NavigationRoute(handler);
-registerRoute(navigationRoute);
-
 // Cache the API calls
 registerRoute(
-  ({ url: { pathname } }) =>
-    (pathname.indexOf("/api/") > -1 ? true : false) && pathname !== "/api/ping",
+  ({ url: { pathname } }) => (pathname.indexOf("/api/") > -1 ? true : false),
   new NetworkFirst()
+);
+registerRoute(
+  ({ url: { pathname } }) =>
+    pathname.indexOf("/api/user") > -1 ? true : false,
+  new StaleWhileRevalidate({
+    cacheName: "user-info",
+  })
 );
 
 // Cache all remaining files

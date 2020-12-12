@@ -1,0 +1,178 @@
+org: ddiamant
+app: meal-planner
+service: meal-planner
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-central-1
+  stage: prod
+  environment:
+    JSON_LD_QUEUE_URL: { Ref: jsonLDQueue }
+    SAVE_IMAGE_QUEUE_URL: { Ref: saveImageQueue }
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - sqs:SendMessage
+        - sqs:DeleteMessage
+        - sqs:GetQueueAttributes
+        - sqs:ListQueues
+        - sqs:ReceiveMessage
+        - sqs:SetQueueAttributes
+      Resource: arn:aws:sqs:*
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-webpack
+  - serverless-offline-sqs
+  - serverless-offline
+
+custom:
+  webpack:
+    webpackConfig: "webpack.config.js"
+    includeModules: true
+  dotenv:
+    exclude:
+      - LOCAL
+      - NODE_ENV
+  serverless-offline:
+    stage: "local"
+    httpPort: 5000
+  serverless-offline-sqs:
+    autoCreate: true
+    apiVersion: "2012-11-05"
+    endpoint: http://0.0.0.0:9324
+    region: eu-central-1
+    accessKeyId: root
+    secretAccessKey: root
+    skipCacheInvalidation: false
+
+package:
+  individually: true
+
+functions:
+  authenticator:
+    handler: src/services/authenticator/index.authenticate
+    layers:
+      - { Ref: FirebaseAdminLambdaLayer }
+
+  recipes-getter:
+    handler: src/services/recipe-getter/index.recipeGetterAPI
+    events:
+      - http:
+          path: /api/recipes
+          method: GET
+          cors: true
+          authorizer: authenticator
+      - http:
+          path: /api/recipes/{recipe+}
+          method: GET
+          cors: true
+          authorizer: authenticator
+
+  recipes-setter:
+    handler: src/services/recipe-setter/index.recipeSetterAPI
+    memorySize: 2048
+    timeout: 29
+    layers:
+      - arn:aws:lambda:eu-central-1:764866452798:layer:chrome-aws-lambda:19
+    events:
+      - http:
+          path: /api/recipes/add
+          method: POST
+          cors: true
+          authorizer: authenticator
+
+  jsonLDParser:
+    handler: src/services/json-ld-parser/index.jsonLDParser
+    events:
+      - sqs:
+          batchSize: 1
+          arn:
+            Fn::GetAtt:
+              - jsonLDQueue
+              - Arn
+
+  imageSaver:
+    handler: src/services/image-saver/index.imageSaver
+    layers:
+      - { Ref: SharpLambdaLayer }
+    events:
+      - sqs:
+          batchSize: 1
+          arn:
+            Fn::GetAtt:
+              - saveImageQueue
+              - Arn
+
+  week:
+    handler: src/services/week/index.weekAPI
+    events:
+      - http:
+          path: /api/week
+          method: GET
+          cors: true
+          authorizer: authenticator
+      - http:
+          path: /api/week/add
+          method: POST
+          cors: true
+          authorizer: authenticator
+      - http:
+          path: /api/week/remove
+          method: POST
+          cors: true
+          authorizer: authenticator
+
+  user:
+    handler: src/services/user/index.userAPI
+    events:
+      - http:
+          path: /api/user
+          method: GET
+          cors: true
+          authorizer: authenticator
+
+layers:
+  sharp:
+    description: Sharp (libvips)
+    package:
+      artifact: ./src/layers/sharp/sharp-0.26.2-aws-lambda-linux-x64-node-12.19.0.zip
+    compatibleRuntimes:
+      - nodejs12.x
+
+  firebaseAdmin:
+    description: Firebase admin SDK
+    package:
+      artifact: ./src/layers/firebase-admin/firebase-admin-9.4.1-aws-lambda-linux-x64-node-12.19.0.zip
+    compatibleRuntimes:
+      - nodejs12.x
+
+resources:
+  Resources:
+    sharedDLQ:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "sharedDLQ"
+    jsonLDQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "jsonLDQueue"
+        MessageRetentionPeriod: 60
+        RedrivePolicy:
+          deadLetterTargetArn:
+            Fn::GetAtt:
+              - sharedDLQ
+              - Arn
+          maxReceiveCount: 3
+    saveImageQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "saveImageQueue"
+        MessageRetentionPeriod: 60
+        RedrivePolicy:
+          deadLetterTargetArn:
+            Fn::GetAtt:
+              - sharedDLQ
+              - Arn
+          maxReceiveCount: 3

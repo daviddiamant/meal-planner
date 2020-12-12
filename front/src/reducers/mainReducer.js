@@ -14,7 +14,6 @@ import { profileReducer } from "./profileReducer";
 import { addReducer } from "./addReducer";
 import { sliderCardReducer } from "./sliderCardReducer";
 import { dropdownReducer } from "./dropdownReducer";
-import { pingReducer } from "./pingReducer";
 
 // An object that tells what reducers handle what part of the state
 let allReducers = {};
@@ -98,8 +97,5 @@ allReducers = {
   profileDropdown: (state = {}, action) =>
     dropdownReducer("profileDropdown", state, action),
 };
-
-// pingReducer handles the key 'serverReachable' in the state
-allReducers = { ...allReducers, serverReachable: pingReducer };
 
 export const mainReducer = combineReducers(allReducers);

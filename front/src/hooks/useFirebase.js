@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import * as firebase from "firebase/app";
+import firebase from "firebase/app";
 
 // Local imports
 import firebaseConfig from "../firebaseConfig";

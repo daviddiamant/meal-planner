@@ -10,7 +10,8 @@ import {
 const mapStateToProps = (state) => {
   return {
     scrollPosition: state.browseRecipes.scrollPosition,
-    title: state.appTitle,
+    title: state.user.bookTitle,
+    lowTitle: state.user.lowTitle,
     recipesLoaded: state.browseRecipes.isFetching,
     recipes: state.browseRecipes.recipes,
   };

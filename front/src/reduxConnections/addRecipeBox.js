@@ -7,7 +7,7 @@ import { updateAddRecipe } from "../actions/actionCreators";
 const mapStateToProps = (state) => {
   return {
     currentUrl: state.addRecipeInput.url,
-    disabled: !state.serverReachable,
+    disabled: false,
   };
 };
 
