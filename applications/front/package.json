@@ -1,6 +1,6 @@
 {
-  "name": "meal-planner",
-  "version": "1.0.0",
+  "name": "meal-planner-front",
+  "version": "2.0.0",
   "private": true,
   "devDependencies": {
     "babel-eslint": "^10.1.0",
@@ -40,9 +40,10 @@
     "algoliasearch": "^4.8.4"
   },
   "scripts": {
-    "dev": "react-app-rewired start",
     "start": "HTTPS=true react-app-rewired start",
-    "build": "react-app-rewired build"
+    "start-both": "REACT_APP_LOCAL_API=true HTTPS=true react-app-rewired start",
+    "build": "./build.sh",
+    "deploy": "npm run build && ./deploy.sh"
   },
   "browserslist": [
     ">0.2%",

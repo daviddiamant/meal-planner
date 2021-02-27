@@ -13,8 +13,8 @@ Resources:
     Properties:
       BucketName: !Ref BucketName
       WebsiteConfiguration:
-        ErrorDocument: "indexv7.html"
-        IndexDocument: "indexv7.html"
+        ErrorDocument: "indexv10.html"
+        IndexDocument: "indexv10.html"
       CorsConfiguration:
         CorsRules:
           - AllowedOrigins: ["*"]
@@ -49,7 +49,7 @@ Resources:
         CustomErrorResponses:
           - ErrorCode: 403 # not found
             ResponseCode: 404
-            ResponsePagePath: "/indexv7.html"
+            ResponsePagePath: "/indexv10.html"
         DefaultCacheBehavior:
           AllowedMethods:
             - GET
@@ -69,7 +69,7 @@ Resources:
           MinTTL: 60 # in seconds
           TargetOriginId: s3origin
           ViewerProtocolPolicy: "redirect-to-https"
-        DefaultRootObject: "indexv7.html"
+        DefaultRootObject: "indexv10.html"
         Enabled: true
         HttpVersion: http2
         Origins:

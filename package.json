@@ -1,0 +1,13 @@
+{
+  "name": "meal-planner-root",
+  "version": "2.0.0",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "scripts": {
+    "install": "node_modules/.bin/lerna bootstrap",
+    "start": "node_modules/.bin/lerna run --parallel start-both",
+    "deploy": "node_modules/.bin/lerna run --parallel deploy"
+  }
+}

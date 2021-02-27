@@ -1,5 +1,5 @@
 {
-  "name": "meal-planner",
+  "name": "meal-planner-back",
   "version": "2.0.0",
   "dependencies": {
     "firebase-admin": "^9.4.1",
@@ -38,5 +38,10 @@
     "webpack": "^5.4.0",
     "terser-webpack-plugin": "^5.0.3",
     "puppeteer": "^7.1.0"
+  },
+  "scripts": {
+    "start": "node_modules/.bin/serverless offline",
+    "start-both": "npm start",
+    "deploy": "node_modules/.bin/serverless deploy"
   }
 }
