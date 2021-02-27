@@ -4,14 +4,33 @@ import {
   LAZY_LOAD_PROCESS_ONE,
   LAZY_LOAD_CLEAR_FOR_LARGE,
   LAZY_LOAD_PROCESS_ONE_LARGE,
-  LAZY_LOAD_REMOVE_FROM_QUEUE,
 } from "../actions/actionTypes";
 
-export function lazyLoadQueueReducer(stateKey, state = [], action) {
-  let isSmall = stateKey.indexOf("small");
-  isSmall = isSmall < 1 && isSmall !== -1;
+const initialState = {
+  index: {},
+  queue: [],
+};
 
-  const [, ...rest] = state;
+const getRestState = (state, indexKey) => {
+  const [, ...restQueue] = state.queue;
+  const restIndex = { ...state.index };
+  delete restIndex[indexKey];
+
+  return {
+    queue: restQueue,
+    index: restIndex,
+  };
+};
+
+export const getIndexKey = (action) => `${action?.stateKey}-${action?.url}`;
+
+export function lazyLoadQueueReducer(stateKey, state = initialState, action) {
+  if (!action.stateKey) {
+    return state;
+  }
+
+  const isSmall = stateKey.includes("small");
+  const indexKey = getIndexKey(action);
 
   switch (action.type) {
     case LAZY_LOAD_IMAGE:
@@ -20,22 +39,21 @@ export function lazyLoadQueueReducer(stateKey, state = [], action) {
       }
 
       // Ensure no duplicates
-      if (
-        state.some(
-          (x) => x.url === action.url && x.stateKey === action.stateKey
-        )
-      ) {
+      if (indexKey in state.index) {
         return state;
       } else {
-        return [...state, action];
+        return {
+          queue: [...state.queue, action],
+          index: { ...state.index, [indexKey]: true },
+        };
       }
 
     case LAZY_LOAD_PROCESS_ONE:
-      if (!isSmall || state.length === 0) {
+      if (!isSmall || state.queue.length === 0) {
         return state;
       }
 
-      return rest;
+      return getRestState(state, indexKey);
 
     case LAZY_LOAD_CLEAR_FOR_LARGE:
       if (isSmall) {
@@ -43,34 +61,24 @@ export function lazyLoadQueueReducer(stateKey, state = [], action) {
       }
 
       // Ensure no duplicates
-      if (
-        state.some(
-          (x) => x.url === action.url && x.stateKey === action.stateKey
-        )
-      ) {
+      if (indexKey in state.index) {
         return state;
       } else {
-        return [...state, action];
+        return {
+          queue: [...state.queue, action],
+          index: { ...state.index, [indexKey]: true },
+        };
       }
 
     case LAZY_LOAD_PROCESS_ONE_LARGE:
-      if (isSmall || state.length === 0) {
+      if (isSmall || state.queue.length === 0) {
         return state;
       }
 
-      return rest;
-
-    case LAZY_LOAD_REMOVE_FROM_QUEUE:
-      const newState = state.filter((x) => {
-        return (
-          x.url !== action.url ||
-          (x.url === action.url && x.stateKey !== action.stateKey)
-        );
-      });
-      return newState;
+      return getRestState(state, indexKey);
 
     case LAZY_LOAD_CLEAN:
-      return [];
+      return initialState;
 
     default:
       return state;

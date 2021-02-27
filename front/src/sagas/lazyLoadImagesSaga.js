@@ -1,4 +1,12 @@
-import { call, delay, select, take, takeEvery, put } from "redux-saga/effects";
+import {
+  put,
+  call,
+  take,
+  delay,
+  select,
+  debounce,
+  takeEvery,
+} from "redux-saga/effects";
 
 // Local imports
 import { IMAGE_URL } from "../appConfig";
@@ -14,6 +22,7 @@ import {
   FETCH_FAVORITES_DONE,
   FETCH_WEEK_DONE,
 } from "../actions/actionTypes";
+import { getIndexKey } from "../reducers/lazyLoadQueueReducer";
 
 import {
   lazyLoadImage as lazyLoadImageActionCreator,
@@ -23,10 +32,8 @@ import {
   processLazyLoadLargeQueue,
 } from "../actions/actionCreators";
 
-let waitingForLargeImage = false;
-
 function* startSmallQueue() {
-  let queue = yield select((state) => state.smallLazyLoadQueue);
+  const { queue } = yield select((state) => state.smallLazyLoadQueue);
 
   if (queue.length) {
     // Fire the action
@@ -37,25 +44,22 @@ function* startSmallQueue() {
 }
 
 function* startLargeQueue() {
-  let queue = yield select((state) => state.largeLazyLoadQueue);
-  let smallQueue = yield select((state) => state.smallLazyLoadQueue);
+  let { queue } = yield select((state) => state.largeLazyLoadQueue);
+  const smallQueue = yield select((state) => state.smallLazyLoadQueue);
 
-  const raceWithSmall =
-    queue[0]?.url &&
-    smallQueue.length &&
-    !smallQueue.some((x) => x.url === queue[0].url);
-  if (queue.length && !raceWithSmall) {
-    // We have a queue and there is no concurrency race with the small queue
-    // (Small queue always needs to be processed first)
-    yield put({ ...queue[0], type: LAZY_LOAD_PROCESS_ONE_LARGE });
+  if (!queue.length) {
+    return false;
   }
 
-  if (queue.length > 1 && !raceWithSmall) {
-    waitingForLargeImage = true;
-    yield delay(250);
-    if (waitingForLargeImage) {
-      // The image have not arrived for 250ms, but we still have a queue - load it
-      yield put(processLazyLoadLargeQueue());
+  const indexKey = getIndexKey(queue[0]);
+  if (!(indexKey in smallQueue.index)) {
+    const currentState = yield select((state) => state[queue[0].stateKey]);
+    const alreadyLoaded = currentState?.[queue[0].url]?.loaded;
+
+    yield put({ ...queue[0], type: LAZY_LOAD_PROCESS_ONE_LARGE });
+
+    if (alreadyLoaded) {
+      yield processLargeQueue();
     }
   }
 }
@@ -100,7 +104,6 @@ function* processSmallQueue() {
 }
 
 function* processLargeQueue() {
-  waitingForLargeImage = false;
   // Notify the queue
   yield put(processLazyLoadLargeQueue());
 }
@@ -147,7 +150,7 @@ function* initWeekOrFavoritesQueue(stateKey, fetchingKey, fetchDone) {
 }
 
 export function* lazyLoadImagesSaga() {
-  yield takeEvery(LAZY_LOAD_PROCESS_SMALL_QUEUE, startSmallQueue);
+  yield debounce(5, LAZY_LOAD_PROCESS_SMALL_QUEUE, startSmallQueue);
   yield takeEvery(LAZY_LOAD_PROCESS_LARGE_QUEUE, startLargeQueue);
   yield takeEvery(LAZY_LOAD_PROCESS_ONE, lazyLoadImage);
   yield takeEvery(GOT_SMALL_LAZY_LOADED, processSmallQueue);

@@ -19,9 +19,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     lazyLoadImage: (image, imageSmall) =>
-      dispatch(lazyLoadImage(image, imageSmall)),
+      dispatch(lazyLoadImage(image, imageSmall, "homepageLazyLoadedImages")),
     processSmallQueue: () => dispatch(processLazyLoadSmallQueue()),
-    loadLarge: (image) => dispatch(clearForLazyLargeImage(image)),
+    loadLarge: (image) =>
+      dispatch(clearForLazyLargeImage(image, "homepageLazyLoadedImages")),
     processLargeQueue: () => dispatch(processLazyLoadLargeQueue()),
     cleanUpLazyLoading: (current) => dispatch(cleanUpLazyLoading(current)),
   };

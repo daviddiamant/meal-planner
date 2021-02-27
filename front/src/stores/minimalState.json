@@ -21,8 +21,14 @@
     "scrollPosition": 0,
     "recipes": []
   },
-  "smallLazyLoadQueue": [],
-  "largeLazyLoadQueue": [],
+  "smallLazyLoadQueue": {
+    "index": {},
+    "queue": []
+  },
+  "largeLazyLoadQueue": {
+    "index": {},
+    "queue": []
+  },
   "homepageLazyLoadedImages": {
     "www.example.se/example-image": {
       "smallUrl": "www.example.se/example-image/small",
