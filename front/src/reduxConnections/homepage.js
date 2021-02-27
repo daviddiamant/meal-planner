@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { createSelector } from "reselect";
 
 // Local imports
 import { Homepage as view } from "../components/homepage";
@@ -7,13 +8,22 @@ import {
   browseRecipesScrollPosition,
 } from "../actions/actionCreators";
 
+const getRecipes = createSelector(
+  (recipes) => recipes,
+  (recipes) =>
+    recipes.map((recipe) => ({
+      ...recipe,
+      stateKey: "homepageLazyLoadedImages",
+    }))
+);
+
 const mapStateToProps = (state) => {
   return {
     scrollPosition: state.browseRecipes.scrollPosition,
     title: state.user.bookTitle,
     lowTitle: state.user.lowTitle,
     recipesLoaded: state.browseRecipes.isFetching,
-    recipes: state.browseRecipes.recipes,
+    recipes: getRecipes(state.browseRecipes.recipes),
   };
 };
 

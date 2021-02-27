@@ -3,7 +3,7 @@ import { FelaRenderer, ThemeContext } from "react-fela";
 
 const styles = [
   {
-    selector: "body, html",
+    selector: "body, html, input",
     rules: ({ theme }) => ({
       boxSizing: "border-box",
       height: "100%",

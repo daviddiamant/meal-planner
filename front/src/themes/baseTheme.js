@@ -77,6 +77,7 @@ const baseTheme = {
   navigationHeight,
   navigationPaddingBottom,
   dropdownPadding: 5,
+  headerHeight: "180px",
 };
 
 export default baseTheme;

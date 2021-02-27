@@ -12,6 +12,7 @@ const style = {
     overflow: "hidden",
     borderRadius: `${theme.primary.borderRadius}px ${theme.primary.borderRadius}px 0 0`,
     borderTop: `1px solid ${theme.quaternaryColors.grey}`,
+    zIndex: 99999,
   }),
 };
 

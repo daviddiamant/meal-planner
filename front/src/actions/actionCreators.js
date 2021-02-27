@@ -22,6 +22,8 @@ import {
   DROPDOWN_OPENED,
   DROPDOWN_SHOULD_CLOSE,
   CLOSE_DROPDOWN,
+  SET_SEARCH_FOCUS,
+  SET_ANIMATION_PIVOT,
   // Async actions
   START_FETCH_RECIPE,
   FETCH_RECIPE_DONE,
@@ -60,6 +62,10 @@ import {
   DELETE_FROM_PROFILE_ANIMATIONS_DONE,
   START_FETCH_USER,
   FETCH_USER_DONE,
+  SEARCH_RECIPES,
+  SET_SEARCH_RESULT,
+  FETCH_SEARCH_FACETS,
+  SET_SEARCH_FACETS,
 } from "./actionTypes";
 
 export function changeHelloWorld(newMessage) {
@@ -445,5 +451,44 @@ export function fetchUserDone(user) {
   return {
     type: FETCH_USER_DONE,
     user,
+  };
+}
+
+export function setSearchFocus(focused) {
+  return {
+    type: SET_SEARCH_FOCUS,
+    focused,
+  };
+}
+
+export function setAnimationPivot(animationPivot) {
+  return {
+    type: SET_ANIMATION_PIVOT,
+    animationPivot,
+  };
+}
+
+export function searchRecipes(query) {
+  return {
+    type: SEARCH_RECIPES,
+    query,
+  };
+}
+
+export function setSearchResult(recipes) {
+  return {
+    type: SET_SEARCH_RESULT,
+    recipes,
+  };
+}
+
+export function loadSearchFacets() {
+  return { type: FETCH_SEARCH_FACETS };
+}
+
+export function setSearchFacets(facets) {
+  return {
+    type: SET_SEARCH_FACETS,
+    facets,
   };
 }

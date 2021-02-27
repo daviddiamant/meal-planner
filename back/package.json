@@ -4,21 +4,22 @@
   "dependencies": {
     "firebase-admin": "^9.4.1",
     "aws-sdk": "^2.783.0",
-    "mongodb": "^3.6.2",
+    "mongodb": "^3.6.4",
     "koa": "^2.13.0",
     "@koa/cors": "^3.1.0",
     "@koa/router": "^9.4.0",
     "serverless-http": "^2.6.0",
     "serverless-offline-sqs": "^4.1.1",
     "chrome-aws-lambda": "^5.3.1",
-    "puppeteer-core": "^5.4.1",
+    "puppeteer-core": "^7.1.0",
     "sanitize-html": "^2.0.0",
     "sharp": "^0.26.2",
     "node-fetch": "^2.6.1",
     "node-vibrant": "^3.1.5",
     "@sentry/serverless": "^5.27.4",
     "@sentry/node": "5.23.0",
-    "@sentry/tracing": "^5.27.4"
+    "@sentry/tracing": "^5.27.4",
+    "algoliasearch": "^4.8.5"
   },
   "devDependencies": {
     "core-js": "^3.7.0",
@@ -36,6 +37,6 @@
     "serverless-dotenv-plugin": "^3.1.0",
     "webpack": "^5.4.0",
     "terser-webpack-plugin": "^5.0.3",
-    "puppeteer": "^5.4.1"
+    "puppeteer": "^7.1.0"
   }
 }

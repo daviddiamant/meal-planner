@@ -11,7 +11,7 @@ import { useDebouncedCallback } from "use-debounce";
 
 // Local imports
 import { IMAGE_URL } from "../appConfig";
-import { HomepageCard } from "./homepageCard";
+import { MasonryCard } from "./masonryCard";
 
 class HomepageMasonryHelper {
   constructor({
@@ -307,7 +307,7 @@ export const HomepageMasonry = (props) => {
     positioner,
     isScrolling,
     containerRef,
-    render: HomepageCard,
+    render: MasonryCard,
     onRender: debouncedOnRender,
     ...props,
   });

@@ -27,3 +27,23 @@ export const recipeForListsProjection = {
   mediumImageWidth: 1,
   mediumImageHeight: 1,
 };
+
+export const recipeForAlgoliaProjection = {
+  _id: 0,
+  url: 1,
+  slug: 1,
+  title: 1,
+  description: 1,
+  keywords: 1,
+  jsonLD: 1,
+  smallImage: 1,
+  mediumImage: 1,
+  smallImageWidth: 1,
+  smallImageHeight: 1,
+  mediumImageWidth: 1,
+  mediumImageHeight: 1,
+  imagePalette: 1,
+  ingredients: 1,
+  instructions: 1,
+  bookID: 1,
+};

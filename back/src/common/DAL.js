@@ -1,5 +1,6 @@
 import { ObjectID } from "mongodb";
 
+import { getFilteredRecipe, getIndex } from "./algolia";
 import { getDB } from "./db";
 import {
   recipeForListsProjection,
@@ -15,6 +16,12 @@ export const recipesDAL = () => ({
         $set: set,
       }
     );
+
+    const filteredSet = getFilteredRecipe(set);
+    filteredSet["objectID"] = recipeId;
+
+    const index = getIndex(process.env.ALGOLIA_RECIPE_INDEX);
+    await index.partialUpdateObject(filteredSet);
   },
   getRecipeBySlug: async (bookID, slug, listProjection = false) => {
     const db = await getDB(process.env.RECIPES_DB);

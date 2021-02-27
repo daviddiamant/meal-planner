@@ -63,6 +63,16 @@
       "displayed": false
     }
   },
+  "searchLazyLoadedImages": {
+    "www.example.se/example-image": {
+      "smallUrl": "www.example.se/example-image/small",
+      "smallLocalURL": "/example-iamge-small",
+      "smallLoaded": false,
+      "shouldBeLoaded": false,
+      "loaded": false,
+      "displayed": false
+    }
+  },
   "recipePage": {
     "backButtonColor": "light",
     "isIngredientsSelected": true,
@@ -102,5 +112,13 @@
     "open": false,
     "shouldOpen": false,
     "shouldClose": false
+  },
+  "search": {
+    "query": "",
+    "focused": false,
+    "animationPivot": false,
+    "searching": false,
+    "recipes": [],
+    "facets": []
   }
 }
