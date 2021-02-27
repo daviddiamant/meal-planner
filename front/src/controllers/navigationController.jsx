@@ -5,6 +5,7 @@ import { Switch, Route } from "react-router-dom";
 import ProtectedRoute from "./protectedRoute";
 import Homepage from "../reduxConnections/homepage";
 import ProfilePage from "../reduxConnections/profilePage";
+import SearchPage from "../reduxConnections/searchPage";
 import { BottomMenu } from "../components/bottomMenu";
 import { Navigation } from "../components/navigation";
 import { navigationUnmounted } from "../actions/actionCreators";
@@ -29,7 +30,7 @@ const NavigationController = ({ store }) => {
         </Route>
         <ProtectedRoute path="/search">
           <SubPage store={store} key="search">
-            <div>Search</div>
+            <SearchPage />
           </SubPage>
         </ProtectedRoute>
         <ProtectedRoute path="/">

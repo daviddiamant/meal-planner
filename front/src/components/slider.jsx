@@ -10,6 +10,7 @@ const style = {
     overflow: "hidden",
   }),
   inner: ({ theme }) => ({
+    height: "100%",
     position: "relative",
     display: "flex",
     width: "max-content",
@@ -21,7 +22,9 @@ const style = {
 export const Slider = ({
   children,
   style: externalStyle,
+  innerStyle: externalInnerStyle,
   onMove,
+  blockScroll,
   ...props
 }) => {
   const theme = useContext(ThemeContext);
@@ -61,17 +64,19 @@ export const Slider = ({
     }
 
     // Now update the position
-    setPos({ left: newLeft });
+    blockScroll || setPos({ left: newLeft });
   });
   const [animateDrag, setPos] = useSpring(() => ({
     left: 0,
   }));
 
+  !blockScroll || setPos({ left: 0 });
+
   return (
     <FelaComponent style={[style.slider, externalStyle]} {...props}>
       {({ className }) => (
         <div className={className}>
-          <FelaComponent style={style.inner}>
+          <FelaComponent style={[style.inner, externalInnerStyle]} {...props}>
             {({ className }) => (
               <animated.div
                 className={className}

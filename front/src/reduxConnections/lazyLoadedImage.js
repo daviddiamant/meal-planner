@@ -13,25 +13,17 @@ import {
 } from "../actions/actionCreators";
 
 const mapStateToProps = (state, { stateKey, src }) => {
-  // Get info about this specific image
-  const imgState = state[stateKey][src];
+  const imgState = state[stateKey]?.[src] ?? false;
+  const changingView = state.navigationItems.changingViev;
 
   return {
-    showImage:
-      state[stateKey][src]?.smallLoaded && !state.navigationItems.changingView,
+    showImage: imgState?.smallLoaded && !changingView,
     startedLazyLoading: imgState ? true : false,
     smallURL:
-      imgState && imgState.smallLoaded && !state.navigationItems.changingView
-        ? imgState.smallLocalURL
-        : "",
-    loadImage:
-      imgState &&
-      imgState.shouldBeLoaded &&
-      !state.navigationItems.changingView,
-    imageLoaded:
-      imgState && imgState.loaded && !state.navigationItems.changingView,
-    imageDisplayed:
-      imgState && imgState.displayed && !state.navigationItems.changingView,
+      imgState?.smallLoaded && !changingView ? imgState.smallLocalURL : "",
+    loadImage: imgState?.shouldBeLoaded && !changingView,
+    imageLoaded: imgState?.loaded && !changingView,
+    imageDisplayed: imgState?.displayed && !changingView,
   };
 };
 

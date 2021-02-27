@@ -26,6 +26,7 @@
     "react-router-dom": "^5.2.0",
     "react-spring": "^8.0.27",
     "react-use-gesture": "^8.0.1",
+    "reselect": "^4.0.0",
     "redux": "^4.0.5",
     "redux-saga": "^1.1.3",
     "use-debounce": "^5.1.0",
@@ -35,14 +36,13 @@
     "workbox-routing": "^5.1.4",
     "workbox-strategies": "^5.1.4",
     "@sentry/react": "^5.27.4",
-    "@sentry/tracing": "^5.27.4"
+    "@sentry/tracing": "^5.27.4",
+    "algoliasearch": "^4.8.4"
   },
   "scripts": {
     "dev": "react-app-rewired start",
     "start": "HTTPS=true react-app-rewired start",
-    "build": "react-app-rewired build",
-    "eject": "react-scripts eject",
-    "prestart": "rm -f ./node_modules/webpack-dev-server/ssl/server.pem && cp -f ../back/server.pem ./node_modules/webpack-dev-server/ssl"
+    "build": "react-app-rewired build"
   },
   "browserslist": [
     ">0.2%",

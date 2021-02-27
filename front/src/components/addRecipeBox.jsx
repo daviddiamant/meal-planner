@@ -3,6 +3,7 @@ import { FelaComponent, ThemeContext } from "react-fela";
 
 // Local imports
 import AddBtn from "../reduxConnections/addBtn";
+import { Input } from "./input";
 import { LoadingDots } from "./loadingDots";
 
 const addPadding = 30;
@@ -20,37 +21,15 @@ const style = {
     paddingRight: `${addPadding}px`,
   },
   addTitle: () => ({}),
-  addInput: ({ theme }) => {
-    const height = 35;
-    return {
-      boxSizing: "border-box",
-      width: "100%",
-      height: `${height}px`,
-      padding: "0 10px",
-      margin: "10px 1px 1px 1px",
-      color: theme.textColors.secondary,
-      textTransform: "lowercase",
-      border: "none",
-      borderRadius: `${theme.primary.borderRadius}px`,
-      "::placeholder": {
-        color: theme.textColors.tertiary,
-        textTransform: "none",
-      },
-      ":focus": {
-        margin: "9px 0 0 0",
-        height: `${height + 2}px`,
-        outline: "none",
-        shadow: "none",
-        border: `1px solid ${theme.secondaryColors.yellow}`,
-        "-webkit-touch-callout": "initial",
-        "-webkit-user-select": "initial",
-        "-khtml-user-select": "initial",
-        "-moz-user-select": "initial",
-        "-ms-user-select": "initial",
-        "user-select": "initial",
-      },
-    };
-  },
+  addInput: ({ theme }) => ({
+    height: "37px",
+    margin: "9px 0 0 0",
+    background: theme.background,
+    color: theme.textColors.secondary,
+    "> input::placeholder": {
+      color: theme.textColors.tertiary,
+    },
+  }),
   addButton: () => ({
     width: "50px",
     height: "50px",
@@ -85,22 +64,13 @@ export const AddRecipeBox = ({
             >
               Lägg till recept
             </FelaComponent>
-            <FelaComponent style={style.addInput}>
-              {({ className }) => (
-                <input
-                  className={className}
-                  type="text"
-                  placeholder={disabled ? "Kan ej nå servern" : "Webbadress.."}
-                  onChange={() =>
-                    /*This is needed to mute a warning, we use onInput here */ null
-                  }
-                  onInput={(e) => onInput(e.target.value)}
-                  ref={urlInput}
-                  value={currentUrl}
-                  disabled={disabled}
-                ></input>
-              )}
-            </FelaComponent>
+            <Input
+              value={currentUrl}
+              style={style.addInput}
+              placeholder={disabled ? "Kan ej nå servern" : "Webbadress.."}
+              onInput={(e) => onInput(e.target.value)}
+              innerRef={urlInput}
+            />
           </FelaComponent>
           <div>
             <AddBtn

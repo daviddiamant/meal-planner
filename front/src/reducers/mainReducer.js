@@ -14,6 +14,7 @@ import { profileReducer } from "./profileReducer";
 import { addReducer } from "./addReducer";
 import { sliderCardReducer } from "./sliderCardReducer";
 import { dropdownReducer } from "./dropdownReducer";
+import { searchReducer } from "./searchReducer";
 
 // An object that tells what reducers handle what part of the state
 let allReducers = {};
@@ -42,7 +43,7 @@ allReducers = {
     lazyLoadQueueReducer("largeLazyLoadQueue", state, action),
 };
 
-// lazyLoadImageReducer handles the keys 'homepageLazyLoadedImages', 'weekLazyLoadedImages', 'favoritesLazyLoadedImages',  and 'recipePageLazyLoadedImages' in the state
+// lazyLoadImageReducer handles the keys 'homepageLazyLoadedImages', 'weekLazyLoadedImages', 'favoritesLazyLoadedImages', 'recipePageLazyLoadedImages', and 'searchLazyLoadedImages' in the state
 allReducers = {
   ...allReducers,
   homepageLazyLoadedImages: (state = {}, action) =>
@@ -62,6 +63,11 @@ allReducers = {
   ...allReducers,
   favoritesLazyLoadedImages: (state = {}, action) =>
     lazyLoadImageReducer("favoritesLazyLoadedImages", state, action),
+};
+allReducers = {
+  ...allReducers,
+  searchLazyLoadedImages: (state = {}, action) =>
+    lazyLoadImageReducer("searchLazyLoadedImages", state, action),
 };
 
 // expandTextReducer handles the key 'expandText' in the state
@@ -97,5 +103,8 @@ allReducers = {
   profileDropdown: (state = {}, action) =>
     dropdownReducer("profileDropdown", state, action),
 };
+
+// searchReducer handles the key 'search' in the state
+allReducers = { ...allReducers, search: searchReducer };
 
 export const mainReducer = combineReducers(allReducers);

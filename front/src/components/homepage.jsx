@@ -78,16 +78,18 @@ export const Homepage = ({
   return (
     <div>
       <Header externalRef={headerRef}>
-        <FelaComponent style={style.titleWrapper} low={lowTitle}>
-          <div>
-            <FelaComponent style={style.title} as="h1" low={lowTitle}>
-              {title}
-            </FelaComponent>
-            <FelaComponent style={style.secondTitle} as="h3">
-              kokbok
-            </FelaComponent>
-          </div>
-        </FelaComponent>
+        {title ? (
+          <FelaComponent style={style.titleWrapper} low={lowTitle}>
+            <div>
+              <FelaComponent style={style.title} as="h1" low={lowTitle}>
+                {title}
+              </FelaComponent>
+              <FelaComponent style={style.secondTitle} as="h3">
+                kokbok
+              </FelaComponent>
+            </div>
+          </FelaComponent>
+        ) : null}
       </Header>
       <FelaComponent style={style.masonryWrapper}>
         <FelaComponent style={style.masonry}>

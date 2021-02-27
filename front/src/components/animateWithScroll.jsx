@@ -5,12 +5,13 @@ import { useSpring, animated } from "react-spring";
 
 const AnimatedContent = (props) => {
   const {
+    inner,
+    className,
     animateKeys,
     valueFormats,
     initialValues,
-    className,
-    inner,
     handleOnScroll,
+    spring: externalSpring,
   } = props;
   let { immediate } = props;
 
@@ -56,29 +57,34 @@ const AnimatedContent = (props) => {
   }
 
   return (
-    <animated.div className={className} style={spring}>
+    <animated.div
+      className={className}
+      style={{ ...spring, ...externalSpring }}
+    >
       {inner}
     </animated.div>
   );
 };
 
 const animateWithScroll = ({
-  className,
+  spring,
   children,
+  className,
   immediate,
-  scrollRange,
-  animateKeys,
-  initialValues,
   stopValues,
+  animateKeys,
+  scrollRange,
   valueFormats,
   comeFromAbove,
   comeFromBelow,
+  initialValues,
 }) => {
   const breakpoint = parseInt(scrollRange.at);
 
   return (
     <AnimatedContent
       {...{
+        spring,
         className,
         animateKeys,
         valueFormats,
@@ -119,15 +125,16 @@ const animateWithScroll = ({
 };
 
 const animateWithScrollRange = ({
-  shouldReset,
-  className,
-  children,
-  scrollRange,
-  animateKeys,
-  initialValues,
-  stopValues,
   steps,
+  spring,
+  children,
+  className,
+  stopValues,
+  animateKeys,
+  scrollRange,
+  shouldReset,
   valueFormats,
+  initialValues,
 }) => {
   // Make sure we have integers
   scrollRange = {
@@ -200,6 +207,7 @@ const animateWithScrollRange = ({
   return (
     <AnimatedContent
       {...{
+        spring,
         className,
         animateKeys,
         valueFormats,
@@ -236,15 +244,16 @@ const animateWithScrollRange = ({
 };
 
 export const AnimateWithScroll = ({
-  className,
-  children,
-  scrollRange,
-  animateKeys,
-  initialValues,
-  stopValues,
   steps,
-  valueFormats,
+  spring,
+  children,
+  className,
   immediate,
+  stopValues,
+  animateKeys,
+  scrollRange,
+  valueFormats,
+  initialValues,
 }) => {
   // Should not trigger re-render (as state does)
   const shouldReset = useRef(false);
@@ -265,6 +274,7 @@ export const AnimateWithScroll = ({
 
   if (scrollRange.at) {
     return animateWithScroll({
+      spring,
       children,
       immediate,
       className,
@@ -279,6 +289,7 @@ export const AnimateWithScroll = ({
   } else {
     return animateWithScrollRange({
       steps,
+      spring,
       children,
       className,
       stopValues,

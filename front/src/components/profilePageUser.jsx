@@ -4,6 +4,7 @@ import { useWindowSize } from "@react-hook/window-size";
 
 // Local imports
 import { Header } from "./header";
+import { HeaderTitle } from "./headerTitle";
 import { SliderMessage } from "./sliderMessage";
 import Slider from "../reduxConnections/slider";
 import SliderCard from "../reduxConnections/sliderCard";
@@ -19,27 +20,7 @@ const style = {
   constrainedContent: ({ theme }) => ({
     ...theme.constrained,
   }),
-  top: ({ withMenu }) => ({
-    display: "flex",
-    margin: `${withMenu ? 85 : 70}px 0 0 0`,
-    justifyContent: "space-between",
-    alignItems: "center",
-  }),
-  greeting: {
-    fontSize: "6vw",
-    ":first-letter": {
-      marginLeft: "-0.27vw",
-    },
-  },
-  name: ({ theme }) => ({
-    marginTop: "5px",
-    fontSize: "9vw",
-    fontWeight: "200",
-    color: theme.textColors.secondary,
-    ":first-letter": {
-      marginLeft: "-0.62vw",
-    },
-  }),
+  top: ({ withMenu }) => ({ margin: `${withMenu ? 85 : 70}px 0 0 0` }),
   image: ({ theme, withMenu }) => ({
     position: "absolute",
     top: `${theme.constrainedMargin}px`,
@@ -209,25 +190,12 @@ export const ProfilePageUser = ({
             </Dropdown>
           </Fragment>
         ) : null}
-        <FelaComponent
-          style={[style.constrainedContent, style.top]}
+        <HeaderTitle
+          style={style.top}
+          topTitle="Hejsan"
+          bottomTitle={name}
           withMenu={rightMenu}
-        >
-          <div>
-            <FelaComponent
-              style={[theme.helpers.resetHeaders, style.greeting]}
-              as="h2"
-            >
-              Hejsan
-            </FelaComponent>
-            <FelaComponent
-              style={[theme.helpers.resetHeaders, style.name]}
-              as="h3"
-            >
-              {name}
-            </FelaComponent>
-          </div>
-        </FelaComponent>
+        />
       </Header>
       <FelaComponent style={style.inner}>
         <FelaComponent style={style.constrainedContent}>

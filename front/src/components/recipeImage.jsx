@@ -60,6 +60,7 @@ export const RecipeImage = ({
                   alt={title}
                   stateKey="recipePageLazyLoadedImages"
                   autoLoadSmall={true}
+                  clearOnUnmount={true}
                   width={scaledImageWidth}
                 />
               </div>

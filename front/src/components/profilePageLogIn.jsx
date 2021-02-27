@@ -3,7 +3,7 @@ import { FelaComponent, ThemeContext } from "react-fela";
 
 // Local imports
 import { Btn } from "./btn";
-import { IMAGE_URL } from "../appConfig";
+import EatingTogether from "../svgs/eatingTogether";
 
 const style = {
   content: ({ theme }) => ({
@@ -22,7 +22,8 @@ const style = {
     flexDirection: "column",
   }),
   topImg: {
-    width: "100%",
+    width: "80%",
+    height: "auto",
     marginTop: "75px",
   },
   button: {
@@ -37,11 +38,7 @@ export const ProfilePageLogIn = ({ logIn }) => {
     <FelaComponent style={style.content}>
       <FelaComponent style={style.topImg}>
         {({ className }) => (
-          <img
-            className={className}
-            src={`${IMAGE_URL}/recipe-images/undraw_eating_together.png`}
-            alt={"Äter tillsammans"}
-          />
+          <EatingTogether className={className} theme={theme} />
         )}
       </FelaComponent>
 

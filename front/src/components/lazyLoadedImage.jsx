@@ -88,6 +88,7 @@ export const LazyLoadedImage = (props) => {
     processLargeQueue,
     whenImageDisplayed,
     startedLazyLoading,
+    clearOnUnmount = false,
   } = props;
 
   const started = useRef(0); // Should not trigger re-render
@@ -104,7 +105,7 @@ export const LazyLoadedImage = (props) => {
       processSmallQueue();
     }
     return () => {
-      if (autoLoadSmall) {
+      if (clearOnUnmount) {
         clearQueue(stateKey);
       }
     };
