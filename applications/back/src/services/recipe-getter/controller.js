@@ -7,8 +7,17 @@ import { getRecipe } from "./service";
 export const recipeGetterController = (prefix) => {
   const router = new Router({ prefix });
 
-  router.get("/", authMiddleware, async (ctx) => {
-    const recipes = await getBook(ctx.bookID);
+  router.get(["/", "/:from/:to"], authMiddleware, async (ctx) => {
+    const from = parseInt(ctx.params.from, 10);
+    const to = parseInt(ctx.params.to, 10);
+
+    if (to < from) {
+      ctx.response.status = 400;
+      ctx.body = { result: "From needs to be smaller than to" };
+      return;
+    }
+
+    const recipes = await getBook(ctx.bookID, from, to);
 
     ctx.body = recipes;
   });
