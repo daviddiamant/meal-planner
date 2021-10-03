@@ -2,7 +2,18 @@ const WorkboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = {
   webpack: {
-    configure: (config, { env, paths }) => {
+    configure: (config, { env }) => {
+      // ts-loader is required to reference @meal-planner/types (non-transpiled)
+      config.module.rules.push({
+        test: /\.tsx?$/,
+        loader: "ts-loader",
+        exclude: /node_modules/,
+        options: {
+          transpileOnly: true,
+          configFile: "tsconfig.json",
+        },
+      });
+
       if (env !== "production") {
         return config;
       }
