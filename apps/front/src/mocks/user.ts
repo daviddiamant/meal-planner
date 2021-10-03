@@ -1,4 +1,5 @@
-import { Paths, Responses } from "../types";
+import { Paths, Responses } from "@meal-planner/types";
+
 import { server, successfulHandler } from ".";
 
 type ConfigHandler = Partial<{

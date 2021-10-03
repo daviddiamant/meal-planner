@@ -1,8 +1,9 @@
 {
-  "name": "typescript-meal-planner",
+  "name": "@meal-planner/front",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@meal-planner/types": "^1.0.0",
     "@react-hook/size": "^2.1.2",
     "@stitches/react": "^1.2.0",
     "@testing-library/jest-dom": "^5.14.1",

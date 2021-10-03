@@ -1,7 +1,7 @@
+import { Paths, Responses } from "@meal-planner/types";
 import { useQuery } from "react-query";
 
 import { API_URL } from "../appConfig";
-import { Paths, Responses } from "../types";
 import { axiosDataGetter } from "../utils";
 
 export const useRecipes = (

@@ -1,6 +1,7 @@
 {
-  "name": "meal-planner-back",
+  "name": "@meal-planner/back",
   "version": "2.0.0",
+  "private": true,
   "dependencies": {
     "firebase-admin": "^9.4.1",
     "aws-sdk": "^2.783.0",

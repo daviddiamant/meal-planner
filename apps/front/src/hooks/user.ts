@@ -1,3 +1,4 @@
+import { Paths, Responses } from "@meal-planner/types";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -9,7 +10,6 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
 import { API_URL } from "../appConfig";
-import { Paths, Responses } from "../types";
 import { axiosDataGetter, ensureFirebaseApp } from "../utils";
 
 const login = async () => {

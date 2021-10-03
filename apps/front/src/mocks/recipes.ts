@@ -1,4 +1,5 @@
-import { Paths, Responses } from "../types";
+import { Paths, Responses } from "@meal-planner/types";
+
 import { server, successfulHandler } from ".";
 
 export const getRecipeMock = (aspectRatio = 1, slug = "some-slug") => ({
