@@ -6,8 +6,8 @@
     "lerna": "^3.22.1"
   },
   "scripts": {
-    "install": "node_modules/.bin/lerna bootstrap",
-    "start": "node_modules/.bin/lerna run --parallel start-both",
-    "deploy": "node_modules/.bin/lerna run --parallel deploy"
+    "install": "npx lerna bootstrap",
+    "start": "npx lerna run --parallel start-both",
+    "deploy": "npx lerna run --parallel deploy"
   }
 }

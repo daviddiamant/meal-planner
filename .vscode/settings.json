@@ -1,5 +1,5 @@
 {
-  "eslint.workingDirectories": ["applications/*"],
+  "eslint.workingDirectories": ["apps/*", "packages/*"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   }
