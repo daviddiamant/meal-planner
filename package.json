@@ -3,10 +3,10 @@
   "version": "2.0.0",
   "private": true,
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "lerna": "^4.0.0"
   },
   "scripts": {
-    "install": "npx lerna bootstrap",
+    "postinstall": "npx lerna bootstrap",
     "start": "npx lerna run --parallel start-both",
     "deploy": "npx lerna run --parallel deploy"
   }
