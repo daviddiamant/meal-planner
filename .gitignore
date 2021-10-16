@@ -1,5 +1,6 @@
 node_modules
 build
+dist
 
 SSL-key
 server.crt
@@ -8,8 +9,9 @@ server.pem
 serviceAccountKey.json
 imgtest.js
 import.js
-package-lock.json
 firebaseConfig.js
 appConfig.js
 firebaseConfig.ts
 appConfig.ts
+.cdk.staging
+cdk.out

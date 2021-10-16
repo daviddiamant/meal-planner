@@ -7,7 +7,7 @@
   },
   "scripts": {
     "postinstall": "npx lerna bootstrap",
-    "start": "npx lerna run --parallel start-both",
+    "start": "npx lerna run --parallel start:both",
     "deploy": "npx lerna run --parallel deploy"
   }
 }

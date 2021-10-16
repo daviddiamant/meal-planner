@@ -2,6 +2,10 @@
   "name": "@meal-planner/front",
   "version": "0.1.0",
   "private": true,
+  "files": ["build"],
+  "exports": {
+    "./": "./build"
+  },
   "dependencies": {
     "@meal-planner/types": "^1.0.0",
     "@react-hook/size": "^2.1.2",
@@ -53,7 +57,7 @@
   "scripts": {
     "start": "HTTPS=true craco start",
     "start:local": "REACT_APP_LOCAL_API=true npm start",
-    "start-both": "npm run start:local",
+    "start:both": "npm run start:local",
     "build": "craco build",
     "test": "craco test",
     "lint": "eslint . --fix",

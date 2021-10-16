@@ -1,5 +1,14 @@
 {
-  "eslint.workingDirectories": ["apps/*", "packages/*"],
+  "eslint.workingDirectories": [
+    {
+      "pattern": "applications/*"
+    },
+    {
+      "pattern": "packages/*"
+    }
+  ],
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   }
