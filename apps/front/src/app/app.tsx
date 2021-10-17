@@ -4,7 +4,7 @@ import { Link, Redirect, Route, Switch } from "react-router-dom";
 
 import { Heading } from "../components";
 import { useUser } from "../hooks";
-import { Home, Login } from "../pages";
+import { Home, Login, Recipe } from "../pages";
 import { globalStyling } from "../stitches.config";
 import { getJWTInterceptor } from "../utils";
 
@@ -42,6 +42,9 @@ export const App = () => {
         <Login />
       </Route>
       {!user && <Redirect to="/login" />}
+      <Route path="/recipe/:slug">
+        <Recipe />
+      </Route>
       <Route path="/">
         <Switch>
           <Route path="/search">

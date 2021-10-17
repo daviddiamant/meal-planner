@@ -22,7 +22,7 @@ describe("Components/Btn", () => {
   it("Should not trigger onClick when disabled", () => {
     const onClick = jest.fn();
     const { getByRole } = render(
-      <Btn onClick={onClick} disabled>
+      <Btn disabled onClick={onClick}>
         Test
       </Btn>
     );

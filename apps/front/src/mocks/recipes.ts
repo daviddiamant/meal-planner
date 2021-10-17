@@ -15,7 +15,7 @@ export const getRecipeMock = (aspectRatio = 1, slug = "some-slug") => ({
 });
 
 export const getRecipesHandler = (
-  pagination = [0, 100],
+  pagination = [0, 64],
   recipes?: Responses["Recipes"]
 ) =>
   successfulHandler<Responses["Recipes"]>(
@@ -29,6 +29,6 @@ export const getRecipesHandler = (
   );
 
 export const setupRecipesHandler = (
-  pagination = [0, 100],
+  pagination = [0, 64],
   recipes?: Responses["Recipes"]
 ) => server.use(getRecipesHandler(pagination, recipes));

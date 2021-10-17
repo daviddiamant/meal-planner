@@ -1,5 +1,9 @@
+import type { Palette } from "./palette";
+import type { Ingredient, Instruction } from "./recipe";
+
 export enum Paths {
   UserConfig = "/user",
+  Recipe = "/recipes/:slug",
   Recipes = "/recipes/:from/:to",
 }
 
@@ -9,6 +13,21 @@ export interface Responses {
     bookID: string;
     bookTitle: string;
     lowTitle: boolean;
+  };
+  Recipe: {
+    screenshot: string;
+    smallImage: string;
+    smallImageWidth: number;
+    smallImageHeight: number;
+    image: string;
+    imageWidth: number;
+    imageHeight: number;
+    imagePalette: Palette;
+    title: string;
+    description: string;
+    ingredients: Ingredient[];
+    instructions: Instruction | Instruction[];
+    url: string;
   };
   Recipes: {
     title: string;

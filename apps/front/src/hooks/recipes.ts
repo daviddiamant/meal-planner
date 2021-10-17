@@ -4,6 +4,15 @@ import { useQuery } from "react-query";
 import { API_URL } from "../appConfig";
 import { axiosDataGetter } from "../utils";
 
+export const useRecipe = (slug: string) =>
+  useQuery<Responses["Recipe"] | undefined>(
+    ["recipe", slug],
+    axiosDataGetter<Responses["Recipe"]>(
+      "get",
+      API_URL + Paths.Recipe.replace(":slug", slug)
+    )
+  );
+
 export const useRecipes = (
   from: number,
   to: number,

@@ -2,10 +2,10 @@ import { Redirect } from "react-router-dom";
 
 import { Btn, CenterBoth, Constrained } from "../../components";
 import { useUser } from "../../hooks";
-import { CSS, css, theme } from "../../stitches.config";
+import { CSS, css, Style, theme } from "../../stitches.config";
 import { EatingTogether } from "../../svgs";
 
-const style: CSS = {
+const style: Style = {
   outer: {
     height: "100%",
     flexDirection: "column",

@@ -1,4 +1,5 @@
 import { User } from "firebase/auth";
+import { MemoryRouter, Route, Switch } from "react-router-dom";
 
 import { useHasIntersected } from "../../hooks/intersection";
 import {
@@ -6,7 +7,7 @@ import {
   setupConfigHandler,
   setupRecipesHandler,
 } from "../../mocks";
-import { render, waitFor, within } from "../../utils";
+import { fireEvent, render, waitFor, within } from "../../utils";
 import { Home } from ".";
 
 jest.mock("@react-hook/size", () => () => [1000, null]);
@@ -23,7 +24,20 @@ jest.mock("../../hooks/intersection", () => ({
   useHasIntersected: jest.fn(() => false),
 }));
 
-describe("Home", () => {
+const MockRouter = () => (
+  <MemoryRouter initialEntries={["/"]}>
+    <Switch>
+      <Route path="/recipe/:slug">
+        <p data-testid="recipe">recipe</p>
+      </Route>
+      <Route path="/">
+        <Home />
+      </Route>
+    </Switch>
+  </MemoryRouter>
+);
+
+describe("Pages/Home", () => {
   it("Should not render the users title before its fetched", () => {
     setupConfigHandler({ bookTitle: "some title", delay: true });
 
@@ -42,15 +56,15 @@ describe("Home", () => {
     expect(banner).toHaveTextContent("some title");
   });
 
-  it("Should fetch 100 recipes on mount and then new ones when the first 100 has all been show", async () => {
+  it("Should fetch 64 recipes on mount and then new ones when the first 64 has all been show", async () => {
     const { queryAllByRole, rerender } = render(<Home />);
 
     await waitFor(() => {
       const recipes = queryAllByRole("gridcell");
-      expect(recipes).toHaveLength(100);
+      expect(recipes).toHaveLength(64);
     });
 
-    setupRecipesHandler([100, 200]);
+    setupRecipesHandler([64, 128]);
     (useHasIntersected as jest.Mock<boolean>).mockImplementation(() => true);
 
     rerender(<Home />);
@@ -58,16 +72,27 @@ describe("Home", () => {
     await waitFor(
       () => {
         const moreRecipes = queryAllByRole("gridcell");
-        expect(moreRecipes).toHaveLength(200);
+        expect(moreRecipes).toHaveLength(128);
       },
       { timeout: 2000, interval: 200 }
     );
   });
 
+  it("Should go to the reecipe when it is clicked", async () => {
+    const { findAllByRole, findByTestId } = render(<MockRouter />);
+
+    const recipes = await findAllByRole("link");
+    fireEvent.click(recipes[0]);
+
+    const mockProfile = await findByTestId("recipe");
+
+    expect(mockProfile).toHaveTextContent("recipe");
+  });
+
   describe("Should use the following heuristics to create a mosaic layout", () => {
     it("Should use left column if the previous heights are the same", async () => {
       setupRecipesHandler(
-        [0, 100],
+        [0, 64],
         [getRecipeMock(), getRecipeMock(), getRecipeMock()]
       );
 
@@ -82,7 +107,7 @@ describe("Home", () => {
 
     it("Should place the recipe in the column that have the least total height", async () => {
       setupRecipesHandler(
-        [0, 100],
+        [0, 64],
         [
           getRecipeMock(0.5, "some-slug-1"),
           getRecipeMock(3, "some-slug-2"),

@@ -13,6 +13,6 @@ Primary.parameters = {
   msw: [
     getConfigHandler(),
     getRecipesHandler(),
-    getRecipesHandler([100, 200], []),
+    getRecipesHandler([64, 128], []),
   ],
 };

@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { Link } from "react-router-dom";
 
+import { LazyImage } from "../../../components";
 import { styled } from "../../../stitches.config";
 import { Recipe as TRecipe } from "../../../types";
-import { RecipeImage } from ".";
 
 const Wrapper = styled(motion.div, {
   position: "relative",
@@ -11,33 +11,38 @@ const Wrapper = styled(motion.div, {
   width: "100%",
   aspectRatio: 1,
   marginBottom: "$2",
-  background: "$quaternaryGrey",
+  background: "$foreground",
   borderRadius: "$primary",
   overflow: "hidden",
   opacity: 0,
 });
 
-export const Recipe = ({ recipe }: { recipe: TRecipe }) => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  const { calculatedHeight, calculatedWidth, mediumImage, slug, smallImage } =
-    recipe;
-
-  return (
+export const Recipe = ({
+  recipe: {
+    calculatedHeight,
+    calculatedWidth,
+    mediumImage,
+    slug,
+    smallImage,
+    title,
+  },
+}: {
+  recipe: TRecipe;
+}) => (
+  <Link to={`/recipe/${slug}`}>
     <Wrapper
+      animate={{ opacity: 1 }}
       css={{
         height: `${calculatedHeight}px`,
         width: `${calculatedWidth}px`,
       }}
-      animate={{ opacity: 1 }}
-      transition={{ type: "spring", duration: 0.25 }}
-      role="gridcell"
-      ref={wrapperRef}
       data-testid={slug}
+      role="gridcell"
+      transition={{ type: "spring", duration: 0.25 }}
     >
       {mediumImage && smallImage && (
-        <RecipeImage recipe={recipe} wrapperRef={wrapperRef} />
+        <LazyImage alt={title} largeUrl={mediumImage} smallUrl={smallImage} />
       )}
     </Wrapper>
-  );
-};
+  </Link>
+);

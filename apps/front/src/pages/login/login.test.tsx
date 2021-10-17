@@ -20,7 +20,7 @@ const MockRouter = () => (
   </MemoryRouter>
 );
 
-describe("Login", () => {
+describe("Pages/Login", () => {
   it("Should wait for user status and return null meanwhile", () => {
     userHook.mockImplementation(() => ({
       user: undefined,

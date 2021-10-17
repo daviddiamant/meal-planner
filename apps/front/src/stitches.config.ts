@@ -27,6 +27,7 @@ const globalStyling = stitchesGlobal({
     fontSize: "4.3vw",
     lineHeight: "1.6",
     letterSpacing: "0.5px",
+    background: "$background",
     color: "$primaryText",
     "&.sb-main-padded.sb-show-main": htmlBody,
   },
@@ -40,4 +41,5 @@ const autoCallingCss = (styleObject: CSS) => css(styleObject)();
 
 export type Theme = typeof theme;
 export type CSS = Stitches.CSS<typeof config>;
+export type Style = Record<string, CSS>;
 export { autoCallingCss as css, globalStyling, styled, theme, utils };

@@ -4,7 +4,7 @@ import { Puff } from "react-loading-icons";
 
 import { Constrained } from "../../../components";
 import { useHasIntersected, useRecipes } from "../../../hooks";
-import { CSS, styled, theme, utils } from "../../../stitches.config";
+import { Style, styled, theme, utils } from "../../../stitches.config";
 import { Recipe } from "../../../types";
 import { Column } from ".";
 
@@ -18,14 +18,14 @@ const Loading = styled(Puff, {
   height: "6.5vh",
   margin: "$2",
 });
-const style: CSS = {
+const style: Style = {
   constrained: {
     flexDirection: "column",
   },
 };
 
 export const Masonry = () => {
-  const recipesPerPage = 100;
+  const recipesPerPage = 64;
   const gridRef = useRef(null);
   const endOfGridRef = useRef(null);
 
@@ -52,7 +52,7 @@ export const Masonry = () => {
   const columnWidth = gridWidth / 2 - imageMargin / 2;
 
   useEffect(() => {
-    if (!recipes) {
+    if (!recipes || !gridWidth) {
       return;
     }
 
@@ -81,7 +81,7 @@ export const Masonry = () => {
     setLeft(tempLeft.recipes);
     setRight(tempRight.recipes);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recipes]);
+  }, [recipes, gridWidth]);
 
   useEffect(() => {
     if (endShown && moreRecipes) {
@@ -94,13 +94,13 @@ export const Masonry = () => {
 
   return (
     <Constrained css={style.constrained as any}>
-      <Grid role="grid" ref={gridRef}>
+      <Grid ref={gridRef} role="grid">
         <Column recipes={left} testId="left-column" />
         <Column
+          loadMorePixelId={!isLoading ? pagination[1].toString() : undefined}
+          loadMorePixelRef={endOfGridRef}
           recipes={right}
           testId="right-column"
-          loadMorePixelRef={endOfGridRef}
-          loadMorePixelId={!isLoading ? pagination[1].toString() : undefined}
         />
       </Grid>
       {isLoading && moreRecipes ? (

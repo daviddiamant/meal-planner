@@ -50,7 +50,7 @@ export const HomeHeader = () => {
             <Heading css={style.title(!!lowTitle) as any} role="banner">
               {bookTitle}
             </Heading>
-            <Heading css={style.secondTitle as any} as="h3">
+            <Heading as="h3" css={style.secondTitle as any}>
               kokbok
             </Heading>
           </div>

@@ -24,11 +24,11 @@ export const Column = ({
 }) => (
   <Styled data-testid={testId}>
     {recipes.map((recipe, i) => (
-      <Recipe recipe={recipe} key={i}></Recipe>
+      <Recipe key={i} recipe={recipe}></Recipe>
     ))}
 
     {!!loadMorePixelId && (
-      <div id={loadMorePixelId} key={loadMorePixelId} ref={loadMorePixelRef} />
+      <div key={loadMorePixelId} ref={loadMorePixelRef} id={loadMorePixelId} />
     )}
   </Styled>
 );

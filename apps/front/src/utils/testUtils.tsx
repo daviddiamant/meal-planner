@@ -1,6 +1,7 @@
 import { render, RenderOptions } from "@testing-library/react";
 import { ReactElement, ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { MemoryRouter } from "react-router-dom";
 
 export const queryClient = new QueryClient();
 
@@ -9,7 +10,9 @@ const DecoratedRender = ({
 }: {
   children?: ReactNode;
 }): ReactElement => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  <MemoryRouter initialEntries={["/"]}>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  </MemoryRouter>
 );
 
 const customRender = (

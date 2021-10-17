@@ -10,7 +10,7 @@ export const baseTheme = {
     headerHeight: "180px",
   },
   radii: {
-    primary: "18px",
+    primary: "28px",
   },
   fonts: {
     bread: '"Roboto", sans-serif',
