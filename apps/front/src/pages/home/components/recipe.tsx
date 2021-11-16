@@ -9,7 +9,6 @@ const Wrapper = styled(motion.div, {
   position: "relative",
   display: "block",
   width: "100%",
-  aspectRatio: 1,
   marginBottom: "$2",
   background: "$foreground",
   borderRadius: "$primary",

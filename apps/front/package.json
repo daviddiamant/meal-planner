@@ -9,6 +9,7 @@
     "./": "./build"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.4",
     "@meal-planner/types": "^1.0.0",
     "@react-hook/size": "^2.1.2",
     "@stitches/react": "^1.2.0",

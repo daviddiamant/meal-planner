@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useState } from "react";
 
 import { IMAGE_URL } from "../../appConfig";
 import { useHasIntersected } from "../../hooks";
@@ -9,13 +9,13 @@ export interface LazyImageProps {
   alt: string;
   largeUrl: string;
   smallUrl: string;
-  storybook?: boolean;
+  onDisplayed?: () => void;
 }
 
 const ImageWrapper = styled("div", {
   position: "relative",
-  minHeight: "1px",
   width: "100%",
+  height: "100%",
 });
 
 const Image = styled(motion.img, {
@@ -40,21 +40,22 @@ const Image = styled(motion.img, {
 export const LazyImage = ({
   alt,
   largeUrl,
+  onDisplayed,
   smallUrl,
-  storybook,
 }: LazyImageProps) => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  // Keep it in state to trigger a re-hook of useHasIntersected
+  const [wrapperRef, setWrapperRef] = useState<HTMLDivElement | null>(null);
 
-  const smallShown = useHasIntersected(wrapperRef.current, 100, {
+  const smallShown = useHasIntersected(wrapperRef, 100, {
     rootMargin: "1000px",
   });
-  const shown = useHasIntersected(wrapperRef.current, 400, {
+  const shown = useHasIntersected(wrapperRef, 400, {
     rootMargin: "600px",
   });
 
   return (
-    <ImageWrapper ref={wrapperRef}>
-      {(smallShown || storybook) && (
+    <ImageWrapper ref={(ref) => ref && setWrapperRef(ref)}>
+      {smallShown && (
         <Image
           alt={`Förhandsvisning - ${alt}`}
           animate={{ opacity: 1 }}
@@ -63,12 +64,13 @@ export const LazyImage = ({
           transition={{ type: "spring", duration: 0.2 }}
         />
       )}
-      {(shown || storybook) && (
+      {shown && (
         <Image
           alt={alt}
           animate={{ opacity: 1 }}
           src={IMAGE_URL + largeUrl}
           transition={{ type: "spring", duration: 0.2 }}
+          onAnimationComplete={onDisplayed}
         />
       )}
     </ImageWrapper>

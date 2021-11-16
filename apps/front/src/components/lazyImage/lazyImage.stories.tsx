@@ -16,5 +16,4 @@ primary.args = {
   largeUrl:
     "/recipe-images/farslimpa-med-graddsas-lingon-och-gronkal/image.jpeg",
   alt: "Some alt",
-  storybook: true,
 };

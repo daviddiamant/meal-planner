@@ -22,8 +22,8 @@ describe("Components/LazyImage", () => {
   });
 
   it("Should show small image when it intersects", async () => {
-    (useHasIntersected as jest.Mock<boolean>).mockImplementationOnce(
-      () => true
+    (useHasIntersected as jest.Mock<boolean>).mockImplementation(
+      (_, delay) => delay === 100
     );
 
     const { findAllByRole, queryByAltText } = render(
