@@ -8,7 +8,7 @@ export default {
   title: "Pages/Home",
 } as Meta;
 
-export const Primary = () => <Home />;
+export const Primary = (): JSX.Element => <Home />;
 Primary.parameters = {
   msw: [
     getConfigHandler(),

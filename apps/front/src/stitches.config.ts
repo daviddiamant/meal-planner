@@ -38,7 +38,13 @@ const globalStyling = stitchesGlobal({
   "*::after": { boxSizing: "border-box" },
 });
 
-const autoCallingCss = (styleObject: CSS) => css(styleObject)();
+const autoCallingCss = (
+  styleObject: CSS
+): string & {
+  className: string;
+  selector: string;
+  props: Record<string, unknown>;
+} => css(styleObject)();
 
 export type Theme = typeof theme;
 export type CSS = Stitches.CSS<typeof config>;

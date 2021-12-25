@@ -14,7 +14,7 @@ export const EatingTogether = ({
       primaryYellow: { value: yellow },
     },
   },
-}: EatingTogetherProps) => (
+}: EatingTogetherProps): JSX.Element => (
   <svg
     className={className}
     data-name="Layer 1"

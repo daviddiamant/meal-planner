@@ -21,7 +21,7 @@ export const Column = ({
   loadMorePixelRef?: RefObject<HTMLDivElement>;
   recipes: TRecipe[];
   testId?: string;
-}) => (
+}): JSX.Element => (
   <Styled data-testid={testId}>
     {recipes.map((recipe, i) => (
       <Recipe key={i} recipe={recipe}></Recipe>

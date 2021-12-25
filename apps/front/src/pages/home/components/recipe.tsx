@@ -27,7 +27,7 @@ export const Recipe = ({
   },
 }: {
   recipe: TRecipe;
-}) => (
+}): JSX.Element => (
   <Link to={`/recipe/${slug}`}>
     <Wrapper
       animate={{ opacity: 1 }}

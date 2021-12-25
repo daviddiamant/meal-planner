@@ -7,4 +7,4 @@ export default {
   title: "Pages/Login",
 } as Meta;
 
-export const Primary = () => <Login />;
+export const Primary = (): JSX.Element => <Login />;

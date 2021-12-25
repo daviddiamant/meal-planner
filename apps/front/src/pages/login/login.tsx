@@ -23,7 +23,7 @@ const style: Style = {
   },
 };
 
-export const Login = () => {
+export const Login = (): JSX.Element | null => {
   const { login, user } = useUser();
 
   if (typeof user === "undefined") {

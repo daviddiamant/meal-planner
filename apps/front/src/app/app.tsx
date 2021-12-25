@@ -8,7 +8,6 @@ import { useUser } from "../hooks";
 import { Home, Login, Recipe } from "../pages";
 import { globalStyling } from "../stitches.config";
 import { getJWTInterceptor } from "../utils";
-import { getMetaValue } from "../utils/importMeta";
 
 export const App = (): JSX.Element | null => {
   useRegisterSW({});

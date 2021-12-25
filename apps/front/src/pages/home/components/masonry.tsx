@@ -24,7 +24,7 @@ const style: Style = {
   },
 };
 
-export const Masonry = () => {
+export const Masonry = (): JSX.Element => {
   const recipesPerPage = 64;
   const gridRef = useRef(null);
   const endOfGridRef = useRef(null);

@@ -3,7 +3,7 @@ import { User } from "firebase/auth";
 
 import { API_URL } from "../appConfig";
 
-export const getJWTInterceptor = (user: User | null | undefined) =>
+export const getJWTInterceptor = (user: User | null | undefined): number =>
   axios.interceptors.request.use(async (config) => {
     const isOwnAPI = config.url?.includes(API_URL);
     if (!isOwnAPI) {

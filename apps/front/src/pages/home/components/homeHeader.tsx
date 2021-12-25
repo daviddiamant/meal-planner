@@ -37,7 +37,7 @@ const style = {
   } as CSS,
 };
 
-export const HomeHeader = () => {
+export const HomeHeader = (): JSX.Element => {
   const { user } = useUser();
   const { data: userConfig } = useUserConfig(user);
   const { bookTitle, lowTitle } = userConfig || {};

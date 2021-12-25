@@ -42,7 +42,7 @@ export const LazyImage = ({
   largeUrl,
   onDisplayed,
   smallUrl,
-}: LazyImageProps) => {
+}: LazyImageProps): JSX.Element => {
   // Keep it in state to trigger a re-hook of useHasIntersected
   const [wrapperRef, setWrapperRef] = useState<HTMLDivElement | null>(null);
 

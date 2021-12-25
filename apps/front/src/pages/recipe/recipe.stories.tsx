@@ -7,4 +7,4 @@ export default {
   title: "Pages/Recipe",
 } as Meta;
 
-export const Primary = () => <Recipe />;
+export const Primary = (): JSX.Element => <Recipe />;

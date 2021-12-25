@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 
 export const useHasIntersected = (
   target: Element | null,
-  confirmationTime: number = 200,
+  confirmationTime = 200,
   options: IntersectionObserverInit = {}
-) => {
+): boolean => {
   const [hasIntersected, setHasIntersected] = useState(false);
 
   const intersecting = useRef(false);

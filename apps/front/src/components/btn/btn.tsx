@@ -34,7 +34,11 @@ const Outer = styled("div", {
 });
 const style: Style = { inner: { flex: 1 } };
 
-export const Btn = ({ children, disabled = false, onClick }: BtnProps) => (
+export const Btn = ({
+  children,
+  disabled = false,
+  onClick,
+}: BtnProps): JSX.Element => (
   <Outer
     disabled={disabled}
     role="button"
