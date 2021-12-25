@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import { globalStyling } from "../src/stitches.config";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -27,9 +28,11 @@ export const decorators = [
     globalStyling();
 
     return (
-      <QueryClientProvider client={queryClient}>
-        <Story />
-      </QueryClientProvider>
+      <Router>
+        <QueryClientProvider client={queryClient}>
+          <Story />
+        </QueryClientProvider>
+      </Router>
     );
   },
 ]

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { User } from "firebase/auth";
-import { MemoryRouter } from "react-router-dom";
 
 import * as userHooks from "../hooks/user";
 import { setupConfigHandler } from "../mocks";
@@ -17,7 +16,7 @@ jest.mock("../hooks/intersection", () => ({
 const mockLogInStatus = (status: undefined | null | User) =>
   userHook.mockImplementation(() => ({
     user: status,
-    login: async () => {},
+    login: async () => undefined,
   }));
 
 describe("App", () => {
@@ -32,11 +31,7 @@ describe("App", () => {
   it("Should redirect if user is not logged in", async () => {
     mockLogInStatus(null);
 
-    const { findByRole } = render(
-      <MemoryRouter initialEntries={["/"]}>
-        <App />
-      </MemoryRouter>
-    );
+    const { findByRole } = render(<App />);
     const loginButton = await findByRole("button");
 
     expect(loginButton).toHaveTextContent("Logga in");
@@ -46,11 +41,7 @@ describe("App", () => {
     mockLogInStatus({ uid: "someID" } as User);
     setupConfigHandler({ bookTitle: "Book title" });
 
-    const { findByRole } = render(
-      <MemoryRouter initialEntries={["/"]}>
-        <App />
-      </MemoryRouter>
-    );
+    const { findByRole } = render(<App />);
     const banner = await findByRole("banner");
 
     expect(banner).toHaveTextContent("Book title");
@@ -59,21 +50,13 @@ describe("App", () => {
   it("Should remove/add axios interception depending on user status", () => {
     mockLogInStatus({ uid: "someID" } as User);
 
-    const { rerender } = render(
-      <MemoryRouter initialEntries={["/"]}>
-        <App />
-      </MemoryRouter>
-    );
+    const { rerender } = render(<App />);
 
     expect(axiosInterception).toHaveBeenCalledTimes(1);
     expect(removeAxiosInterception).toHaveBeenCalledTimes(0);
 
     mockLogInStatus(null);
-    rerender(
-      <MemoryRouter initialEntries={["/"]}>
-        <App />
-      </MemoryRouter>
-    );
+    rerender(<App />);
 
     expect(removeAxiosInterception).toHaveBeenCalledTimes(1);
   });

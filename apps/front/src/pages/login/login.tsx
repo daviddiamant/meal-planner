@@ -1,4 +1,4 @@
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import { Btn, CenterBoth, Constrained } from "../../components";
 import { useUser } from "../../hooks";
@@ -31,7 +31,7 @@ export const Login = () => {
   }
 
   return user ? (
-    <Redirect to="/profile" />
+    <Navigate to="/profile" />
   ) : (
     <Constrained css={style.outer as any}>
       <CenterBoth css={style.outer as any}>

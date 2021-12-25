@@ -1,4 +1,8 @@
-import { render, RenderOptions } from "@testing-library/react";
+import {
+  render as defaultRender,
+  RenderOptions,
+  RenderResult,
+} from "@testing-library/react";
 import { ReactElement, ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
@@ -11,14 +15,27 @@ const DecoratedRender = ({
   children?: ReactNode;
 }): ReactElement => (
   <MemoryRouter initialEntries={["/"]}>
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <RenderWithoutRouter>{children}</RenderWithoutRouter>
   </MemoryRouter>
 );
 
-const customRender = (
+const RenderWithoutRouter = ({
+  children,
+}: {
+  children?: ReactNode;
+}): ReactElement => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
+
+export const render = (
   ui: ReactElement,
   options?: Omit<RenderOptions, "wrapper">
-) => render(ui, { wrapper: DecoratedRender, ...options });
+): RenderResult => defaultRender(ui, { wrapper: DecoratedRender, ...options });
+
+export const renderWitoutRouter = (
+  ui: ReactElement,
+  options?: Omit<RenderOptions, "wrapper">
+): RenderResult =>
+  defaultRender(ui, { wrapper: RenderWithoutRouter, ...options });
 
 export * from "@testing-library/react";
-export { customRender as render };

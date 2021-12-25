@@ -1,0 +1,19 @@
+{
+  "jsc": {
+    "target": "es2016",
+    "parser": {
+      "syntax": "typescript",
+      "tsx": true,
+      "dynamicImport": true
+    },
+    "transform": {
+      "react": {
+        "runtime": "automatic",
+        "importSource": "React"
+      }
+    }
+  },
+  "module": {
+    "type": "es6"
+  }
+}

@@ -4,7 +4,8 @@ import { createStitches } from "@stitches/react";
 import { baseTheme, lightTheme } from "./themes";
 
 const utils = {
-  getNumericFromString: (value: string) => parseFloat(value.replace(/\D/g, "")),
+  getNumericFromString: (value: string): number =>
+    parseFloat(value.replace(/\D/g, "")),
 };
 
 const {

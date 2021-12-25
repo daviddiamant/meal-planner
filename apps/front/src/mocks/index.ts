@@ -1,13 +1,17 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { rest } from "msw";
-import { setupServer, SetupServerApi } from "msw/node";
+import { SetupServerApi } from "msw/node";
 
-import { setupConfigHandler, setupRecipesHandler } from ".";
+import { setupRecipesHandler } from "./recipes";
+import { setupConfigHandler } from "./user";
+
 export * from "./recipes";
 export * from "./user";
 
-// Can only create a server in a node process
-export const server = (typeof global.process !== "undefined" &&
-  setupServer()) as SetupServerApi;
+// Only create the server when run in Jest
+export const server = (
+  process?.env?.NODE_ENV === "test" ? require("msw/node").setupServer() : {}
+) as SetupServerApi;
 
 export const setupBaseHandlers = () => {
   setupConfigHandler();

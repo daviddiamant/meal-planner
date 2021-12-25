@@ -63,7 +63,7 @@ export class FrontendStack extends Stack {
     });
 
     new BucketDeployment(this, `${this.logicalId}Deploy`, {
-      sources: [Source.asset("node_modules/@meal-planner/front/build")],
+      sources: [Source.asset("node_modules/@meal-planner/front/dist")],
       destinationBucket: storage,
     });
   }

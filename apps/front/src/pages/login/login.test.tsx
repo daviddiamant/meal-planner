@@ -1,22 +1,18 @@
 import { User } from "firebase/auth";
-import { MemoryRouter, Route, Switch } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import * as userHooks from "../../hooks/user";
-import { render } from "../../utils";
+import { render, renderWitoutRouter } from "../../utils";
 import { Login } from ".";
 
 const userHook = jest.spyOn(userHooks, "useUser");
 
 const MockRouter = () => (
   <MemoryRouter initialEntries={["/login"]}>
-    <Switch>
-      <Route path="/login">
-        <Login />
-      </Route>
-      <Route path="/profile">
-        <p data-testid="profile">profile</p>
-      </Route>
-    </Switch>
+    <Routes>
+      <Route element={<Login />} path="/login" />
+      <Route element={<p data-testid="profile">profile</p>} path="/profile" />
+    </Routes>
   </MemoryRouter>
 );
 
@@ -24,7 +20,7 @@ describe("Pages/Login", () => {
   it("Should wait for user status and return null meanwhile", () => {
     userHook.mockImplementation(() => ({
       user: undefined,
-      login: async () => {},
+      login: async () => undefined,
     }));
 
     const login = render(<Login />);
@@ -35,10 +31,10 @@ describe("Pages/Login", () => {
   it("Should not redirect if user is not logged in", async () => {
     userHook.mockImplementation(() => ({
       user: null,
-      login: async () => {},
+      login: async () => undefined,
     }));
 
-    const { findByRole } = render(<MockRouter />);
+    const { findByRole } = renderWitoutRouter(<MockRouter />);
     const loginButton = await findByRole("button");
 
     expect(loginButton).toHaveTextContent("Logga in");
@@ -47,10 +43,10 @@ describe("Pages/Login", () => {
   it("Should redirect if user is logged in", async () => {
     userHook.mockImplementation(() => ({
       user: { uid: "someID" } as User,
-      login: async () => {},
+      login: async () => undefined,
     }));
 
-    const { findByTestId } = render(<MockRouter />);
+    const { findByTestId } = renderWitoutRouter(<MockRouter />);
     const mockProfile = await findByTestId("profile");
 
     expect(mockProfile).toHaveTextContent("profile");

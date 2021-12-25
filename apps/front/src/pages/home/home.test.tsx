@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { MemoryRouter, Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { useHasIntersected } from "../../hooks/intersection";
 import {
@@ -16,7 +16,7 @@ jest.mock("../../hooks/user", () => ({
   ...jest.requireActual("../../hooks/user"),
   useUser: () => ({
     user: { uid: "someID" } as User,
-    login: async () => {},
+    login: async () => undefined,
   }),
 }));
 
@@ -24,17 +24,11 @@ jest.mock("../../hooks/intersection", () => ({
   useHasIntersected: jest.fn(() => false),
 }));
 
-const MockRouter = () => (
-  <MemoryRouter initialEntries={["/"]}>
-    <Switch>
-      <Route path="/recipe/:slug">
-        <p data-testid="recipe">recipe</p>
-      </Route>
-      <Route path="/">
-        <Home />
-      </Route>
-    </Switch>
-  </MemoryRouter>
+const MockRoutes = () => (
+  <Routes>
+    <Route element={<p data-testid="recipe">recipe</p>} path="/recipe/:slug" />
+    <Route element={<Home />} path="/" />
+  </Routes>
 );
 
 describe("Pages/Home", () => {
@@ -79,7 +73,7 @@ describe("Pages/Home", () => {
   });
 
   it("Should go to the reecipe when it is clicked", async () => {
-    const { findAllByRole, findByTestId } = render(<MockRouter />);
+    const { findAllByRole, findByTestId } = render(<MockRoutes />);
 
     const recipes = await findAllByRole("link");
     fireEvent.click(recipes[0]);

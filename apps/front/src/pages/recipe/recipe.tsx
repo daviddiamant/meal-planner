@@ -1,7 +1,7 @@
 import { ChevronLeftIcon } from "@heroicons/react/outline";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Constrained, LazyImage } from "../../components";
 import { useRecipe } from "../../hooks";
@@ -63,13 +63,13 @@ const style: Style = {
   },
 };
 
-export const Recipe = () => {
-  const { slug } = useParams<{ slug: string }>();
+export const Recipe = (): JSX.Element => {
+  const { slug } = useParams();
 
   const [showButtons, setShowButtons] = useState(false);
 
-  const { data: recipe } = useRecipe(slug);
-  const history = useHistory();
+  const { data: recipe } = useRecipe(slug ?? "");
+  const navigate = useNavigate();
 
   const { image, imageHeight, imageWidth, smallImage, title } = recipe ?? {};
   const aspectRatio = (imageWidth ?? 1) / (imageHeight ?? 1);
@@ -103,7 +103,7 @@ export const Recipe = () => {
             animate={showButtons ? "shown" : "hidden"}
             role="link"
             variants={imageButtonVariants}
-            onClick={() => history.goBack()}
+            onClick={() => navigate(-1)}
           >
             <Back />
           </ImageButton>

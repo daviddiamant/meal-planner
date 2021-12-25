@@ -2,127 +2,74 @@
   "name": "@meal-planner/front",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "files": [
-    "build"
+    "dist"
   ],
   "exports": {
-    "./": "./build"
+    "./": "./dist"
+  },
+  "scripts": {
+    "build": "tsc && vite build",
+    "build:storybook": "build-storybook",
+    "serve": "vite preview",
+    "start": "vite",
+    "start:local": "APP_LOCAL_API=true vite",
+    "storybook": "start-storybook -p 6006",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "dependencies": {
-    "@heroicons/react": "^1.0.4",
-    "@meal-planner/types": "^1.0.0",
+    "@heroicons/react": "^1.0.5",
     "@react-hook/size": "^2.1.2",
-    "@stitches/react": "^1.2.0",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "@types/jest": "^26.0.24",
-    "@types/node": "^12.20.16",
-    "@types/react": "^17.0.14",
-    "@types/react-dom": "^17.0.9",
-    "axios": "^0.21.1",
-    "firebase": "^9.0.0-beta.7",
-    "framer-motion": "^4.1.17",
+    "@stitches/react": "^1.2.6",
+    "axios": "^0.24.0",
+    "firebase": "^9.6.1",
+    "framer-motion": "^5.5.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-loading-icons": "^1.0.6",
-    "react-query": "^3.21.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
-    "typescript": "^4.3.5",
-    "web-vitals": "^1.1.2"
+    "react-query": "^3.34.6",
+    "react-router-dom": "^6.2.1"
   },
   "devDependencies": {
-    "@craco/craco": "^6.3.0",
-    "@storybook/addon-actions": "^6.3.5",
-    "@storybook/addon-essentials": "^6.3.5",
-    "@storybook/addon-links": "^6.3.5",
-    "@storybook/node-logger": "^6.3.5",
-    "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.3.5",
-    "@types/react-router-dom": "^5.1.8",
-    "aws-cdk": "^1.125.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-react": "^7.26.1",
-    "eslint-plugin-simple-import-sort": "^7.0.0",
-    "eslint-plugin-sort-destructure-keys": "^1.3.5",
-    "msw": "^0.35.0",
-    "msw-storybook-addon": "^1.3.0",
-    "prettier": "^2.3.2",
-    "ts-loader": "^8.3.0",
-    "workbox-core": "^6.3.0",
-    "workbox-expiration": "^6.3.0",
-    "workbox-precaching": "^6.3.0",
-    "workbox-routing": "^6.3.0",
-    "workbox-strategies": "^6.3.0",
-    "workbox-webpack-plugin": "^6.3.0"
-  },
-  "scripts": {
-    "start": "HTTPS=true craco start",
-    "start:local": "REACT_APP_LOCAL_API=true npm start",
-    "start:both": "npm run start:local",
-    "build": "craco build",
-    "test": "craco test",
-    "lint": "eslint src --fix",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
-  },
-  "eslintConfig": {
-    "plugins": [
-      "simple-import-sort",
-      "sort-destructure-keys"
-    ],
-    "extends": [
-      "plugin:prettier/recommended",
-      "plugin:react/jsx-runtime",
-      "plugin:react/recommended",
-      "prettier",
-      "react-app",
-      "react-app/jest"
-    ],
-    "rules": {
-      "react/jsx-sort-props": [
-        2,
-        {
-          "callbacksLast": true,
-          "shorthandFirst": false,
-          "shorthandLast": true,
-          "ignoreCase": true,
-          "noSortAlphabetically": false,
-          "reservedFirst": true
-        }
-      ],
-      "react/jsx-uses-react": "off",
-      "simple-import-sort/exports": "error",
-      "simple-import-sort/imports": "error",
-      "sort-destructure-keys/sort-destructure-keys": 2,
-      "react/react-in-jsx-scope": "off"
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/*.stories.*"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "@meal-planner/eslint-config": "^1.0.0",
+    "@meal-planner/types": "^1.0.0",
+    "@rushstack/eslint-patch": "^1.1.0",
+    "@storybook/addon-actions": "^6.4.9",
+    "@storybook/addon-essentials": "^6.4.9",
+    "@storybook/addon-links": "^6.4.9",
+    "@storybook/react": "^6.4.9",
+    "@swc/core": "^1.2.122",
+    "@swc/jest": "^0.2.15",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@types/jest": "^27.0.3",
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "@vitejs/plugin-react": "^1.1.3",
+    "eslint": "^7.32.0",
+    "jest": "^27.4.5",
+    "jest-environment-jsdom": "^27.4.4",
+    "msw-storybook-addon": "^1.5.0",
+    "prettier": "^2.5.1",
+    "sb": "^6.4.9",
+    "storybook-builder-vite": "^0.1.12",
+    "typescript": "^4.5.4",
+    "vite": "^2.7.6",
+    "vite-plugin-pwa": "^0.11.12",
+    "workbox-build": "^6.4.2",
+    "workbox-core": "^6.4.2",
+    "workbox-expiration": "^6.4.2",
+    "workbox-precaching": "^6.4.2",
+    "workbox-routing": "^6.4.2",
+    "workbox-strategies": "^6.4.2"
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-typescript"
+    ]
   }
 }

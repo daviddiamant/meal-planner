@@ -15,3 +15,8 @@ firebaseConfig.ts
 appConfig.ts
 .cdk.staging
 cdk.out
+
+.DS_Store
+dist-ssr
+*.local
+lerna-debug.log
