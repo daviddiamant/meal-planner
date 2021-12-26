@@ -97,25 +97,16 @@ export const processImage = async (json) => {
     return;
   }
 
-  const headers = imageResponse.headers.raw();
-  if (
-    !(
-      headers["content-type"] &&
-      headers["content-type"].some(
-        (contentType) => contentType.indexOf("image") > -1
-      )
-    )
-  ) {
+  const contentType = imageResponse.headers.get("content-type");
+  if (!imageResponse.headers.get("content-type").includes("image")) {
     return;
   }
 
-  const extension = headers["content-type"]
-    .find((contentType) => contentType.indexOf("image") > -1)
-    .split("/")
-    .pop();
-  const imageBuffer = await imageResponse.buffer();
+  const extension = contentType.split("/").at(-1);
+  const imageArrayBuffer = await imageResponse.arrayBuffer();
+  const imageBody = Buffer.from(new Uint8Array(imageArrayBuffer));
 
-  const imageMeta = await saveAllSizes(imageBuffer, extension, slug);
+  const imageMeta = await saveAllSizes(imageBody, extension, slug);
   const { updateRecipe } = recipesDAL();
   await updateRecipe(recipeId, imageMeta);
 };

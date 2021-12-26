@@ -14,9 +14,8 @@ export const getWeek = async (weekID) => {
 
 export const addToWeek = async (recipe) => {
   const db = await getDB(process.env.WEEK_DB);
-  const added = await db.collection("planned").insertOne(recipe);
 
-  return added;
+  return db.collection("planned").insertOne(recipe);
 };
 
 export const removeFromWeek = async (slug, weekID) => {

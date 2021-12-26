@@ -8,8 +8,8 @@ export const recipeGetterController = (prefix) => {
   const router = new Router({ prefix });
 
   router.get(["/", "/:from/:to"], authMiddleware, async (ctx) => {
-    const from = parseInt(ctx.params.from, 10);
-    const to = parseInt(ctx.params.to, 10);
+    const from = parseInt(ctx.params.from ?? 0, 10);
+    const to = parseInt(ctx.params.to ?? Number.MAX_SAFE_INTEGER, 10);
 
     if (to < from) {
       ctx.response.status = 400;

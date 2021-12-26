@@ -1,26 +1,27 @@
-import * as Sentry from "@sentry/serverless";
-import firebase from "firebase-admin";
+import { AWSLambda } from "@sentry/serverless";
+import { credential } from "firebase-admin";
+import { initializeApp } from "firebase-admin/app";
+import { getAuth } from "firebase-admin/auth";
 
 import { initLambdaSentry } from "../../common/sentry";
 import { getUser } from "./service";
 import serviceAccount from "./serviceAccountKey.json";
 
-firebase.initializeApp({
-  credential: firebase.credential.cert(serviceAccount),
+const firebaseApp = initializeApp({
+  credential: credential.cert(serviceAccount),
   databaseURL: process.env.FIREBASE_ADMIN_URL,
 });
 initLambdaSentry();
 
 const getJWT = (event) => {
-  let JWT;
   try {
-    JWT = event.authorizationToken || null;
-    JWT = JWT.split(" ");
-    JWT = JWT[0] === "Bearer" ? JWT[1] : null;
+    const authToken = event.authorizationToken || null;
+    const authTokenParts = authToken.split(" ");
+
+    return authTokenParts[0] === "Bearer" ? authTokenParts[1] : null;
   } catch (error) {
-    JWT = null;
+    return null;
   }
-  return JWT;
 };
 
 const generatePolicy = (principalId, user, localUser, effect, resource) => ({
@@ -41,21 +42,16 @@ const generatePolicy = (principalId, user, localUser, effect, resource) => ({
   },
 });
 
-export const authenticate = Sentry.AWSLambda.wrapHandler(
-  async (event, context) => {
-    context.callbackWaitsForEmptyEventLoop = false;
+export const authenticate = AWSLambda.wrapHandler(async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
 
-    const JWT = getJWT(event);
-    if (!JWT) {
-      throw new Error("Invalid token");
-    }
+  const JWT = getJWT(event);
+  if (!JWT) {
+    throw new Error("Invalid token");
+  }
 
-    let user;
-    try {
-      user = await firebase.auth().verifyIdToken(JWT);
-    } catch (error) {
-      throw new Error("Unauthorized");
-    }
+  try {
+    const user = await getAuth(firebaseApp).verifyIdToken(JWT);
 
     if (!user?.uid) {
       throw new Error("Unauthorized");
@@ -64,5 +60,7 @@ export const authenticate = Sentry.AWSLambda.wrapHandler(
     const localUser = await getUser(user.uid);
 
     return generatePolicy("user", user, localUser, "Allow", event.methodArn);
+  } catch (error) {
+    throw new Error("Unauthorized");
   }
-);
+});

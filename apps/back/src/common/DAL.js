@@ -1,4 +1,4 @@
-import { ObjectID } from "mongodb";
+import { ObjectId } from "mongodb";
 
 import { getFilteredRecipe, getIndex } from "./algolia";
 import { getDB } from "./db";
@@ -11,7 +11,7 @@ export const recipesDAL = () => ({
   updateRecipe: async (recipeId, set) => {
     const db = await getDB(process.env.RECIPES_DB);
     await db.collection("recipes").updateOne(
-      { _id: ObjectID(recipeId) },
+      { _id: ObjectId(recipeId) },
       {
         $set: set,
       }

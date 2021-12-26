@@ -2,12 +2,7 @@ import { uploadImage } from "../../common/s3";
 import { notifyImageSaver, notifyJsonLDParser } from "../../common/sqs";
 import { slugify } from "../../common/utils";
 import { alreadyAdded, alreadyAddedBySlug, saveRecipe } from "./DAL";
-import {
-  getNetworkIdleType,
-  getPage,
-  getPuppeteer,
-  injectDependencies,
-} from "./puppeteer";
+import { getPage, getPuppeteer, injectDependencies } from "./puppeteer";
 
 export const addRecipe = async (bookID, url) => {
   if (await alreadyAdded(bookID, url)) {
@@ -15,6 +10,7 @@ export const addRecipe = async (bookID, url) => {
   }
 
   let { recipe, screenshot } = await scrapeRecipe(url);
+
   const slug = await getAvailableSlug(bookID, recipe.title);
   const folderName = process.env.S3_IMAGE_BUCKET_FOLDER_NAME;
   recipe = {
@@ -28,6 +24,7 @@ export const addRecipe = async (bookID, url) => {
   await uploadImage(slug, "screenshot.jpeg", screenshot);
 
   const inserted = await saveRecipe(recipe);
+
   if (!inserted.insertedId) {
     return false;
   }
@@ -69,11 +66,13 @@ const scrapeRecipe = async (url) => {
   try {
     await page.goto(url, {
       timeout: 120000,
-      waitUntil: ["load", getNetworkIdleType(url)],
+      waitUntil: ["load", "domcontentloaded", "networkidle2"],
     });
+
     await page.waitForSelector("body");
   } catch (err) {
     await page.close();
+
     throw err;
   }
 

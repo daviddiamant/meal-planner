@@ -1,16 +1,16 @@
 import * as SentryNode from "@sentry/node";
-import * as SentryLambda from "@sentry/serverless";
+import { AWSLambda } from "@sentry/serverless";
 import * as SentryTracing from "@sentry/tracing";
 
 const initParams = {
   environment: process.env.LOCAL ? "local" : "production",
   dsn: process.env.SENTRY_DSN,
-  tracesSampleRate: process.env.LOCAL ? 1 : 0.25,
+  tracesSampleRate: 1,
 };
 
 export const initLambdaSentry = () => {
   if (!process.env.SENTRY_LAMBDA_REGISTRED) {
-    SentryLambda.AWSLambda.init({ initParams });
+    AWSLambda.init({ initParams });
 
     SentryTracing.addExtensionMethods();
 

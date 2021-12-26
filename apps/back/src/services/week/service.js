@@ -18,7 +18,7 @@ export const addToWeek = async (weekID, bookID, slug) => {
     weekID,
   });
 
-  return inserted.insertedCount > 0;
+  return !!inserted?.insertedId;
 };
 
 export const removeFromWeek = async (weekID, slug) => {

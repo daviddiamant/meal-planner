@@ -1,5 +1,5 @@
 SHARP_VERSION=$(npm show sharp version)
-NODE_VERSION=12.19.0
+NODE_VERSION=14.18.2
 TARBALL=sharp-$SHARP_VERSION-aws-lambda-linux-x64-node-$NODE_VERSION.zip
 
 cd nodejs

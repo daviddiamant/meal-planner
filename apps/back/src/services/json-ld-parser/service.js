@@ -2,7 +2,8 @@ import sanitizeHtml from "sanitize-html";
 
 import { recipesDAL } from "../../common/DAL";
 
-const regexForUnits = /(^(ev|eventuellt|kanske|valfritt|\s)*(\d|en|ett|två|tre|fyra|fem|sex|sju|åtta|nio|tio|några|nått|någon|något|[\u00BC-\u00BE\u2150-\u215E]|ca|cirka|ungefär|ung|typ|ish|nästan)+(\d|\/|\.|,|\s|dussin|tjog|rågat|stor|liten|medelstor|mellan|[\u00BC-\u00BE\u2150-\u215E]|-)*)(knyte|knyten|ark|skiva|skivor|stjälk|stjälkar|kvist|kvistar|sats|satsar|halv|hel|klyfta|klyftor|kruka|krukor|flaska|flaskor|ask|askar|paket|förpackning|förpackningar|förp|pack|påse|påsar|portion|portioner|port|burk|burkar|kopp|koppar|mugg|muggar|glas|sked|skedar|nypa|nypor|näve|nävar|handfull|skopa|skopor|trave|travar|st|stycken|kg|hg|g|gr|kilo|kilon|kilogram|hekto|hekton|hektogram|gram|l|liter|dl|deciliter|ml|milliliter|cl|centiliter|krm|kryddmått|krm|tsk|tesked|teskedar|dsk|dessertsked|dessertskedar|msk|matsked|matskedar|kkp|kaffekopp|kaffekoppar|cm|centimeter)?\s+/gm;
+const regexForUnits =
+  /(^(ev|eventuellt|kanske|valfritt|\s)*(\d|en|ett|två|tre|fyra|fem|sex|sju|åtta|nio|tio|några|nått|någon|något|[\u00BC-\u00BE\u2150-\u215E]|ca|cirka|ungefär|ung|typ|ish|nästan)+(\d|\/|\.|,|\s|dussin|tjog|rågat|stor|liten|medelstor|mellan|[\u00BC-\u00BE\u2150-\u215E]|-)*)(knyte|knyten|ark|skiva|skivor|stjälk|stjälkar|kvist|kvistar|sats|satsar|halv|hel|klyfta|klyftor|kruka|krukor|flaska|flaskor|ask|askar|paket|förpackning|förpackningar|förp|pack|påse|påsar|portion|portioner|port|burk|burkar|kopp|koppar|mugg|muggar|glas|sked|skedar|nypa|nypor|näve|nävar|handfull|skopa|skopor|trave|travar|st|stycken|kg|hg|g|gr|kilo|kilon|kilogram|hekto|hekton|hektogram|gram|l|liter|dl|deciliter|ml|milliliter|cl|centiliter|krm|kryddmått|krm|tsk|tesked|teskedar|dsk|dessertsked|dessertskedar|msk|matsked|matskedar|kkp|kaffekopp|kaffekoppar|cm|centimeter)?\s+/gm;
 
 const parseIngredients = (ingredients) => {
   if (!ingredients) {

@@ -4,7 +4,7 @@ service: meal-planner
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   region: eu-central-1
   stage: prod
   environment:
@@ -30,7 +30,6 @@ plugins:
 custom:
   webpack:
     webpackConfig: "webpack.config.js"
-    includeModules: true
   dotenv:
     exclude:
       - LOCAL
@@ -75,7 +74,7 @@ functions:
     memorySize: 2048
     timeout: 29
     layers:
-      - arn:aws:lambda:eu-central-1:764866452798:layer:chrome-aws-lambda:19
+      - arn:aws:lambda:eu-central-1:764866452798:layer:chrome-aws-lambda:25
     events:
       - http:
           path: /api/recipes/add
@@ -137,16 +136,16 @@ layers:
   sharp:
     description: Sharp (libvips)
     package:
-      artifact: ./src/layers/sharp/sharp-0.26.2-aws-lambda-linux-x64-node-12.19.0.zip
+      artifact: ./src/layers/sharp/sharp-0.29.3-aws-lambda-linux-x64-node-14.18.2.zip
     compatibleRuntimes:
-      - nodejs12.x
+      - nodejs14.x
 
   firebaseAdmin:
     description: Firebase admin SDK
     package:
-      artifact: ./src/layers/firebase-admin/firebase-admin-9.4.1-aws-lambda-linux-x64-node-12.19.0.zip
+      artifact: ./src/layers/firebase-admin/firebase-admin-10.0.1-aws-lambda-linux-x64-node-14.18.2.zip
     compatibleRuntimes:
-      - nodejs12.x
+      - nodejs14.x
 
 resources:
   Resources:

@@ -4,7 +4,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   entry: slsw.lib.entries,
-  target: "node12.19",
+  target: "node14.18",
   mode: slsw.lib.options.stage === "prod" ? "production" : "development",
   optimization: {
     minimize: true,
@@ -30,9 +30,9 @@ module.exports = {
               {
                 modules: false,
                 useBuiltIns: "usage",
-                corejs: 3,
+                corejs: { version: "3.20", proposals: true },
                 targets: {
-                  node: "12.19",
+                  node: "14.18",
                 },
               },
             ],

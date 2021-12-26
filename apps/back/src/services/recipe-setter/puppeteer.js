@@ -3,15 +3,14 @@
 import chromium from "chrome-aws-lambda";
 
 let puppeteer;
-const idle2Hosts = ["www.javligtgott.se", "www.mat.se"];
 
 const createBrowser = async () => {
+  const chromiumPath = await chromium.executablePath;
+
   puppeteer = await chromium.puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: process.env.LOCAL
-      ? process.env.LOCAL_CHROME
-      : await chromium.executablePath,
+    executablePath: chromiumPath,
     headless: chromium.headless,
     ignoreHTTPSErrors: true,
   });
@@ -252,12 +251,6 @@ export const getPage = async (puppeteer) => {
   });
 
   return page;
-};
-
-export const getNetworkIdleType = (url) => {
-  const idle2Host = idle2Hosts.includes(new URL(url).hostname);
-
-  return idle2Host ? "networkidle2" : "networkidle0";
 };
 
 export const injectDependencies = async (page) => {
