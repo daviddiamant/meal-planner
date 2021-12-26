@@ -9,13 +9,18 @@ export const getBook = async (
   to = Number.MAX_SAFE_INTEGER
 ) => {
   const db = await getDB(process.env.RECIPES_DB);
-  const findRes = await db
+
+  return db
     .collection(recipesCollection)
     .find({ bookID })
     .skip(from)
     .limit(to - from)
     .project(recipeForListsProjection)
     .toArray();
+};
 
-  return findRes;
+export const getAmountInBook = async (bookID) => {
+  const db = await getDB(process.env.RECIPES_DB);
+
+  return db.collection(recipesCollection).count({ bookID });
 };
