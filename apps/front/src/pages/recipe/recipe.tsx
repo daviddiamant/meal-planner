@@ -96,6 +96,7 @@ export const Recipe = (): JSX.Element => {
               alt={title}
               largeUrl={image}
               smallUrl={smallImage}
+              useConfirmationTime={false}
               onDisplayed={() => setShowButtons(true)}
             />
           </Zoom>

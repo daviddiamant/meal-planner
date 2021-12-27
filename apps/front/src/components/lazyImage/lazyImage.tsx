@@ -10,6 +10,7 @@ export interface LazyImageProps {
   largeUrl: string;
   smallUrl: string;
   onDisplayed?: () => void;
+  useConfirmationTime?: boolean;
 }
 
 const ImageWrapper = styled("div", {
@@ -24,7 +25,6 @@ const Image = styled(motion.img, {
   left: 0,
   width: "100%",
   height: "auto",
-  opacity: 0,
   variants: {
     small: {
       true: {
@@ -42,6 +42,7 @@ export const LazyImage = ({
   largeUrl,
   onDisplayed,
   smallUrl,
+  useConfirmationTime = true,
 }: LazyImageProps): JSX.Element => {
   // Keep it in state to trigger a re-hook of useHasIntersected
   const [wrapperRef, setWrapperRef] = useState<HTMLDivElement | null>(null);
@@ -53,12 +54,25 @@ export const LazyImage = ({
   const smallAnimation = useAnimation();
   const largeAnimation = useAnimation();
 
-  const showSmall = useHasIntersected(wrapperRef, 100, {
-    rootMargin: "1000px",
-  });
-  const showLarge = useHasIntersected(wrapperRef, 400, {
-    rootMargin: "600px",
-  });
+  // Only animate it if it is actually shown
+  const animateSmall = useHasIntersected(
+    wrapperRef,
+    useConfirmationTime ? 100 : 0
+  );
+  const showSmall = useHasIntersected(
+    wrapperRef,
+    useConfirmationTime ? 100 : 0,
+    {
+      rootMargin: "1000px",
+    }
+  );
+  const showLarge = useHasIntersected(
+    wrapperRef,
+    useConfirmationTime ? 500 : 0,
+    {
+      rootMargin: "200px",
+    }
+  );
 
   useEffect(() => {
     if (smallLoaded) smallAnimation.start({ opacity: 1 });
@@ -74,9 +88,10 @@ export const LazyImage = ({
         <Image
           alt={`Förhandsvisning - ${alt}`}
           animate={smallAnimation}
+          initial={{ opacity: 0 }}
           small={true}
           src={IMAGE_URL + smallUrl}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: animateSmall ? 0.15 : 0 }}
           onAnimationComplete={() => {
             setSmallAnimated(true);
 
@@ -89,8 +104,9 @@ export const LazyImage = ({
         <Image
           alt={alt}
           animate={largeAnimation}
+          initial={{ opacity: 0 }}
           src={IMAGE_URL + largeUrl}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.2 }}
           onLoad={() => setLargeLoaded(true)}
         />
       )}
