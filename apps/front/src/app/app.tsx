@@ -1,13 +1,16 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import { useRegisterSW } from "virtual:pwa-register/react";
 
 import { Heading } from "../components";
 import { useUser } from "../hooks";
-import { Home, Login, Recipe } from "../pages";
 import { globalStyling } from "../stitches.config";
 import { getJWTInterceptor } from "../utils";
+
+const Home = lazy(() => import("../pages/home"));
+const Login = lazy(() => import("../pages/login"));
+const Recipe = lazy(() => import("../pages/recipe"));
 
 export const App = (): JSX.Element | null => {
   useRegisterSW({});
@@ -33,8 +36,22 @@ export const App = (): JSX.Element | null => {
 
   return (
     <Routes>
-      <Route element={<Login />} path="/login" />
-      <Route element={<Recipe />} path="/recipe/:slug" />
+      <Route
+        element={
+          <Suspense fallback={null}>
+            <Login />
+          </Suspense>
+        }
+        path="/login"
+      />
+      <Route
+        element={
+          <Suspense fallback={null}>
+            <Recipe />
+          </Suspense>
+        }
+        path="/recipe/:slug"
+      />
       <Route
         element={
           <>
@@ -48,7 +65,14 @@ export const App = (): JSX.Element | null => {
                 }
                 path="profile"
               />
-              <Route element={<Home />} path="/" />
+              <Route
+                element={
+                  <Suspense fallback={null}>
+                    <Home />
+                  </Suspense>
+                }
+                path="/"
+              />
             </Routes>
             <Link to="/">Home</Link>
             <Link to="/search">Search</Link>

@@ -1,6 +1,32 @@
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 import { defineConfig } from "vite";
+import { dependencies } from "./package.json";
+
+const vendorPackages = [
+  "react",
+  "react-router-dom",
+  "react-dom",
+  "react-query",
+  "@stitches/react",
+];
+
+const getChunks = (deps: Record<string, string>) => {
+  const chunks = {};
+
+  Object.keys(deps).forEach((dep) => {
+    if (
+      vendorPackages.includes(dep) ||
+      dep.includes("firebase") ||
+      dep.includes("@heroicons/react")
+    )
+      return;
+
+    chunks[dep] = [dep];
+  });
+
+  return chunks;
+};
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -50,5 +76,17 @@ export default defineConfig({
   ],
   server: {
     https: true,
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: vendorPackages,
+          firebase: ["firebase/app", "firebase/auth"],
+          icons: ["@heroicons/react/outline"],
+          ...getChunks(dependencies),
+        },
+      },
+    },
   },
 });
