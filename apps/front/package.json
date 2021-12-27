@@ -14,7 +14,8 @@
     "build:storybook": "build-storybook",
     "serve": "vite preview",
     "start": "vite",
-    "start:local": "APP_LOCAL_API=true vite",
+    "start:local": "vite --mode local-dev",
+    "start:both": "npm run start:local",
     "storybook": "start-storybook -p 6006",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },

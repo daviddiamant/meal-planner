@@ -12,6 +12,13 @@ const removeAxiosInterception = jest.spyOn(axios.interceptors.request, "eject");
 jest.mock("../hooks/intersection", () => ({
   useHasIntersected: () => false,
 }));
+jest.mock(
+  "virtual:pwa-register/react",
+  () => ({
+    useRegisterSW: () => undefined,
+  }),
+  { virtual: true }
+);
 
 const mockLogInStatus = (status: undefined | null | User) =>
   userHook.mockImplementation(() => ({

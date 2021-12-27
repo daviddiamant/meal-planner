@@ -2,7 +2,10 @@ import { Paths, Responses } from "@meal-planner/types";
 
 import { server, successfulHandler } from ".";
 
-export const getRecipeMock = (aspectRatio = 1, slug = "some-slug") => ({
+export const getRecipeMock = (
+  aspectRatio = 1,
+  slug = "some-slug"
+): Responses["Recipes"]["recipes"][number] => ({
   mediumImage: "",
   mediumImageHeight: 200,
   mediumImageWidth: 200 * aspectRatio,
@@ -16,7 +19,7 @@ export const getRecipeMock = (aspectRatio = 1, slug = "some-slug") => ({
 
 export const getRecipesHandler = (
   pagination = [0, 64],
-  recipes?: Responses["Recipes"]
+  recipes?: Responses["Recipes"]["recipes"]
 ) =>
   successfulHandler<Responses["Recipes"]>(
     "get",
@@ -25,10 +28,14 @@ export const getRecipesHandler = (
       pagination[1].toString()
     ),
     false,
-    recipes ?? Array(pagination[1] - pagination[0]).fill(getRecipeMock())
+    {
+      recipes:
+        recipes ?? Array(pagination[1] - pagination[0]).fill(getRecipeMock()),
+      hasMoreRecipes: true,
+    }
   );
 
 export const setupRecipesHandler = (
   pagination = [0, 64],
-  recipes?: Responses["Recipes"]
-) => server.use(getRecipesHandler(pagination, recipes));
+  recipes?: Responses["Recipes"]["recipes"]
+): void => server.use(getRecipesHandler(pagination, recipes));

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { rest } from "msw";
+import { MockedRequest, rest, RestHandler } from "msw";
 import { SetupServerApi } from "msw/node";
 
 import { setupRecipesHandler } from "./recipes";
@@ -13,7 +13,7 @@ export const server = (
   process?.env?.NODE_ENV === "test" ? require("msw/node").setupServer() : {}
 ) as SetupServerApi;
 
-export const setupBaseHandlers = () => {
+export const setupBaseHandlers = (): void => {
   setupConfigHandler();
   setupRecipesHandler();
 };

@@ -30,14 +30,17 @@ export interface Responses {
     url: string;
   };
   Recipes: {
-    title: string;
-    slug: string;
-    url: string;
-    smallImage: string;
-    smallImageWidth: number;
-    smallImageHeight: number;
-    mediumImage: string;
-    mediumImageWidth: number;
-    mediumImageHeight: number;
-  }[];
+    recipes: {
+      title: string;
+      slug: string;
+      url: string;
+      smallImage: string;
+      smallImageWidth: number;
+      smallImageHeight: number;
+      mediumImage: string;
+      mediumImageWidth: number;
+      mediumImageHeight: number;
+    }[];
+    hasMoreRecipes: boolean;
+  };
 }

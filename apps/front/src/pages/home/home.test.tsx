@@ -55,6 +55,7 @@ describe("Pages/Home", () => {
 
     await waitFor(() => {
       const recipes = queryAllByRole("gridcell");
+
       expect(recipes).toHaveLength(64);
     });
 
@@ -66,6 +67,7 @@ describe("Pages/Home", () => {
     await waitFor(
       () => {
         const moreRecipes = queryAllByRole("gridcell");
+
         expect(moreRecipes).toHaveLength(128);
       },
       { timeout: 2000, interval: 200 }

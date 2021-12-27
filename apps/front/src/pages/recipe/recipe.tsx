@@ -65,11 +65,11 @@ const style: Style = {
 
 export const Recipe = (): JSX.Element => {
   const { slug } = useParams();
+  const navigate = useNavigate();
 
   const [showButtons, setShowButtons] = useState(false);
 
   const { data: recipe } = useRecipe(slug ?? "");
-  const navigate = useNavigate();
 
   const { image, imageHeight, imageWidth, smallImage, title } = recipe ?? {};
   const aspectRatio = (imageWidth ?? 1) / (imageHeight ?? 1);
