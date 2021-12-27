@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect, useState } from "react";
 
 import { IMAGE_URL } from "../../appConfig";
 import { useHasIntersected } from "../../hooks";
@@ -46,31 +46,52 @@ export const LazyImage = ({
   // Keep it in state to trigger a re-hook of useHasIntersected
   const [wrapperRef, setWrapperRef] = useState<HTMLDivElement | null>(null);
 
-  const smallShown = useHasIntersected(wrapperRef, 100, {
+  const [smallLoaded, setSmallLoaded] = useState(false);
+  const [largeLoaded, setLargeLoaded] = useState(false);
+  const [smallAnimated, setSmallAnimated] = useState(false);
+
+  const smallAnimation = useAnimation();
+  const largeAnimation = useAnimation();
+
+  const showSmall = useHasIntersected(wrapperRef, 100, {
     rootMargin: "1000px",
   });
-  const shown = useHasIntersected(wrapperRef, 400, {
+  const showLarge = useHasIntersected(wrapperRef, 400, {
     rootMargin: "600px",
   });
 
+  useEffect(() => {
+    if (smallLoaded) smallAnimation.start({ opacity: 1 });
+  }, [smallAnimation, smallLoaded]);
+
+  useEffect(() => {
+    if (largeLoaded && smallAnimated) largeAnimation.start({ opacity: 1 });
+  }, [largeAnimation, largeLoaded, smallAnimated]);
+
   return (
     <ImageWrapper ref={(ref) => ref && setWrapperRef(ref)}>
-      {smallShown && (
+      {showSmall && (
         <Image
           alt={`Förhandsvisning - ${alt}`}
-          animate={{ opacity: 1 }}
+          animate={smallAnimation}
           small={true}
           src={IMAGE_URL + smallUrl}
-          transition={{ type: "spring", duration: 0.2 }}
+          transition={{ duration: 0.2 }}
+          onAnimationComplete={() => {
+            setSmallAnimated(true);
+
+            onDisplayed && onDisplayed();
+          }}
+          onLoad={() => setSmallLoaded(true)}
         />
       )}
-      {shown && (
+      {showLarge && (
         <Image
           alt={alt}
-          animate={{ opacity: 1 }}
+          animate={largeAnimation}
           src={IMAGE_URL + largeUrl}
-          transition={{ type: "spring", duration: 0.2 }}
-          onAnimationComplete={onDisplayed}
+          transition={{ duration: 0.3 }}
+          onLoad={() => setLargeLoaded(true)}
         />
       )}
     </ImageWrapper>

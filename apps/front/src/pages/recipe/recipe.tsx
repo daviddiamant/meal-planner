@@ -101,6 +101,7 @@ export const Recipe = (): JSX.Element => {
           </Zoom>
           <ImageButton
             animate={showButtons ? "shown" : "hidden"}
+            initial="hidden"
             role="link"
             variants={imageButtonVariants}
             onClick={() => navigate(-1)}
