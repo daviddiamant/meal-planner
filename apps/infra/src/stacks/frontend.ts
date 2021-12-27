@@ -36,6 +36,7 @@ export class FrontendStack extends Stack {
     new CloudFrontWebDistribution(this, `${this.logicalId}CDN`, {
       errorConfigurations: [
         { errorCode: 403, responseCode: 404, responsePagePath: "/index.html" },
+        { errorCode: 404, responseCode: 404, responsePagePath: "/index.html" },
       ],
       originConfigs: [
         {
