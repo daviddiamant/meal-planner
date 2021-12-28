@@ -11,5 +11,6 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+  "jest.jestCommandLine": "NODE_OPTIONS=--experimental-vm-modules npx jest"
 }
