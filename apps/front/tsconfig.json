@@ -5,7 +5,11 @@
     "lib": ["dom", "dom.iterable"],
     "jsx": "react-jsx",
     "noEmit": true,
-    "esModuleInterop": false
+    "esModuleInterop": false,
+    "baseUrl": ".",
+    "paths": {
+      "@emotion/core": ["./src/emotion.d.ts"]
+    }
   },
   "include": ["src", "jest"]
 }
