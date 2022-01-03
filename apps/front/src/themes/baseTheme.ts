@@ -18,7 +18,7 @@ export const baseTheme = {
     veryCursive: '"Pacifico", cursive',
   },
   fontSizes: {
-    1: "20px",
+    1: "4.3vw",
     2: "20px",
     3: "20px",
     4: "20px",
@@ -30,6 +30,7 @@ export const baseTheme = {
   },
   lineHeights: {
     1: "115%",
+    primary: 1.6,
   },
   letterSpacings: {
     1: "0.5px",

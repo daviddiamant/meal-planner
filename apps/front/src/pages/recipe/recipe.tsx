@@ -3,11 +3,12 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Constrained, LazyImage } from "../../components";
+import { Constrained, Heading, LazyImage } from "../../components";
+import { ExpandText } from "../../components/expandText";
 import { useRecipe } from "../../hooks";
 import { Style, styled } from "../../stitches.config";
 
-const Wrapper = styled(motion.div, {
+const Wrapper = styled("div", {
   position: "relative",
   display: "block",
   width: "100%",
@@ -16,7 +17,6 @@ const Wrapper = styled(motion.div, {
   background: "$foreground",
   borderRadius: "$primary",
   overflow: "hidden",
-  opacity: 0,
 });
 
 const Zoom = styled("div", {
@@ -57,9 +57,24 @@ const Back = styled(ChevronLeftIcon, {
   color: "#fff",
 });
 
+const RecipeContent = styled("div", {
+  marginTop: "$5",
+  padding: "$2",
+});
+
 const style: Style = {
   constrained: {
+    display: "block",
     padding: "$2",
+  },
+  title: {
+    fontSize: "7.5vw",
+  },
+  description: {
+    position: "relative",
+    marginTop: "$4",
+    textAlign: "justify",
+    color: "$secondaryText",
   },
 };
 
@@ -71,7 +86,15 @@ export const Recipe = (): JSX.Element => {
 
   const { data: recipe } = useRecipe(slug ?? "");
 
-  const { image, imageHeight, imageWidth, smallImage, title } = recipe ?? {};
+  const {
+    description,
+    image,
+    imageHeight,
+    imagePalette,
+    imageWidth,
+    smallImage,
+    title,
+  } = recipe ?? {};
   const aspectRatio = (imageWidth ?? 1) / (imageHeight ?? 1);
   const zoomedAspectRatio = Math.min(Math.max(0.9, aspectRatio), 1.33);
   const zoomedWidth = `${Math.max(
@@ -83,13 +106,11 @@ export const Recipe = (): JSX.Element => {
     <Constrained css={style.constrained as any}>
       {smallImage && image && title && (
         <Wrapper
-          animate={{ opacity: 1 }}
           css={{
             aspectRatio: `${zoomedAspectRatio} / 1`,
           }}
           data-testid={slug}
           role="gridcell"
-          transition={{ type: "spring", duration: 0.25 }}
         >
           <Zoom css={{ width: zoomedWidth, aspectRatio: `${aspectRatio} / 1` }}>
             <LazyImage
@@ -111,6 +132,15 @@ export const Recipe = (): JSX.Element => {
           </ImageButton>
         </Wrapper>
       )}
+      <RecipeContent>
+        <Heading css={style.title as any}>{title}</Heading>
+        <ExpandText
+          css={style.description}
+          toggleColor={`rgba(${imagePalette?.Vibrant.join(", ")}, 0.45)`}
+        >
+          {description}
+        </ExpandText>
+      </RecipeContent>
     </Constrained>
   );
 };

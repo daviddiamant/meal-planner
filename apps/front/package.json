@@ -22,6 +22,7 @@
   "dependencies": {
     "@heroicons/react": "^1.0.5",
     "@react-hook/size": "^2.1.2",
+    "@react-hook/window-size": "^3.0.7",
     "@stitches/react": "^1.2.6",
     "axios": "^0.24.0",
     "firebase": "^9.6.1",
