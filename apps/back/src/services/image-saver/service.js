@@ -80,18 +80,7 @@ const saveAllSizes = async (imageBuffer, extension, slug) => {
   };
 };
 
-export const processImage = async (json) => {
-  let recipeId, imageUrl, slug;
-  try {
-    ({ recipeId, imageUrl, slug } = JSON.parse(json));
-
-    if (!recipeId || !imageUrl || !slug) {
-      throw new Error("missing data");
-    }
-  } catch (error) {
-    return;
-  }
-
+export const processImage = async (recipeId, imageUrl, slug) => {
   const imageResponse = await fetch(imageUrl);
   if (!imageResponse) {
     return;
