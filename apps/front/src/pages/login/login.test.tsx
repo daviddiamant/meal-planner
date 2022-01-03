@@ -2,7 +2,7 @@ import { User } from "firebase/auth";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import * as userHooks from "../../hooks/user";
-import { render, renderWitoutRouter } from "../../utils";
+import { render, renderWithoutRouter } from "../../utils";
 import { Login } from ".";
 
 const userHook = jest.spyOn(userHooks, "useUser");
@@ -34,7 +34,7 @@ describe("Pages/Login", () => {
       login: async () => undefined,
     }));
 
-    const { findByRole } = renderWitoutRouter(<MockRouter />);
+    const { findByRole } = renderWithoutRouter(<MockRouter />);
     const loginButton = await findByRole("button");
 
     expect(loginButton).toHaveTextContent("Logga in");
@@ -46,7 +46,7 @@ describe("Pages/Login", () => {
       login: async () => undefined,
     }));
 
-    const { findByTestId } = renderWitoutRouter(<MockRouter />);
+    const { findByTestId } = renderWithoutRouter(<MockRouter />);
     const mockProfile = await findByTestId("profile");
 
     expect(mockProfile).toHaveTextContent("profile");

@@ -32,7 +32,7 @@ export const render = (
   options?: Omit<RenderOptions, "wrapper">
 ): RenderResult => defaultRender(ui, { wrapper: DecoratedRender, ...options });
 
-export const renderWitoutRouter = (
+export const renderWithoutRouter = (
   ui: ReactElement,
   options?: Omit<RenderOptions, "wrapper">
 ): RenderResult =>
