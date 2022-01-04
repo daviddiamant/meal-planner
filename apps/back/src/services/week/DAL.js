@@ -1,6 +1,12 @@
 import { getDB } from "../../common/db";
 import { getAllProjcetion } from "./projections";
 
+export const countInWeek = async (weekID, slug) => {
+  const db = await getDB(process.env.WEEK_DB);
+
+  return db.collection("planned").count({ weekID, slug });
+};
+
 export const getWeek = async (weekID) => {
   const db = await getDB(process.env.WEEK_DB);
   const findRes = await db
