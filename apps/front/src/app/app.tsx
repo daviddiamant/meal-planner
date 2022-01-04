@@ -1,9 +1,9 @@
 import axios from "axios";
 import { lazy, Suspense, useEffect, useState } from "react";
-import { Link, Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { useRegisterSW } from "virtual:pwa-register/react";
 
-import { Heading } from "../components";
+import { BottomMenu, Heading } from "../components";
 import { useUser } from "../hooks";
 import { globalStyling } from "../stitches.config";
 import { getJWTInterceptor } from "../utils";
@@ -74,9 +74,7 @@ export const App = (): JSX.Element | null => {
                 path="/"
               />
             </Routes>
-            <Link to="/">Home</Link>
-            <Link to="/search">Search</Link>
-            <Link to="/profile">Profile</Link>
+            <BottomMenu />
             {!user && <Navigate to="/login" />}
           </>
         }
