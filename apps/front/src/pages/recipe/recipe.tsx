@@ -78,7 +78,7 @@ const style: Style = {
   },
 };
 
-export const Recipe = (): JSX.Element => {
+export const Recipe = (): JSX.Element | null => {
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -105,7 +105,7 @@ export const Recipe = (): JSX.Element => {
     100
   )}%`;
 
-  return (
+  return recipe ? (
     <Constrained css={style.constrained}>
       {smallImage && image && title && (
         <Wrapper
@@ -176,5 +176,5 @@ export const Recipe = (): JSX.Element => {
         </a>
       </RecipeContent>
     </Constrained>
-  );
+  ) : null;
 };
