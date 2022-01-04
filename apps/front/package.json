@@ -24,6 +24,7 @@
     "@react-hook/size": "^2.1.2",
     "@react-hook/window-size": "^3.0.7",
     "@stitches/react": "^1.2.6",
+    "algoliasearch": "^4.11.0",
     "axios": "^0.24.0",
     "firebase": "^9.6.1",
     "framer-motion": "^5.5.5",

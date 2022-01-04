@@ -3,14 +3,16 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useRegisterSW } from "virtual:pwa-register/react";
 
-import { BottomMenu, Heading } from "../components";
+import { BottomMenu } from "../components";
 import { useUser } from "../hooks";
 import { globalStyling } from "../stitches.config";
 import { getJWTInterceptor } from "../utils";
 
 const Home = lazy(() => import("../pages/home"));
 const Login = lazy(() => import("../pages/login"));
+const Profile = lazy(() => import("../pages/profile"));
 const Recipe = lazy(() => import("../pages/recipe"));
+const Search = lazy(() => import("../pages/search"));
 
 export const App = (): JSX.Element | null => {
   useRegisterSW({});
@@ -56,12 +58,19 @@ export const App = (): JSX.Element | null => {
         element={
           <>
             <Routes>
-              <Route element={<Heading>search</Heading>} path="search" />
               <Route
                 element={
-                  <div role="banner">
-                    <Heading>profile</Heading>
-                  </div>
+                  <Suspense fallback={null}>
+                    <Search />
+                  </Suspense>
+                }
+                path="search"
+              />
+              <Route
+                element={
+                  <Suspense fallback={null}>
+                    <Profile />
+                  </Suspense>
                 }
                 path="profile"
               />

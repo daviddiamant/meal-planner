@@ -1,19 +1,15 @@
+export type { RecipeInIndex } from "./algolia";
 import type { Palette } from "./palette";
 import type { Ingredient, Instruction } from "./recipe";
 
 export enum Paths {
-  UserConfig = "/user",
   Recipe = "/recipes/:slug",
   Recipes = "/recipes/:from/:to",
+  UserConfig = "/user",
+  Week = "/week",
 }
 
 export interface Responses {
-  UserConfig: {
-    algoliaSearchKey: string;
-    bookID: string;
-    bookTitle: string;
-    lowTitle: boolean;
-  };
   Recipe: {
     screenshot: string;
     smallImage: string;
@@ -43,4 +39,22 @@ export interface Responses {
     }[];
     hasMoreRecipes: boolean;
   };
+  UserConfig: {
+    algoliaSearchKey: string;
+    bookID: string;
+    bookTitle: string;
+    lowTitle: boolean;
+  };
+  Week: {
+    title: string;
+    url: string;
+    slug: string;
+    mediumImage: string;
+    mediumImageHeight: number;
+    mediumImageWidth: number;
+    smallImage: string;
+    smallImageHeight: number;
+    smallImageWidth: number;
+    weekID: string;
+  }[];
 }

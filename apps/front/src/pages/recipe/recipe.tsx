@@ -92,8 +92,11 @@ export const Recipe = (): JSX.Element => {
     imageHeight,
     imagePalette,
     imageWidth,
+    ingredients,
+    instructions,
     smallImage,
     title,
+    url,
   } = recipe ?? {};
   const aspectRatio = (imageWidth ?? 1) / (imageHeight ?? 1);
   const zoomedAspectRatio = Math.min(Math.max(0.9, aspectRatio), 1.33);
@@ -140,6 +143,37 @@ export const Recipe = (): JSX.Element => {
         >
           {description}
         </ExpandText>
+        <br />
+        <br />
+        {ingredients?.map((ingredient, i) => (
+          <div key={i}>
+            {ingredient.ingredient} {ingredient.unit}
+          </div>
+        ))}
+        {Array.isArray(instructions) ? (
+          instructions.map((instruction, i) => (
+            <div key={i}>
+              <h3>{instruction?.name}</h3>
+              <ol>
+                {instruction?.instructions.map((ins, j) => (
+                  <li key={j}>{ins}</li>
+                ))}
+              </ol>
+            </div>
+          ))
+        ) : (
+          <div>
+            <h3>{instructions?.name}</h3>
+            <ol>
+              {instructions?.instructions.map((instruction, i) => (
+                <li key={i}>{instruction}</li>
+              ))}
+            </ol>
+          </div>
+        )}
+        <a href={url} rel="noopener noreferrer" target="_blank">
+          Besök recept
+        </a>
       </RecipeContent>
     </Constrained>
   );
