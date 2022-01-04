@@ -103,7 +103,7 @@ export const Recipe = (): JSX.Element => {
   )}%`;
 
   return (
-    <Constrained css={style.constrained as any}>
+    <Constrained css={style.constrained}>
       {smallImage && image && title && (
         <Wrapper
           css={{
@@ -133,7 +133,7 @@ export const Recipe = (): JSX.Element => {
         </Wrapper>
       )}
       <RecipeContent>
-        <Heading css={style.title as any}>{title}</Heading>
+        <Heading css={style.title}>{title}</Heading>
         <ExpandText
           css={style.description}
           toggleColor={`rgba(${imagePalette?.Vibrant.join(", ")}, 0.45)`}

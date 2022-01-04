@@ -47,10 +47,10 @@ export const HomeHeader = (): JSX.Element => {
       {bookTitle ? (
         <TitleWrapper low={lowTitle}>
           <div>
-            <Heading css={style.title(!!lowTitle) as any} role="banner">
+            <Heading css={style.title(!!lowTitle)} role="banner">
               {bookTitle}
             </Heading>
-            <Heading as="h3" css={style.secondTitle as any}>
+            <Heading as="h3" css={style.secondTitle}>
               kokbok
             </Heading>
           </div>

@@ -33,13 +33,13 @@ export const Login = (): JSX.Element | null => {
   return user ? (
     <Navigate to="/profile" />
   ) : (
-    <Constrained css={style.outer as any}>
-      <CenterBoth css={style.outer as any}>
+    <Constrained css={style.outer}>
+      <CenterBoth css={style.outer}>
         <EatingTogether
           className={css(style.image as CSS)}
           theme={theme}
         ></EatingTogether>
-        <CenterBoth css={style.inner as any}>
+        <CenterBoth css={style.inner}>
           <div>
             <p>
               Logga in för att kunna lägga till recept, planera din matvecka och

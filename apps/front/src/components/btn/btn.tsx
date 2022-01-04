@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import { Style, styled } from "../../stitches.config";
+import { Style, styled, StyledComponent } from "../../stitches.config";
 import { CenterBoth } from "../centerBoth";
 
 export type BtnProps = {
@@ -34,16 +34,20 @@ const Outer = styled("div", {
 });
 const style: Style = { inner: { flex: 1 } };
 
-export const Btn = ({
+const BtnComponent = ({
   children,
   disabled = false,
   onClick,
-}: BtnProps): JSX.Element => (
+  ...restProps
+}: StyledComponent<BtnProps, typeof Outer>): JSX.Element => (
   <Outer
+    {...restProps}
     disabled={disabled}
     role="button"
     onClick={!disabled ? onClick : undefined}
   >
-    <CenterBoth css={style.inner as any}>{children}</CenterBoth>
+    <CenterBoth css={style.inner}>{children}</CenterBoth>
   </Outer>
 );
+
+export const Btn = styled(BtnComponent);

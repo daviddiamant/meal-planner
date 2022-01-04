@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { IMAGE_URL } from "../../appConfig";
 import { useHasIntersected } from "../../hooks";
-import { styled } from "../../stitches.config";
+import { styled, StyledComponent } from "../../stitches.config";
 
 export interface LazyImageProps {
   alt: string;
@@ -37,13 +37,14 @@ const Image = styled(motion.img, {
   },
 });
 
-export const LazyImage = ({
+const LazyImageComponent = ({
   alt,
   largeUrl,
   onDisplayed,
   smallUrl,
   useConfirmationTime = true,
-}: LazyImageProps): JSX.Element => {
+  ...restProps
+}: StyledComponent<LazyImageProps, typeof ImageWrapper>): JSX.Element => {
   // Keep it in state to trigger a re-hook of useHasIntersected
   const [wrapperRef, setWrapperRef] = useState<HTMLDivElement | null>(null);
 
@@ -83,7 +84,7 @@ export const LazyImage = ({
   }, [largeAnimation, largeLoaded, smallAnimated]);
 
   return (
-    <ImageWrapper ref={(ref) => ref && setWrapperRef(ref)}>
+    <ImageWrapper {...restProps} ref={(ref) => ref && setWrapperRef(ref)}>
       {showSmall && (
         <Image
           alt={`Förhandsvisning - ${alt}`}
@@ -113,3 +114,5 @@ export const LazyImage = ({
     </ImageWrapper>
   );
 };
+
+export const LazyImage = styled(LazyImageComponent);

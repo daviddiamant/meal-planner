@@ -85,7 +85,7 @@ export const Masonry = (): JSX.Element => {
   }, [endShown, fetchNextPage, hasNextPage]);
 
   return (
-    <Constrained css={style.constrained as any}>
+    <Constrained css={style.constrained}>
       <Grid ref={gridRef} role="grid">
         <Column recipes={left} testId="left-column" />
         <Column
