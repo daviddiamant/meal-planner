@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { Constrained, Heading, LazyImage } from "../../components";
 import { ExpandText } from "../../components/expandText";
-import { useRecipe } from "../../hooks";
+import { useAddToWeek, useRecipe } from "../../hooks";
 import { Style, styled } from "../../stitches.config";
 
 const Wrapper = styled("div", {
@@ -85,6 +85,11 @@ export const Recipe = (): JSX.Element | null => {
   const [showButtons, setShowButtons] = useState(false);
 
   const { data: recipe } = useRecipe(slug ?? "");
+  const {
+    isError: isAddError,
+    isSuccess: isAddSuccess,
+    mutate: addToWeek,
+  } = useAddToWeek(slug ?? "");
 
   const {
     description,
@@ -174,6 +179,13 @@ export const Recipe = (): JSX.Element | null => {
         <a href={url} rel="noopener noreferrer" target="_blank">
           Besök recept
         </a>
+        <br />
+        <button onClick={addToWeek}>Planera</button>
+        {isAddSuccess ? (
+          <p>Planerat!</p>
+        ) : isAddError ? (
+          <p>Kunde inte planera.</p>
+        ) : null}
       </RecipeContent>
     </Constrained>
   ) : null;

@@ -3,6 +3,7 @@ import type { Palette } from "./palette";
 import type { Ingredient, Instruction } from "./recipe";
 
 export enum Paths {
+  AddToWeek = "/week/add",
   Recipe = "/recipes/:slug",
   Recipes = "/recipes/:from/:to",
   UserConfig = "/user",
