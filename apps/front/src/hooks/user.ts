@@ -23,7 +23,10 @@ const login = async () => {
   signInWithPopup(auth, provider);
 };
 
-export const useUser = () => {
+export const useUser = (): {
+  user: User | null | undefined;
+  login: () => Promise<void>;
+} => {
   const [user, setUser] = useState<User | null>();
 
   const onMount = () => {
