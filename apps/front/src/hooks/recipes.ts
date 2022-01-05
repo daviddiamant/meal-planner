@@ -46,11 +46,15 @@ export const useRecipes = (): UseInfiniteQueryResult<Responses["Recipes"]> =>
     }
   );
 
-export const useAddRecipe = (
-  url: string
-): UseMutationResult<{ result: boolean | string }> =>
+export const useAddRecipe = (): UseMutationResult<
+  {
+    result: boolean | string;
+  },
+  unknown,
+  string
+> =>
   useMutation(
-    () =>
+    (url) =>
       axios.post(API_URL + Paths.AddRecipe, {
         value: url,
       }),

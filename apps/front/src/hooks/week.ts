@@ -18,11 +18,15 @@ export const useWeek = (): UseQueryResult<Responses["Week"] | undefined> =>
     axiosDataGetter<Responses["Week"]>("get", API_URL + Paths.Week)
   );
 
-export const useAddToWeek = (
-  slug: string
-): UseMutationResult<{ result: boolean | string }> =>
+export const useAddToWeek = (): UseMutationResult<
+  {
+    result: boolean | string;
+  },
+  unknown,
+  string
+> =>
   useMutation(
-    () =>
+    (slug) =>
       axios.post(API_URL + Paths.AddToWeek, {
         value: slug,
       }),

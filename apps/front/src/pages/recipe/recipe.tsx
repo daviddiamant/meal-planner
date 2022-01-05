@@ -89,7 +89,7 @@ export const Recipe = (): JSX.Element | null => {
     isError: isAddError,
     isSuccess: isAddSuccess,
     mutate: addToWeek,
-  } = useAddToWeek(slug ?? "");
+  } = useAddToWeek();
 
   const {
     description,
@@ -185,7 +185,7 @@ export const Recipe = (): JSX.Element | null => {
         ) : isAddError ? (
           <p>Kunde inte planera.</p>
         ) : null}
-        <button onClick={addToWeek}>Planera</button>
+        <button onClick={() => addToWeek(slug ?? "")}>Planera</button>
       </RecipeContent>
     </Constrained>
   ) : null;

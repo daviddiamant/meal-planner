@@ -13,7 +13,7 @@ export const Profile = (): JSX.Element | null => {
     isError: isAddError,
     isSuccess: isAddSuccess,
     mutate: addRecipe,
-  } = useAddRecipe(recipeUrl);
+  } = useAddRecipe();
 
   return user ? (
     <>
@@ -32,7 +32,7 @@ export const Profile = (): JSX.Element | null => {
       ) : isAddError ? (
         <p>Kunde inte lägga till.</p>
       ) : null}
-      <button onClick={addRecipe}>Lägg till</button>
+      <button onClick={() => addRecipe(recipeUrl)}>Lägg till</button>
       <br />
       <br />
       <Heading as="h3">Planerade recept</Heading>
