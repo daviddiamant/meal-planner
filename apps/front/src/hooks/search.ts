@@ -2,6 +2,7 @@ import { RecipeInIndex } from "@meal-planner/types";
 import { useQuery, UseQueryResult } from "react-query";
 
 import { getAlgoliaIndex } from "../utils";
+import { useUserConfig } from ".";
 
 interface FacetResult {
   title: string;
@@ -39,17 +40,18 @@ const defaultFacets: FacetResult[] = [
   },
 ];
 
-export const useFacets = (
-  searchKey: string | undefined
-): UseQueryResult<FacetResult[] | undefined> =>
-  useQuery<FacetResult[] | undefined>(
+export const useFacets = (): UseQueryResult<FacetResult[] | undefined> => {
+  const { data: userConfig } = useUserConfig();
+  const { algoliaSearchKey } = userConfig || {};
+
+  return useQuery<FacetResult[] | undefined>(
     "facets",
     async (): Promise<FacetResult[] | undefined> => {
-      if (!searchKey) {
+      if (!algoliaSearchKey) {
         return;
       }
 
-      const algolia = getAlgoliaIndex(searchKey);
+      const algolia = getAlgoliaIndex(algoliaSearchKey);
 
       const { facetHits } = await algolia.searchForFacetValues("keywords", "", {
         maxFacetHits: 4,
@@ -90,6 +92,7 @@ export const useFacets = (
       ];
     },
     {
-      enabled: !!searchKey,
+      enabled: !!algoliaSearchKey,
     }
   );
+};

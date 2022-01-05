@@ -1,5 +1,5 @@
 import { Header, Heading } from "../../../components";
-import { useUser, useUserConfig } from "../../../hooks";
+import { useUserConfig } from "../../../hooks";
 import { CSS, styled } from "../../../stitches.config";
 
 const TitleWrapper = styled("div", {
@@ -38,8 +38,7 @@ const style = {
 };
 
 export const HomeHeader = (): JSX.Element => {
-  const { user } = useUser();
-  const { data: userConfig } = useUserConfig(user);
+  const { data: userConfig } = useUserConfig();
   const { bookTitle, lowTitle } = userConfig || {};
 
   return (

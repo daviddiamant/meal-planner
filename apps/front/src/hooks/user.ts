@@ -44,11 +44,14 @@ export const useUser = (): {
   return { user, login };
 };
 
-export const useUserConfig = (
-  user: User | null | undefined
-): UseQueryResult<Responses["UserConfig"] | undefined> =>
-  useQuery<Responses["UserConfig"] | undefined>(
+export const useUserConfig = (): UseQueryResult<
+  Responses["UserConfig"] | undefined
+> => {
+  const { user } = useUser();
+
+  return useQuery<Responses["UserConfig"] | undefined>(
     `${user?.uid}-config`,
     axiosDataGetter<Responses["UserConfig"]>("get", API_URL + Paths.UserConfig),
     { enabled: !!user }
   );
+};

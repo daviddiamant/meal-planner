@@ -1,11 +1,8 @@
 import { Heading, LazyImage } from "../../components";
-import { useFacets, useUser, useUserConfig } from "../../hooks";
+import { useFacets } from "../../hooks";
 
 export const Search = (): JSX.Element => {
-  const { user } = useUser();
-  const { data: userConfig } = useUserConfig(user);
-  const { algoliaSearchKey } = userConfig || {};
-  const { data: facets } = useFacets(algoliaSearchKey);
+  const { data: facets } = useFacets();
 
   return (
     <>
