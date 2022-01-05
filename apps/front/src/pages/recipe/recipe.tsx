@@ -180,12 +180,12 @@ export const Recipe = (): JSX.Element | null => {
           Besök recept
         </a>
         <br />
-        <button onClick={addToWeek}>Planera</button>
         {isAddSuccess ? (
           <p>Planerat!</p>
         ) : isAddError ? (
           <p>Kunde inte planera.</p>
         ) : null}
+        <button onClick={addToWeek}>Planera</button>
       </RecipeContent>
     </Constrained>
   ) : null;
