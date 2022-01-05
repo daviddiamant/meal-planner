@@ -1,13 +1,18 @@
 import { Paths, Responses } from "@meal-planner/types";
+import axios from "axios";
 import {
   useInfiniteQuery,
   UseInfiniteQueryResult,
+  useMutation,
+  UseMutationResult,
   useQuery,
   UseQueryResult,
 } from "react-query";
 
 import { API_URL } from "../appConfig";
-import { axiosDataGetter } from "../utils";
+import { axiosDataGetter, queryClient } from "../utils";
+
+const getRecipesQueryKey = "recipes";
 
 export const useRecipe = (
   slug: string
@@ -22,7 +27,7 @@ export const useRecipe = (
 
 export const useRecipes = (): UseInfiniteQueryResult<Responses["Recipes"]> =>
   useInfiniteQuery<Responses["Recipes"]>(
-    "recipes",
+    getRecipesQueryKey,
     async ({ pageParam = 1 }) => {
       const recipesPerPage = 64;
       const to = pageParam * recipesPerPage;
@@ -38,5 +43,19 @@ export const useRecipes = (): UseInfiniteQueryResult<Responses["Recipes"]> =>
     {
       getNextPageParam: ({ hasMoreRecipes }, allPages) =>
         hasMoreRecipes ? allPages.length + 1 : undefined,
+    }
+  );
+
+export const useAddRecipe = (
+  url: string
+): UseMutationResult<{ result: boolean | string }> =>
+  useMutation(
+    () =>
+      axios.post(API_URL + Paths.AddRecipe, {
+        value: url,
+      }),
+    {
+      onSuccess: () =>
+        queryClient.invalidateQueries(getRecipesQueryKey, { exact: true }),
     }
   );
