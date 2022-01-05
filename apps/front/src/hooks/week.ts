@@ -4,6 +4,7 @@ import {
   useMutation,
   UseMutationResult,
   useQuery,
+  useQueryClient,
   UseQueryResult,
 } from "react-query";
 
@@ -35,3 +36,42 @@ export const useAddToWeek = (): UseMutationResult<
         queryClient.invalidateQueries(getWeekQueryKey, { exact: true }),
     }
   );
+
+export const useRemoveFromWeek = (): UseMutationResult<
+  {
+    result: boolean | string;
+  },
+  unknown,
+  string,
+  { oldWeek: Responses["Week"] | undefined }
+> => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    (slug) =>
+      axios.post(API_URL + Paths.RemoveFromWeek, {
+        value: slug,
+      }),
+    {
+      onMutate: async (slugToRemove) => {
+        await queryClient.cancelQueries(getWeekQueryKey);
+
+        const oldWeek =
+          queryClient.getQueryData<Responses["Week"]>(getWeekQueryKey);
+
+        queryClient.setQueryData(
+          getWeekQueryKey,
+          oldWeek?.filter(({ slug }) => slug !== slugToRemove)
+        );
+
+        return { oldWeek };
+      },
+      onError: (_, __, context) => {
+        queryClient.setQueryData<Responses["Week"] | undefined>(
+          getWeekQueryKey,
+          context?.oldWeek
+        );
+      },
+    }
+  );
+};

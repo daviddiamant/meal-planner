@@ -7,6 +7,7 @@ export enum Paths {
   AddToWeek = "/week/add",
   Recipe = "/recipes/:slug",
   Recipes = "/recipes/:from/:to",
+  RemoveFromWeek = "/week/remove",
   UserConfig = "/user",
   Week = "/week",
 }

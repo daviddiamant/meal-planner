@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Heading, LazyImage } from "../../components";
-import { useAddRecipe, useUser, useWeek } from "../../hooks";
+import { useAddRecipe, useRemoveFromWeek, useUser, useWeek } from "../../hooks";
 
 export const Profile = (): JSX.Element | null => {
   const [recipeUrl, setRecipeUrl] = useState("");
@@ -14,6 +14,7 @@ export const Profile = (): JSX.Element | null => {
     isSuccess: isAddSuccess,
     mutate: addRecipe,
   } = useAddRecipe();
+  const { mutate: removeRecipe } = useRemoveFromWeek();
 
   return user ? (
     <>
@@ -40,7 +41,10 @@ export const Profile = (): JSX.Element | null => {
         <ul>
           {week?.map(({ mediumImage, slug, smallImage, title }) => (
             <li key={slug}>
-              <Link to={`/recipe/${slug}`}>{title}</Link>
+              <Link to={`/recipe/${slug}`}>{title}</Link> -{" "}
+              <button onClick={() => removeRecipe(slug)}>
+                Ta bort från plan
+              </button>
               <LazyImage
                 alt={`Bild för ${title}`}
                 css={{ width: "125px", height: "125px", overflow: "hidden" }}
