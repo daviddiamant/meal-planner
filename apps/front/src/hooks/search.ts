@@ -96,3 +96,28 @@ export const useFacets = (): UseQueryResult<FacetResult[] | undefined> => {
     }
   );
 };
+
+export const useSearch = (
+  query: string
+): UseQueryResult<RecipeInIndex[] | undefined> => {
+  const { data: userConfig } = useUserConfig();
+  const { algoliaSearchKey } = userConfig || {};
+
+  return useQuery<RecipeInIndex[] | undefined>(
+    ["search", query],
+    async (): Promise<RecipeInIndex[] | undefined> => {
+      if (!algoliaSearchKey) {
+        return;
+      }
+
+      const algolia = getAlgoliaIndex(algoliaSearchKey);
+
+      const { hits: searchResult } = await algolia.search<RecipeInIndex>(query);
+
+      return searchResult;
+    },
+    {
+      enabled: false,
+    }
+  );
+};
