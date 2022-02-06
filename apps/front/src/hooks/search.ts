@@ -9,6 +9,7 @@ interface FacetResult {
   smallImage: string;
   mediumImage: string;
   color: [number, number, number];
+  slug?: "";
 }
 
 const defaultFacets: FacetResult[] = [

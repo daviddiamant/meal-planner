@@ -150,32 +150,37 @@ export const Recipe = (): JSX.Element | null => {
         </ExpandText>
         <br />
         <br />
-        {ingredients?.map((ingredient, i) => (
-          <div key={i}>
-            {ingredient.ingredient} {ingredient.unit}
-          </div>
-        ))}
-        {Array.isArray(instructions) ? (
-          instructions.map((instruction, i) => (
-            <div key={i}>
-              <h3>{instruction?.name}</h3>
-              <ol>
-                {instruction?.instructions.map((ins, j) => (
-                  <li key={j}>{ins}</li>
-                ))}
-              </ol>
-            </div>
-          ))
-        ) : (
-          <div>
-            <h3>{instructions?.name}</h3>
-            <ol>
-              {instructions?.instructions.map((instruction, i) => (
-                <li key={i}>{instruction}</li>
-              ))}
-            </ol>
-          </div>
-        )}
+        {ingredients?.map && instructions ? (
+          <>
+            {ingredients?.map((ingredient, i) => (
+              <div key={i}>
+                {ingredient.ingredient} {ingredient.unit}
+              </div>
+            ))}
+            {Array.isArray(instructions) ? (
+              instructions.map((instruction, i) => (
+                <div key={i}>
+                  <h3>{instruction?.name}</h3>
+                  <ol>
+                    {instruction?.instructions.map((ins, j) => (
+                      <li key={j}>{ins}</li>
+                    ))}
+                  </ol>
+                </div>
+              ))
+            ) : (
+              <div>
+                <h3>{instructions?.name}</h3>
+                <ol>
+                  {instructions?.instructions.map((instruction, i) => (
+                    <li key={i}>{instruction}</li>
+                  ))}
+                </ol>
+              </div>
+            )}
+          </>
+        ) : null}
+
         <a href={url} rel="noopener noreferrer" target="_blank">
           Besök recept
         </a>

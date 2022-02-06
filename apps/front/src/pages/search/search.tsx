@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { Heading, LazyImage } from "../../components";
 import { useFacets, useSearch } from "../../hooks";
@@ -7,6 +8,8 @@ export const Search = (): JSX.Element => {
   const [query, setQuery] = useState("");
   const { data: facets } = useFacets();
   const { data: searchResult, refetch: search } = useSearch(query);
+
+  const Wrap = searchResult?.length ? Link : Fragment;
 
   return (
     <>
@@ -23,15 +26,21 @@ export const Search = (): JSX.Element => {
         </Heading>
         <ul>
           {(searchResult?.length ? searchResult : facets)?.map(
-            ({ mediumImage, smallImage, title }, i) => (
+            ({ mediumImage, slug = "/", smallImage, title }, i) => (
               <li key={title + i}>
-                {title}
-                <LazyImage
-                  alt={`Bild för ${title}`}
-                  css={{ width: "125px", height: "125px", overflow: "hidden" }}
-                  largeUrl={mediumImage}
-                  smallUrl={smallImage}
-                />
+                <Wrap to={`/recipe/${slug}`}>
+                  {title}
+                  <LazyImage
+                    alt={`Bild för ${title}`}
+                    css={{
+                      width: "125px",
+                      height: "125px",
+                      overflow: "hidden",
+                    }}
+                    largeUrl={mediumImage}
+                    smallUrl={smallImage}
+                  />
+                </Wrap>
               </li>
             )
           )}
