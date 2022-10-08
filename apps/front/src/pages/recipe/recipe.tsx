@@ -1,4 +1,4 @@
-import { ChevronLeftIcon } from "@heroicons/react/outline";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";

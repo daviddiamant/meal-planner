@@ -1,4 +1,5 @@
 import { Paths, Responses } from "@meal-planner/types";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -7,7 +8,6 @@ import {
   User,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { useQuery, UseQueryResult } from "react-query";
 
 import { API_URL } from "../appConfig";
 import { axiosDataGetter, ensureFirebaseApp } from "../utils";
@@ -50,7 +50,7 @@ export const useUserConfig = (): UseQueryResult<
   const { user } = useUser();
 
   return useQuery<Responses["UserConfig"] | undefined>(
-    `${user?.uid}-config`,
+    [`${user?.uid}-config`],
     axiosDataGetter<Responses["UserConfig"]>("get", API_URL + Paths.UserConfig),
     { enabled: !!user }
   );

@@ -1,18 +1,19 @@
 import { Paths, Responses } from "@meal-planner/types";
-import axios from "axios";
 import {
   useInfiniteQuery,
   UseInfiniteQueryResult,
   useMutation,
   UseMutationResult,
   useQuery,
+  useQueryClient,
   UseQueryResult,
-} from "react-query";
+} from "@tanstack/react-query";
+import axios from "axios";
 
 import { API_URL } from "../appConfig";
-import { axiosDataGetter, queryClient } from "../utils";
+import { axiosDataGetter } from "../utils";
 
-const getRecipesQueryKey = "recipes";
+const getRecipesQueryKey = ["recipes"];
 
 export const useRecipe = (
   slug: string
@@ -52,8 +53,10 @@ export const useAddRecipe = (): UseMutationResult<
   },
   unknown,
   string
-> =>
-  useMutation(
+> => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
     (url) =>
       axios.post(API_URL + Paths.AddRecipe, {
         value: url,
@@ -63,3 +66,4 @@ export const useAddRecipe = (): UseMutationResult<
         queryClient.invalidateQueries(getRecipesQueryKey, { exact: true }),
     }
   );
+};

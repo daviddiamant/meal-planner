@@ -1,17 +1,17 @@
 import { Paths, Responses } from "@meal-planner/types";
-import axios from "axios";
 import {
   useMutation,
   UseMutationResult,
   useQuery,
   useQueryClient,
   UseQueryResult,
-} from "react-query";
+} from "@tanstack/react-query";
+import axios from "axios";
 
 import { API_URL } from "../appConfig";
-import { axiosDataGetter, queryClient } from "../utils";
+import { axiosDataGetter } from "../utils";
 
-const getWeekQueryKey = "week";
+const getWeekQueryKey = ["week"];
 
 export const useWeek = (): UseQueryResult<Responses["Week"] | undefined> =>
   useQuery<Responses["Week"] | undefined>(
@@ -25,8 +25,10 @@ export const useAddToWeek = (): UseMutationResult<
   },
   unknown,
   string
-> =>
-  useMutation(
+> => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
     (slug) =>
       axios.post(API_URL + Paths.AddToWeek, {
         value: slug,
@@ -36,6 +38,7 @@ export const useAddToWeek = (): UseMutationResult<
         queryClient.invalidateQueries(getWeekQueryKey, { exact: true }),
     }
   );
+};
 
 export const useRemoveFromWeek = (): UseMutationResult<
   {

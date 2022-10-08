@@ -1,15 +1,21 @@
-import { Fragment, useState } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Heading, LazyImage } from "../../components";
 import { useFacets, useSearch } from "../../hooks";
 
+const Wrap = ({
+  children,
+  to,
+}: {
+  to: string | undefined;
+  children: ReactNode;
+}) => (to ? <Link to={to}>{children}</Link> : <Fragment>{children}</Fragment>);
+
 export const Search = (): JSX.Element => {
   const [query, setQuery] = useState("");
   const { data: facets } = useFacets();
   const { data: searchResult, refetch: search } = useSearch(query);
-
-  const Wrap = searchResult?.length ? Link : Fragment;
 
   return (
     <>
@@ -28,7 +34,7 @@ export const Search = (): JSX.Element => {
           {(searchResult?.length ? searchResult : facets)?.map(
             ({ mediumImage, slug = "/", smallImage, title }, i) => (
               <li key={title + i}>
-                <Wrap to={`/recipe/${slug}`}>
+                <Wrap to={searchResult?.length ? `/recipe/${slug}` : undefined}>
                   {title}
                   <LazyImage
                     alt={`Bild för ${title}`}

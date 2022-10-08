@@ -2,12 +2,13 @@ import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 import { defineConfig } from "vite";
 import { dependencies } from "./package.json";
+import basicSSL from "@vitejs/plugin-basic-ssl";
 
 const vendorPackages = [
   "react",
   "react-router-dom",
   "react-dom",
-  "react-query",
+  "@tanstack/react-query",
   "@stitches/react",
 ];
 
@@ -32,6 +33,7 @@ const getChunks = (deps: Record<string, string>) => {
 export default defineConfig({
   plugins: [
     react(),
+    basicSSL(),
     VitePWA({
       strategies: "injectManifest",
       srcDir: "src",
@@ -76,6 +78,7 @@ export default defineConfig({
   ],
   server: {
     https: true,
+    port: 3000
   },
   build: {
     rollupOptions: {

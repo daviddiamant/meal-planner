@@ -1,5 +1,9 @@
-import { HomeIcon, SearchIcon, UserIcon } from "@heroicons/react/outline";
-import { HomeIcon as SolidHomeIcon } from "@heroicons/react/solid";
+import {
+  HomeIcon,
+  MagnifyingGlassIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline";
+import { HomeIcon as SolidHomeIcon } from "@heroicons/react/24/solid";
 import { Link, useMatch } from "react-router-dom";
 
 import { styled, StyledComponent, theme } from "../../stitches.config";
@@ -43,7 +47,7 @@ const BottomMenuComponent = (
       </MenuLink>
       <MenuLink to="/search">
         <MenuIcon
-          as={SearchIcon}
+          as={MagnifyingGlassIcon}
           {...(isSearch && { fill: theme.colors.primaryText.value })}
         />
       </MenuLink>

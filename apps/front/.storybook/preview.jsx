@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { globalStyling } from "../src/stitches.config";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { initialize as initializeMsw, mswDecorator } from "msw-storybook-addon";
 
 const queryClient = new QueryClient();

@@ -1,10 +1,10 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   render as defaultRender,
   RenderOptions,
   RenderResult,
 } from "@testing-library/react";
 import { ReactElement, ReactNode } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 
 export const queryClient = new QueryClient();

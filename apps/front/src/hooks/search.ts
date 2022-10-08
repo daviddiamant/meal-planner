@@ -1,5 +1,5 @@
 import { RecipeInIndex } from "@meal-planner/types";
-import { useQuery, UseQueryResult } from "react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 import { getAlgoliaIndex } from "../utils";
 import { useUserConfig } from ".";
@@ -46,7 +46,7 @@ export const useFacets = (): UseQueryResult<FacetResult[] | undefined> => {
   const { algoliaSearchKey } = userConfig || {};
 
   return useQuery<FacetResult[] | undefined>(
-    "facets",
+    ["facets"],
     async (): Promise<FacetResult[] | undefined> => {
       if (!algoliaSearchKey) {
         return;
