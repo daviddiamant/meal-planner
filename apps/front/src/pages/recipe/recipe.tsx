@@ -62,6 +62,20 @@ const RecipeContent = styled("div", {
   padding: "$2",
 });
 
+const IngredientRow = styled("div", {
+  display: "flex",
+  justifyContent: "space-between",
+});
+
+const Ingredient = styled("p", {
+  margin: 0,
+});
+
+const Unit = styled("p", {
+  margin: 0,
+  fontWeight: "$2",
+});
+
 const style: Style = {
   constrained: {
     display: "block",
@@ -73,6 +87,7 @@ const style: Style = {
   description: {
     position: "relative",
     marginTop: "$4",
+    marginBottom: "$5",
     textAlign: "justify",
     color: "$secondaryText",
   },
@@ -148,19 +163,26 @@ export const Recipe = (): JSX.Element | null => {
         >
           {description}
         </ExpandText>
-        <br />
-        <br />
         {ingredients?.map && instructions ? (
           <>
+            <Heading as="h3" margins>
+              Ingredienser
+            </Heading>
             {ingredients?.map((ingredient, i) => (
-              <div key={i}>
-                {ingredient.ingredient} {ingredient.unit}
-              </div>
+              <IngredientRow key={i}>
+                <Ingredient>
+                  {ingredient.ingredient[0].toUpperCase() +
+                    ingredient.ingredient.slice(1)}{" "}
+                </Ingredient>
+                <Unit>{ingredient.unit}</Unit>
+              </IngredientRow>
             ))}
             {Array.isArray(instructions) ? (
               instructions.map((instruction, i) => (
                 <div key={i}>
-                  <h3>{instruction?.name}</h3>
+                  <Heading as="h3" margins>
+                    {instruction?.name}
+                  </Heading>
                   <ol>
                     {instruction?.instructions.map((ins, j) => (
                       <li key={j}>{ins}</li>
@@ -170,7 +192,9 @@ export const Recipe = (): JSX.Element | null => {
               ))
             ) : (
               <div>
-                <h3>{instructions?.name}</h3>
+                <Heading as="h3" margins>
+                  {instructions?.name}
+                </Heading>
                 <ol>
                   {instructions?.instructions.map((instruction, i) => (
                     <li key={i}>{instruction}</li>
