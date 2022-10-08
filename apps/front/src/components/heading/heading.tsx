@@ -5,12 +5,11 @@ import { styled } from "../../stitches.config";
 type HeadingTags = "h1" | "h2" | "h3";
 export type HeadingProps = {
   as?: HeadingTags;
+  margins?: true;
   children: ReactNode;
 };
 
 export const Heading = styled("h1", {
-  margin: 0,
-  padding: 0,
   fontFamily: "$heading",
   fontWeight: "$3",
   lineHeight: "$1",
@@ -27,8 +26,12 @@ export const Heading = styled("h1", {
         fontSize: "5vw",
       },
     },
+    margins: {
+      false: { margin: 0, padding: 0 },
+    },
   },
   defaultVariants: {
     as: "h1",
+    margins: false,
   },
 });
