@@ -12,15 +12,13 @@ export type BottomMenuProps = Record<string, unknown>;
 
 const Menu = styled("div", {
   position: "fixed",
-  bottom: "$2",
+  bottom: 0,
   display: "flex",
-  width: `calc(100% - (2 * ${theme.space[2].value}))`,
-  minHeight: "50px",
-  margin: "0 $2",
+  width: `100%`,
+  minHeight: "56px",
   alignItems: "center",
   justifyContent: "space-evenly",
   background: "$foreground",
-  borderRadius: "$primary",
 });
 
 const MenuLink = styled(Link, {
@@ -28,8 +26,8 @@ const MenuLink = styled(Link, {
 });
 
 const MenuIcon = styled("svg", {
-  width: "26px",
-  height: "26px",
+  width: "32px",
+  height: "32px",
   color: "$primaryText",
 });
 
