@@ -61,7 +61,10 @@ const autoCallingCss = (
 export type Theme = typeof theme;
 export type CSS = Stitches.CSS<typeof config>;
 export type Style = Record<string, CSS>;
-export type StyledComponent<TOwnProps, TReturnComponent> = TOwnProps &
+export type StyledComponent<
+  TOwnProps,
+  TReturnComponent extends { [key: string]: any; [key: symbol]: any }
+> = TOwnProps &
   Stitches.VariantProps<TReturnComponent> &
   Partial<{ className: string }>;
 export { autoCallingCss as css, globalStyling, styled, theme, utils };
