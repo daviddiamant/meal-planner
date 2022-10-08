@@ -74,7 +74,7 @@ functions:
     memorySize: 2048
     timeout: 29
     layers:
-      - arn:aws:lambda:eu-central-1:764866452798:layer:chrome-aws-lambda:25
+      - { Ref: ChromiumLambdaLayer }
     events:
       - http:
           path: /api/recipes/add
@@ -136,14 +136,21 @@ layers:
   sharp:
     description: Sharp (libvips)
     package:
-      artifact: ./src/layers/sharp/sharp-0.29.3-aws-lambda-linux-x64-node-14.18.2.zip
+      artifact: ./src/layers/sharp/sharp-0.31.1-aws-lambda-linux-x64-node-14.18.2.zip
     compatibleRuntimes:
       - nodejs14.x
 
   firebaseAdmin:
     description: Firebase admin SDK
     package:
-      artifact: ./src/layers/firebase-admin/firebase-admin-10.0.1-aws-lambda-linux-x64-node-14.18.2.zip
+      artifact: ./src/layers/firebase-admin/firebase-admin-11.1.0-aws-lambda-linux-x64-node-14.18.2.zip
+    compatibleRuntimes:
+      - nodejs14.x
+
+  chromium:
+    description: Chromium
+    package:
+      artifact: ./src/layers/chromium/chromium/chromium.zip
     compatibleRuntimes:
       - nodejs14.x
 
@@ -153,6 +160,7 @@ resources:
       Type: "AWS::SQS::Queue"
       Properties:
         QueueName: "sharedDLQ"
+
     jsonLDQueue:
       Type: "AWS::SQS::Queue"
       Properties:
@@ -164,6 +172,7 @@ resources:
               - sharedDLQ
               - Arn
           maxReceiveCount: 3
+
     saveImageQueue:
       Type: "AWS::SQS::Queue"
       Properties:

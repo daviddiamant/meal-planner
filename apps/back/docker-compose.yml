@@ -11,3 +11,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./src/layers/firebase-admin:/app
+
+  chromium:
+    build:
+      context: ./src/layers/chromium
+      dockerfile: Dockerfile
+    volumes:
+      - ./src/layers/chromium:/app

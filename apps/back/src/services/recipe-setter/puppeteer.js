@@ -1,6 +1,6 @@
 /*global window, document*/
 
-import chromium from "chrome-aws-lambda";
+import chromium from "@sparticuz/chromium";
 
 let puppeteer;
 

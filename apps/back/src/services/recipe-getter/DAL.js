@@ -13,6 +13,7 @@ export const getBook = async (
   return db
     .collection(recipesCollection)
     .find({ bookID })
+    .sort({ _id: -1 })
     .skip(from)
     .limit(to - from)
     .project(recipeForListsProjection)
