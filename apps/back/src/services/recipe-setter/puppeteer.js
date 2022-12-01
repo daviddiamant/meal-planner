@@ -1,16 +1,24 @@
 /*global window, document*/
-
 import chromium from "@sparticuz/chromium";
+import pupeteerCore from "puppeteer-core";
 
 let puppeteer;
 
 const createBrowser = async () => {
-  const chromiumPath = await chromium.executablePath;
+  const pupeteerConfig = process.env.IS_OFFLINE
+    ? {
+        module: require("puppeteer"),
+        path: undefined,
+      }
+    : {
+        module: pupeteerCore,
+        path: await chromium.executablePath,
+      };
 
-  puppeteer = await chromium.puppeteer.launch({
+  puppeteer = await pupeteerConfig.module.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: chromiumPath,
+    executablePath: pupeteerConfig.path,
     headless: chromium.headless,
     ignoreHTTPSErrors: true,
   });

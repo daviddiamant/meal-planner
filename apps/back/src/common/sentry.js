@@ -3,7 +3,7 @@ import { AWSLambda } from "@sentry/serverless";
 import * as SentryTracing from "@sentry/tracing";
 
 const initParams = {
-  environment: process.env.LOCAL ? "local" : "production",
+  environment: process.env.IS_OFFLINE ? "local" : "production",
   dsn: process.env.SENTRY_DSN,
   tracesSampleRate: 1,
 };

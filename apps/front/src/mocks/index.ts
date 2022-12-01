@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { DefaultRequestBody, MockedRequest, rest, RestHandler } from "msw";
+import { rest } from "msw";
 import { SetupServerApi } from "msw/node";
 
 import { setupRecipesHandler } from "./recipes";
@@ -19,8 +19,8 @@ export const setupBaseHandlers = (): void => {
 };
 
 export const successfulHandler = <
-  ReturnType extends DefaultRequestBody,
-  RequestType extends DefaultRequestBody = any
+  ReturnType extends Record<string, any>,
+  RequestType extends Record<string, any> = any
 >(
   method: "get" | "post",
   path: string,

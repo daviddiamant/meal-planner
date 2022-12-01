@@ -1,11 +1,9 @@
-org: ddiamant
-app: meal-planner
 service: meal-planner
 
 provider:
   name: aws
-  runtime: nodejs14.x
-  region: eu-central-1
+  runtime: nodejs16.x
+  region: eu-north-1
   stage: prod
   environment:
     JSON_LD_QUEUE_URL: { Ref: jsonLDQueue }
@@ -30,10 +28,6 @@ plugins:
 custom:
   webpack:
     webpackConfig: "webpack.config.js"
-  dotenv:
-    exclude:
-      - LOCAL
-      - NODE_ENV
   serverless-offline:
     stage: "local"
     httpPort: 5000
@@ -41,7 +35,7 @@ custom:
     autoCreate: true
     apiVersion: "2012-11-05"
     endpoint: http://0.0.0.0:9324
-    region: eu-central-1
+    region: eu-north-1
     accessKeyId: root
     secretAccessKey: root
     skipCacheInvalidation: false
@@ -136,23 +130,23 @@ layers:
   sharp:
     description: Sharp (libvips)
     package:
-      artifact: ./src/layers/sharp/sharp-0.31.1-aws-lambda-linux-x64-node-14.18.2.zip
+      artifact: ./src/layers/sharp/sharp-0.31.2-aws-lambda-linux-x64-node-16.18.1.zip
     compatibleRuntimes:
-      - nodejs14.x
+      - nodejs16.x
 
   firebaseAdmin:
     description: Firebase admin SDK
     package:
-      artifact: ./src/layers/firebase-admin/firebase-admin-11.1.0-aws-lambda-linux-x64-node-14.18.2.zip
+      artifact: ./src/layers/firebase-admin/firebase-admin-11.3.0-aws-lambda-linux-x64-node-16.18.1.zip
     compatibleRuntimes:
-      - nodejs14.x
+      - nodejs16.x
 
   chromium:
     description: Chromium
     package:
       artifact: ./src/layers/chromium/chromium/chromium.zip
     compatibleRuntimes:
-      - nodejs14.x
+      - nodejs16.x
 
 resources:
   Resources:

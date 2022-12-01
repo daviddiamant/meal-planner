@@ -1,20 +1,9 @@
 services:
-  sharp:
-    build:
-      context: ./src/layers/sharp
-      dockerfile: Dockerfile
-    volumes:
-      - ./src/layers/sharp:/app
-  firebase-admin:
-    build:
-      context: ./src/layers/firebase-admin
-      dockerfile: Dockerfile
-    volumes:
-      - ./src/layers/firebase-admin:/app
+  sqs:
+    image: softwaremill/elasticmq-native
+    container_name: sqs
+    ports:
+      - "9324:9324"
+      - "9325:9325"
 
-  chromium:
-    build:
-      context: ./src/layers/chromium
-      dockerfile: Dockerfile
-    volumes:
-      - ./src/layers/chromium:/app
+
