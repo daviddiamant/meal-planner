@@ -3,7 +3,27 @@ services:
     image: softwaremill/elasticmq-native
     container_name: sqs
     ports:
-      - "9324:9324"
-      - "9325:9325"
+      - 9324:9324
+      - 9325:9325
+
+  sqs-init:
+    image: amazon/aws-cli
+    depends_on:
+      - sqs
+    restart: "no"
+    environment:
+      AWS_ACCESS_KEY_ID : ROOT
+      AWS_SECRET_ACCESS_KEY: ROOT
+    entrypoint: [
+      "aws",
+      "sqs",
+      "create-queue",
+      "--queue-name",
+      "sharedDLQ",
+      "--endpoint-url",
+      "http://sqs:9324",
+      "--region",
+      "eu-north-1"
+    ]
 
 

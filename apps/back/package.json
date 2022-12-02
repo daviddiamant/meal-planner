@@ -41,7 +41,7 @@
     "webpack": "^5.75.0"
   },
   "scripts": {
-    "start": "docker compose up --detach && sleep 5 && serverless offline",
+    "start": "docker compose up --detach && sleep 5 && serverless offline --reloadHandler",
     "start:both": "npm start",
     "deploy": "serverless deploy",
     "build-layers": "docker compose -f docker-compose.layers.yml up"
