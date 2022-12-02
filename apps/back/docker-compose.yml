@@ -25,5 +25,3 @@ services:
       "--region",
       "eu-north-1"
     ]
-
-
