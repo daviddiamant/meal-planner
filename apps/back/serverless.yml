@@ -2,7 +2,7 @@ service: meal-planner
 
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs18.x
   region: eu-north-1
   stage: prod
   environment:
@@ -130,23 +130,23 @@ layers:
   sharp:
     description: Sharp (libvips)
     package:
-      artifact: ./src/layers/sharp/sharp-0.31.2-aws-lambda-linux-x64-node-16.18.1.zip
+      artifact: ./src/layers/sharp/sharp-0.32.0-aws-lambda-linux-x64-node-18.15.0.zip
     compatibleRuntimes:
-      - nodejs16.x
+      - nodejs18.x
 
   firebaseAdmin:
     description: Firebase admin SDK
     package:
-      artifact: ./src/layers/firebase-admin/firebase-admin-11.3.0-aws-lambda-linux-x64-node-16.18.1.zip
+      artifact: ./src/layers/firebase-admin/firebase-admin-11.6.0-aws-lambda-linux-x64-node-18.15.0.zip
     compatibleRuntimes:
-      - nodejs16.x
+      - nodejs18.x
 
   chromium:
     description: Chromium
     package:
       artifact: ./src/layers/chromium/chromium/chromium.zip
     compatibleRuntimes:
-      - nodejs16.x
+      - nodejs18.x
 
 resources:
   Resources:

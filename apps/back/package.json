@@ -49,7 +49,7 @@
     "build-layers": "docker compose -f docker-compose.layers.yml up"
   },
   "volta": {
-    "node": "16.18.1",
-    "npm": "8.19.3"
+    "node": "18.15.0",
+    "npm": "9.6.4"
   }
 }
