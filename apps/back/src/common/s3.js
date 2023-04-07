@@ -1,4 +1,5 @@
-import { S3 } from "aws-sdk";
+import { S3 } from "@aws-sdk/client-s3";
+import { Upload } from "@aws-sdk/lib-storage";
 
 export const uploadImage = async (slug, fileName, body) => {
   const s3 = new S3({
@@ -9,8 +10,10 @@ export const uploadImage = async (slug, fileName, body) => {
   const v = process.env.S3_IMAGE_VERSION;
   const folderName = process.env.S3_IMAGE_BUCKET_FOLDER_NAME;
 
-  await s3
-    .upload({
+  await new Upload({
+    client: s3,
+
+    params: {
       Bucket: process.env.S3_IMAGE_BUCKET,
       Key: `${v}/${folderName}/${slug}/${fileName}`,
       Body: body,
@@ -22,6 +25,6 @@ export const uploadImage = async (slug, fileName, body) => {
           : null
       }`,
       CacheControl: "max-age=2592000",
-    })
-    .promise();
+    },
+  }).done();
 };

@@ -1,13 +1,11 @@
-import { SQS } from "aws-sdk";
+import { SQS } from "@aws-sdk/client-sqs";
 
 const sendMessage = async (QueueUrl, body) => {
   const sqs = new SQS();
-  await sqs
-    .sendMessage({
-      MessageBody: JSON.stringify(body),
-      QueueUrl,
-    })
-    .promise();
+  await sqs.sendMessage({
+    MessageBody: JSON.stringify(body),
+    QueueUrl,
+  });
 };
 
 export const notifyJsonLDParser = async (recipeId, jsonLD) => {

@@ -14,7 +14,15 @@ module.exports = {
   performance: {
     hints: false,
   },
-  externals: ["@sparticuz/chromium", "aws-sdk", "sharp", "firebase-admin"],
+  externals: [
+    "@sparticuz/chromium",
+    "aws-sdk",
+    "@aws-sdk/client-s3",
+    "@aws-sdk/lib-storage",
+    "@aws-sdk/client-sqs",
+    "sharp",
+    "firebase-admin",
+  ],
   module: {
     rules: [
       {
