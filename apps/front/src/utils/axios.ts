@@ -12,11 +12,10 @@ export const getJWTInterceptor = (user: User | null | undefined): number =>
 
     const JWT = await user?.getIdToken();
 
+    config.headers["Authorization"] = `Bearer ${JWT}`;
+
     return {
       ...config,
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
       cancelToken: !JWT
         ? new axios.CancelToken((cancel) => cancel("Have no JWT"))
         : undefined,
