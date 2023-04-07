@@ -87,24 +87,20 @@ const scrapeMetaData = () => {
   };
 
   const domainSpecificImage = (domain, jsonLD) => {
-    switch (domain) {
-      case "www.koket.se":
-        return jsonLD.image.replace("thumbnail", "desktop");
-      case "blogg.alltommat.se":
-        return document
-          .querySelector("#content picture source")
-          .srcset.split(" ")[0];
-      case "www.javligtgott.se":
-        return document.querySelector(".entry img").src;
-      case "www.ica.se":
-        return jsonLD.image.replace("cf_6901", "cf_259");
-      case "hemmahosandrea.se":
-        return document.querySelector(".wp-post-image").src;
-      case "marcussamuelsson.se":
-        return document.querySelector(".photo").src;
-      default:
-        return null;
-    }
+    const domainMap = new Map([
+      ["koket.se", jsonLD.image?.replace("thumbnail", "desktop")],
+      [
+        "blogg.alltommat.se",
+        document.querySelector("#content picture source")?.srcset.split(" ")[0],
+      ],
+      ["javligtgott.se", document.querySelector(".entry img")?.src],
+      ["ica.se", jsonLD.image?.replace("cf_6901", "cf_259")],
+      ["hemmahosandrea.se", document.querySelector(".wp-post-image")?.src],
+      ["marcussamuelsson.se", document.querySelector(".photo")?.src],
+      ["polarbrod.se", document.querySelector(".slide img")?.src],
+    ]);
+
+    return domainMap.get(domain.replace("www.", ""));
   };
 
   // First check if we can get some linked data
