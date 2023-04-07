@@ -12,7 +12,7 @@ const createBrowser = async () => {
       }
     : {
         module: pupeteerCore,
-        path: await chromium.executablePath,
+        path: await chromium.executablePath(),
       };
 
   puppeteer = await pupeteerConfig.module.launch({
