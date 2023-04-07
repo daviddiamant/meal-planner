@@ -17,7 +17,20 @@ provider:
         - sqs:ListQueues
         - sqs:ReceiveMessage
         - sqs:SetQueueAttributes
-      Resource: arn:aws:sqs:*
+      Resource:
+        - !GetAtt sharedDLQ.Arn
+        - !GetAtt jsonLDQueue.Arn
+        - !GetAtt saveImageQueue.Arn
+    - Effect: Allow
+      Action:
+        - s3:AbortMultipartUpload  
+        - s3:ListBucketMultipartUploads
+        - s3:ListMultipartUploadParts
+        - s3:GetObject
+        - s3:PutObject
+      Resource: 
+        - arn:aws:s3:::meal-planner-images
+        - arn:aws:s3:::meal-planner-images/*
 
 plugins:
   - serverless-dotenv-plugin
