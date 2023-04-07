@@ -196,6 +196,7 @@ const scrapeMetaData = () => {
    */
   let image = firstNotNull([
     { value: domainSpecificImage(window.location.hostname, jsonLD) },
+    { value: jsonLD.image, key: "url" },
     { value: jsonLD, key: "image" },
     {
       value: document.querySelector('meta[itemprop="image"]'),
