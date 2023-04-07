@@ -1,8 +1,8 @@
-import { S3 } from "@aws-sdk/client-s3";
+import { S3Client } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 
 export const uploadImage = async (slug, fileName, body) => {
-  const s3 = new S3({
+  const s3 = new S3Client({
     region: process.env.S3_IMAGE_REGION,
     accessKeyId: process.env.S3_IMAGE_ACCESS_KEY_ID,
     secretAccessKey: process.env.S3_IMAGE_SECRET_ACCESS_KEY,
@@ -12,7 +12,6 @@ export const uploadImage = async (slug, fileName, body) => {
 
   await new Upload({
     client: s3,
-
     params: {
       Bucket: process.env.S3_IMAGE_BUCKET,
       Key: `${v}/${folderName}/${slug}/${fileName}`,
