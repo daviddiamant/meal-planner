@@ -1,17 +1,17 @@
+import { App, Duration, Stack, StackProps } from "aws-cdk-lib";
 import {
   CloudFrontAllowedCachedMethods,
   CloudFrontAllowedMethods,
   CloudFrontWebDistribution,
   OriginAccessIdentity,
-} from "@aws-cdk/aws-cloudfront";
-import { Bucket, HttpMethods } from "@aws-cdk/aws-s3";
-import { BucketDeployment, Source } from "@aws-cdk/aws-s3-deployment";
-import { Construct, Duration, Stack, StackProps } from "@aws-cdk/core";
+} from "aws-cdk-lib/aws-cloudfront";
+import { Bucket, HttpMethods } from "aws-cdk-lib/aws-s3";
+import { BucketDeployment, Source } from "aws-cdk-lib/aws-s3-deployment";
 
 export class FrontendStack extends Stack {
   logicalId = "MealPlannerTypescriptFrontend";
 
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: App, id: string, props?: StackProps) {
     super(scope, id, props);
 
     const storage = new Bucket(this, `${this.logicalId}Bucket`, {
