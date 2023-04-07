@@ -52,6 +52,8 @@ export const Masonry = (): JSX.Element => {
 
     data.pages.slice(noPagesAdded).forEach((page) => {
       page.recipes.forEach((recipe) => {
+        if (!recipe.mediumImageHeight || !recipe.mediumImageWidth) return;
+
         const column =
           tempLeft.height < tempRight.height ||
           tempLeft.height === tempRight.height
