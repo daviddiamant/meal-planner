@@ -11,7 +11,7 @@ export const recipesDAL = () => ({
   updateRecipe: async (recipeId, set) => {
     const db = await getDB(process.env.RECIPES_DB);
     await db.collection("recipes").updateOne(
-      { _id: ObjectId(recipeId) },
+      { _id: new ObjectId(recipeId) },
       {
         $set: set,
       }
